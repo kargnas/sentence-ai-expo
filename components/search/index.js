@@ -30,7 +30,6 @@ function WordItem(props) {
                 <View style={styles.wordRightContainer}>
                     <Text style={{
                         ...styles.meaning,
-                        fontColor: theme.colors.onSurface,
                         color: theme.colors.outline,
                     }}>{component.meaning}</Text>
                     <List.Icon icon="chevron-right"/>
@@ -47,7 +46,7 @@ function WordItem(props) {
 }
 
 export default function Search() {
-    const [query, setQuery] = React.useState("从市政府到博物馆有多远？");
+    const [query, setQuery] = React.useState("");
     const [results, setResults] = React.useState([]);
     const [loading, setLoading] = React.useState(0);
     const navigation = useNavigation();

@@ -2,12 +2,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {
     MD3DarkTheme as DefaultTheme,
-    PaperProvider, adaptNavigationTheme,
+    PaperProvider, adaptNavigationTheme, BottomNavigation,
 } from 'react-native-paper';
 
 import SearchScreen from './components/search';
 import WordScreen from './components/word';
+import StarredListScreen from './components/starredList';
 import FavoriteButton from "./components/word/favoriteButton";
+import {useState} from "react";
 
 const Stack = createStackNavigator();
 const theme = {
@@ -63,11 +65,17 @@ export default function App() {
     return (
         <PaperProvider theme={theme}>
             <NavigationContainer theme={DarkTheme}>
-                <Stack.Navigator initialRouteName="Home">
-                    <Stack.Screen name="Home"
-                                  component={SearchScreen}
+                <Stack.Navigator initialRouteName="StarredList">
+                    <Stack.Screen name="StarredList"
+                                  component={StarredListScreen}
                                   options={{
                                       title: 'Chinese Sentences Analysis',
+                                  }}
+                    />
+                    <Stack.Screen name="Search"
+                                  component={SearchScreen}
+                                  options={{
+                                      title: 'Analysis',
                                   }}
                     />
                     <Stack.Screen name="Word"
