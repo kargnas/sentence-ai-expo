@@ -22,9 +22,9 @@ export default function StarredList() {
         setStarredList(result)
     }
 
-    useEffect(() => {
-        refreshStarredList();
-    }, []);
+    // useEffect(() => {
+    //     refreshStarredList();
+    // }, []);
 
     return (
         <ScrollView refreshControl={<RefreshControl refreshing={loading}
