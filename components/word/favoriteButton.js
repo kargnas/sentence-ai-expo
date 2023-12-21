@@ -1,8 +1,9 @@
 import * as React from 'react';
 import * as SecureStore from 'expo-secure-store';
 import {useEffect, useState} from 'react'; // new import
-import {Button, List} from "react-native-paper";
+import {Button, FAB, List} from "react-native-paper";
 import {StyleSheet, View} from "react-native";
+import * as Haptics from "expo-haptics";
 
 async function save(key, value) {
     await SecureStore.setItemAsync(key, value);
@@ -77,40 +78,47 @@ export default function FavoriteButton(props) {
 
     if (starred) {
         return (
-            <View
+            <FAB
+                icon={'check'}
+                size={'small'}
+                mode={'flat'}
+                variant={'surface'}
                 style={{
-                    padding: 10,
-                }}>
-                <Button
-                    mode="outlined"
-                    icon="check"
-                    onPress={() => {
-                        removeStarred(word);
-                        setStarred(false);
-                    }}
-                >
-                    Favorited
-                </Button>
-            </View>
+                    ...styles.fab,
+                    ...props.style,
+                }}
+                onPress={() => {
+                    removeStarred(word);
+                    setStarred(false);
+                    Haptics.notificationAsync(
+                        Haptics.NotificationFeedbackType.Error
+                    )
+                }}
+            />
         );
     } else {
         return (
-            <View
+            <FAB
+                icon={'star'}
+                size={'small'}
+                mode={'flat'}
                 style={{
-                    padding: 11,
-                }}>
-                <Button
-                    mode="contained-tonal"
-                    icon="star"
-                    onPress={() => {
-                        addStarred(word, pinyin);
-                        setStarred(true);
-                    }}
-                >
-                    Favorite
-                </Button>
-            </View>
+                    ...styles.fab,
+                    ...props.style,
+                }}
+                onPress={() => {
+                    addStarred(word, pinyin);
+                    setStarred(true);
+                    Haptics.notificationAsync(
+                        Haptics.NotificationFeedbackType.Success
+                    )
+                }}
+            />
         );
     }
 }
 
+const styles = StyleSheet.create({
+    fab: {
+    },
+});

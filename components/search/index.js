@@ -1,38 +1,74 @@
 import * as React from 'react';
 import {StatusBar} from 'expo-status-bar';
 import {StyleSheet, View, Text, FlatList} from 'react-native';
-import {List, Button, PaperProvider, TextInput, ActivityIndicator} from "react-native-paper";
+import {List, Button, PaperProvider, TextInput, ActivityIndicator, useTheme} from "react-native-paper";
 import axios from "axios";
 import {SafeAreaView, SafeAreaProvider, SafeAreaInsetsContext, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useEffect} from "react";
 import {useNavigation} from "@react-navigation/native";
 import FavoriteButton from "../word/favoriteButton";
+import ApiService from "../../api/apiService";
 
 let cancelToken;
 let loadingStack = 0;
+
+function WordItem(props) {
+    const { component } = props;
+    const navigation = useNavigation();
+    const theme = useTheme()
+
+    return (
+        <List.Item
+            title={component.word}
+            description={component.pinyin}
+            left={props =>
+                <FavoriteButton word={component.word} style={{
+                    marginLeft: 15
+                }}/>
+            }
+            right={props =>
+                <View style={styles.wordRightContainer}>
+                    <Text style={{
+                        ...styles.meaning,
+                        fontColor: theme.colors.onSurface,
+                        color: theme.colors.outline,
+                    }}>{component.meaning}</Text>
+                    <List.Icon icon="chevron-right"/>
+                </View>
+            }
+            onPress={() =>
+                navigation.navigate('Word', {
+                    title: `${component.word} ${component.pinyin}`,
+                    component
+                })
+            }
+        />
+    )
+}
 
 export default function Search() {
     const [query, setQuery] = React.useState("从市政府到博物馆有多远？");
     const [results, setResults] = React.useState([]);
     const [loading, setLoading] = React.useState(0);
     const navigation = useNavigation();
+    const theme = useTheme()
 
     const handleSearch = async () => {
-        if (typeof cancelToken != typeof undefined) {
-            cancelToken.cancel();
-        }
-        cancelToken = axios.CancelToken.source();
+        const apiService = new ApiService();
         loadingStack++;
         setLoading(loadingStack)
 
         try {
-            const response = await axios.get(`https://merciful-winds-sd2i8lb9e6gr.vapor-farm-b1.com/api/analysis/input?text=${query}`, { cancelToken: cancelToken.token });
+            apiService.prepareForRequest();
+            const response = await apiService.analysis(query);
             setResults(response.data);
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log("Cancelled previous request");
             } else {
+                // trace
                 console.error(error);
+                console.error(error, error.stack)
             }
         } finally {
             loadingStack--;
@@ -58,29 +94,36 @@ export default function Search() {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
                         <List.Section>
-                            <List.Subheader>{item.meaning}</List.Subheader>
-                            <List.Item
-                                title={item.sentence}
-                                description={item.explain_structure}
-                            />
+                            <Text style={{
+                                marginLeft: 15,
+                                marginRight: 15,
+                                marginBottom: 5,
+                                lineHeight: 20,
+                                fontWeight: 'bold',
+                                color: theme.colors.onSurfaceDisabled
+                            }}>
+                                {item.sentence}
+                            </Text>
+                            <Text style={{
+                                marginLeft: 15,
+                                marginRight: 15,
+                                marginBottom: 5,
+                                lineHeight: 20,
+                                color: theme.colors.onSurface
+                            }}>
+                                {item.meaning}
+                            </Text>
+                            <Text style={{
+                                marginLeft: 15,
+                                marginRight: 15,
+                                marginBottom: 5,
+                                lineHeight: 20,
+                                color: theme.colors.onSurfaceVariant
+                            }}>
+                                {item.explain_structure}
+                            </Text>
                             {item.components.map((component, idx) => (
-                                <List.Item
-                                    key={idx}
-                                    title={component.word}
-                                    description={component.pinyin}
-                                    right={props =>
-                                        <View style={styles.wordRightContainer}>
-                                            <Text style={styles.meaning}>{component.meaning}</Text>
-                                            <List.Icon icon="chevron-right"/>
-                                        </View>
-                                    }
-                                    onPress={() =>
-                                        navigation.navigate('Word', {
-                                            title: `${component.word} ${component.pinyin}`,
-                                            component
-                                        })
-                                    }
-                                />
+                                <WordItem key={idx} component={component}/>
                             ))}
                         </List.Section>
                     )}
@@ -93,11 +136,9 @@ export default function Search() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFF',
     },
     searchBar: {
         margin: 5,
-        marginBottom: 10,
     },
     loading: {
         marginTop: 20,
