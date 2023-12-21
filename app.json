@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "21217879-3fd9-4910-b23c-d62a50bf41ac"
+      }
+    },
+    "owner": "kargnas"
   }
 }

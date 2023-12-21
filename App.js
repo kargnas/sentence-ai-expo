@@ -1,20 +1,38 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {TouchableOpacity} from 'react-native';
+import {
+    Card,
+    Title,
+    Paragraph,
+    List,
+    PaperProvider,
+} from 'react-native-paper';
+
+import SearchScreen from './components/search';
+import WordScreen from './components/word';
+
+const Stack = createStackNavigator();
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    return (
+        <PaperProvider>
+            <NavigationContainer>
+                <Stack.Navigator initialRouteName="Home">
+                    <Stack.Screen name="Home"
+                                  component={SearchScreen}
+                                  options={{
+                                      title: 'Chinese Sentences Analysis',
+                                  }}
+                    />
+                    <Stack.Screen name="Word"
+                                  component={WordScreen}
+                                  options={({ route }) =>
+                                      ({ title: route.params.title })}
+                    />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </PaperProvider>
+    );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
