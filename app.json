@@ -2,20 +2,20 @@
   "expo": {
     "name": "Mandarin AI Analyzer",
     "slug": "chinese-learning",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#cf4237"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "buildNumber": "7",
+      "buildNumber": "9",
       "supportsTablet": true,
       "bundleIdentifier": "as.kargn.chineselearning",
       "config": {
