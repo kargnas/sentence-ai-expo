@@ -22,9 +22,9 @@ export default function StarredList() {
         setStarredList(result)
     }
 
-    // useEffect(() => {
-    //     refreshStarredList();
-    // }, []);
+    useEffect(() => {
+        refreshStarredList();
+    }, []);
 
     return (
         <ScrollView refreshControl={<RefreshControl refreshing={loading}
@@ -55,7 +55,7 @@ export default function StarredList() {
                                     <Text style={{
                                         ...styles.meaning,
                                         color: theme.colors.outline,
-                                    }}>{component.meaning}</Text>
+                                    }}>{component?.meaning}</Text>
                                     <List.Icon icon="chevron-right"/>
                                 </View>
                             }

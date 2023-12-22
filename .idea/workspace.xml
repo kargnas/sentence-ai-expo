@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fdb975b2-6389-43d8-8dd5-e7bdce4956f8" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/eas.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/search/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/search/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/word/favoriteButton.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/word/favoriteButton.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/word/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/word/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/starredList/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/starredList/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
@@ -166,26 +165,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Node.js.App.js.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Shell Script.Deploy.executor": "Run",
-    "Shell Script.Run.executor": "Debug",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/Users/kargnas/Library/Mobile Documents/com~apple~CloudDocs/projects/chinese-app/mobile",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "ts.external.directory.path": "/Users/kargnas/Applications/WebStorm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Node.js.App.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Shell Script.Deploy.executor&quot;: &quot;Run&quot;,
+    &quot;Shell Script.Run.executor&quot;: &quot;Debug&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/kargnas/Library/Mobile Documents/com~apple~CloudDocs/projects/chinese-app/mobile&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/kargnas/Applications/WebStorm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager">
+}</component>
+  <component name="RunManager" selected="Shell Script.Prebuild">
+    <configuration name="Prebuild" type="ShConfigurationType">
+      <option name="SCRIPT_TEXT" value="npx expo prebuild" />
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="/bin/zsh" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <option name="EXECUTE_SCRIPT_FILE" value="false" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <configuration name="Run" type="ShConfigurationType">
       <option name="SCRIPT_TEXT" value="npm run start" />
       <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
@@ -201,6 +215,10 @@
       <envs />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Shell Script.Run" />
+      <item itemvalue="Shell Script.Prebuild" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -216,7 +234,9 @@
       <workItem from="1703061299042" duration="10430000" />
       <workItem from="1703077670495" duration="2036000" />
       <workItem from="1703079959589" duration="3071000" />
-      <workItem from="1703083045930" duration="28952000" />
+      <workItem from="1703083045930" duration="45533000" />
+      <workItem from="1703237422075" duration="1391000" />
+      <workItem from="1703252011619" duration="4191000" />
     </task>
     <servers />
   </component>
