@@ -20,6 +20,7 @@ export default function Word(props) {
         try {
             apiService.prepareForRequest();
             const response = await apiService.word(component.word);
+            console.log(response.data);
             setResults(response.data);
         } catch (error) {
             if (axios.isCancel(error)) {
@@ -50,7 +51,7 @@ export default function Word(props) {
                     fontWeight: 'bold',
                     color: theme.colors.primary,
                 },
-                text: `${results?.summary?.simplified}, ${results?.summary?.traditional}, ${results?.summary?.korean_hanja}`
+                text: `${results?.summary?.simplified}, ${results?.summary?.traditional}`
             }]
         },
         {

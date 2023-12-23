@@ -37,6 +37,10 @@ class StarStore {
         console.log('List', existingStarsString)
         return existingStarsString ? JSON.parse(existingStarsString) : {};
     }
+
+    async clearStars() {
+        await SecureStore.deleteItemAsync(StarStore.STORAGE_KEY);
+    }
 }
 
 export default new StarStore();

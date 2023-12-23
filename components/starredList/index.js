@@ -68,6 +68,19 @@ export default function StarredList() {
                         />
                     )
                 })}
+                {/* Clear Saved Words buttons but only when the item exists at least one */}
+                {Object.keys(starredList).length > 0 &&
+                    <Button icon="delete"
+                            mode="text"
+                            textColor={theme.colors.error}
+                            onPress={() => {
+                                StarStore.clearStars()
+                                refreshStarredList()
+                            }}>
+                        Clear Saved Words
+                    </Button>
+                }
+
             </List.Section>
         </ScrollView>
     );
