@@ -2,7 +2,7 @@
   "expo": {
     "name": "Mandarin AI Analyzer",
     "slug": "chinese-learning",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -15,7 +15,7 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "9",
+      "buildNumber": "10",
       "supportsTablet": true,
       "bundleIdentifier": "as.kargn.chineselearning",
       "config": {
@@ -37,6 +37,9 @@
         "projectId": "21217879-3fd9-4910-b23c-d62a50bf41ac"
       }
     },
-    "owner": "kargnas"
+    "owner": "kargnas",
+    "plugins": [
+      "expo-localization"
+    ]
   }
 }

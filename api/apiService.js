@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {getLocales} from 'expo-localization';
 
 class ApiService {
     constructor() {
@@ -21,12 +22,18 @@ class ApiService {
 
     analysis(text) {
         console.log(`Requesting analysis with text: ${text}`);
-        return this.axiosInstance.post('/api/analysis', { text }, { cancelToken: this.cancelToken.token });
+        return this.axiosInstance.post('/api/analysis', {
+            text,
+            locale: getLocales()[0].languageTag,
+        }, { cancelToken: this.cancelToken.token });
     }
 
     word(text) {
         console.log(`Requesting word with text: ${text}`);
-        return this.axiosInstance.post('/api/word', { text }, { cancelToken: this.cancelToken.token });
+        return this.axiosInstance.post('/api/word', {
+            text,
+            locale: getLocales()[0].languageTag,
+        }, { cancelToken: this.cancelToken.token });
     }
 }
 

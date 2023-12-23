@@ -7,7 +7,6 @@ import FavoriteButton from "./favoriteButton";
 import ApiService from "../../api/apiService";
 import axios from "axios";
 
-
 export default function Word(props) {
     const { component } = props?.route?.params;
     const [results, setResults] = React.useState(null);
