@@ -5,19 +5,25 @@ import {Button, FAB, List} from "react-native-paper";
 import {StyleSheet, View} from "react-native";
 import * as Haptics from "expo-haptics";
 import StarStore from "../../util/StarStore";
+import {useNavigation} from "@react-navigation/native";
 
 export default function FavoriteButton(props) {
     const { word, pinyin } = props;
     const [starred, setStarred] = useState(false);
+    const navigation = useNavigation();
+
+    async function loadStarred() {
+        const _starred = await StarStore.isStar(word);
+        setStarred(_starred);
+    }
 
     useEffect(() => {
-        async function loadStarred() {
-            const _starred = await StarStore.isStar(word);
-            setStarred(_starred);
-        }
-
         loadStarred();
     }, [word]);
+
+    navigation.addListener('focus', () => {
+        loadStarred();
+    });
 
     if (starred) {
         return (

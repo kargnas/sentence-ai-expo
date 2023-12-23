@@ -26,6 +26,10 @@ export default function StarredList() {
         refreshStarredList();
     }, []);
 
+    navigation.addListener('focus', () => {
+        refreshStarredList();
+    });
+
     return (
         <ScrollView refreshControl={<RefreshControl refreshing={loading}
                                                     colors={[theme.colors.onSurface]}
