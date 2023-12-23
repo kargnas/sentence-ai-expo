@@ -1,14 +1,10 @@
 import * as React from 'react';
-import {StatusBar} from 'expo-status-bar';
 import {StyleSheet, View, FlatList, ScrollView, RefreshControl} from 'react-native';
 import {List, Button, PaperProvider, Text, ActivityIndicator, useTheme} from "react-native-paper";
-import axios from "axios";
-import {SafeAreaView, SafeAreaProvider, SafeAreaInsetsContext, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useEffect} from "react";
 import {useNavigation} from "@react-navigation/native";
 import FavoriteButton from "../word/favoriteButton";
 import StarStore from "../../util/StarStore";
-import ApiService from "../../api/apiService";
 
 export default function StarredList() {
     const theme = useTheme()
@@ -37,8 +33,11 @@ export default function StarredList() {
                                                     onRefresh={refreshStarredList}/>}>
             <List.Section>
                 <List.Item key={'go_search'} title='Analysis New Sentences'
+                           left={props =>
+                               <List.Icon icon="magic" {...props}/>
+                           }
                            right={props =>
-                               <List.Icon icon="chevron-right"/>
+                               <List.Icon icon="chevron-right" {...props}/>
                            }
                            onPress={() =>
                                navigation.navigate('Search')
@@ -50,9 +49,7 @@ export default function StarredList() {
                             key={key}
                             title={key}
                             left={props =>
-                                <FavoriteButton word={key} style={{
-                                    marginLeft: 15
-                                }}/>
+                                <FavoriteButton word={key} {...props}/>
                             }
                             right={props =>
                                 <View style={styles.wordRightContainer}>
@@ -74,7 +71,7 @@ export default function StarredList() {
                 })}
                 {/* Clear Saved Words buttons but only when the item exists at least one */}
                 {Object.keys(starredList).length > 0 &&
-                    <Button icon="delete"
+                    <Button icon="trash-alt"
                             mode="text"
                             textColor={theme.colors.error}
                             onPress={() => {

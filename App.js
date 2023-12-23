@@ -10,6 +10,7 @@ import WordScreen from './components/word';
 import StarredListScreen from './components/starredList';
 import FavoriteButton from "./components/word/favoriteButton";
 import {useState} from "react";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 const Stack = createStackNavigator();
 const theme = {
@@ -63,7 +64,10 @@ const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: theme })
 
 export default function App() {
     return (
-        <PaperProvider theme={theme}>
+        <PaperProvider theme={theme}
+                       settings={{
+                           icon: props => <FontAwesome5 {...props} />,
+                       }}>
             <NavigationContainer theme={DarkTheme}>
                 <Stack.Navigator initialRouteName="StarredList">
                     <Stack.Screen name="StarredList"
