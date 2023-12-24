@@ -8,7 +8,7 @@ import StarStore from "../../util/StarStore";
 
 let focus = 0;
 
-export default function StarredList() {
+export default function SavedWords() {
     const theme = useTheme()
     const navigation = useNavigation();
     const [starredList, setStarredList] = React.useState({})
@@ -32,16 +32,6 @@ export default function StarredList() {
                                                     tintColor={theme.colors.onSurface}
                                                     onRefresh={refreshStarredList}/>}>
             <List.Section>
-                <List.Item key={'go_search'} title='Analysis New Sentences'
-                           left={props =>
-                               <List.Icon icon="magic" {...props}/>
-                           }
-                           right={props =>
-                               <List.Icon icon="chevron-right" {...props}/>
-                           }
-                           onPress={() =>
-                               navigation.navigate('Search')
-                           }/>
                 {Object.keys(starredList).map(key => {
                     const component = starredList[key];
                     return (

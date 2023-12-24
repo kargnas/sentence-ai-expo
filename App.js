@@ -1,18 +1,17 @@
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
 import {
+    adaptNavigationTheme,
     MD3DarkTheme as DefaultTheme,
-    PaperProvider, adaptNavigationTheme, BottomNavigation,
+    PaperProvider,
 } from 'react-native-paper';
 
-import SearchScreen from './components/search';
-import WordScreen from './components/word';
-import StarredListScreen from './components/starredList';
-import FavoriteButton from "./components/word/favoriteButton";
-import {useState} from "react";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import {createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
+import SearchNavigationScreen from "./screens/SearchNavigationScreen";
+import SavedWordNavigationScreen from "./screens/SavedWordNavigationScreen";
+import Search from "./components/search";
+import {NavigationContainer} from "@react-navigation/native";
+import SavedWords from "./components/savedWords";
 
-const Stack = createStackNavigator();
 const theme = {
     ...DefaultTheme,
     roundness: 2,
@@ -59,8 +58,9 @@ const theme = {
         backdrop: "rgba(45, 49, 56, 0.4)"
     }
 };
+const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: theme });
 
-const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: theme })
+const Drawer = createDrawerNavigator();
 
 export default function App() {
     return (
@@ -69,32 +69,33 @@ export default function App() {
                            icon: props => <FontAwesome5 {...props} />,
                        }}>
             <NavigationContainer theme={DarkTheme}>
-                <Stack.Navigator initialRouteName="StarredList">
-                    <Stack.Screen name="StarredList"
-                                  component={StarredListScreen}
-                                  options={{
-                                      title: 'Chinese Sentences Analysis',
-                                  }}
-                    />
-                    <Stack.Screen name="Search"
-                                  component={SearchScreen}
-                                  options={{
-                                      title: 'Analysis',
-                                  }}
-                    />
-                    <Stack.Screen name="Word"
-                                  component={WordScreen}
-                                  options={({ route }) => ({
-                                      title: route.params.title,
-                                      headerRight: () => (
-                                          <FavoriteButton word={route.params.component.word} style={{
-                                              marginRight: 15,
-                                              backgroundColor: 'transparent'
-                                          }}/>
-                                      ),
-                                  })}
-                    />
-                </Stack.Navigator>
+                <Drawer.Navigator initialRouteName="DrawerSearch"
+                                  screenOptions={{
+                                      drawerStyle: { width: 180 },
+                                      drawerLabelStyle: {
+                                          marginLeft: -20
+                                      },
+                                      drawerContentContainerStyle: {
+                                          width: 210
+                                      },
+                }}>
+                    <Drawer.Screen name="DrawerSearch" component={SearchNavigationScreen}
+                                   options={{
+                                       drawerLabel: 'Search',
+                                       drawerIcon: ({ focused, color, size }) => (
+                                           <FontAwesome5 name={'search'} size={size} color={color}/>
+                                       ),
+                                       headerShown: false,
+                                   }}/>
+                    <Drawer.Screen name="DrawerSavedWords" component={SavedWordNavigationScreen}
+                                   options={{
+                                       drawerLabel: 'Saved Words',
+                                       drawerIcon: ({ focused, color, size }) => (
+                                           <FontAwesome5 name={'star'} size={size} color={color}/>
+                                       ),
+                                       headerShown: false,
+                                   }}/>
+                </Drawer.Navigator>
             </NavigationContainer>
         </PaperProvider>
     );
