@@ -17,13 +17,11 @@ export default function FavoriteButton(props) {
         setStarred(_starred);
     }
 
-    useEffect(() => {
-        loadStarred();
-    }, [word]);
-
     navigation.addListener('focus', () => {
         loadStarred();
     });
+
+    loadStarred();
 
     if (starred) {
         return (

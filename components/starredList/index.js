@@ -6,11 +6,14 @@ import {useNavigation} from "@react-navigation/native";
 import FavoriteButton from "../word/favoriteButton";
 import StarStore from "../../util/StarStore";
 
+let focus = 0;
+
 export default function StarredList() {
     const theme = useTheme()
     const navigation = useNavigation();
     const [starredList, setStarredList] = React.useState({})
     const [loading, setLoading] = React.useState(false);
+    const [initialized, setInitialized] = React.useState(true);
 
     const refreshStarredList = async () => {
         const result = await StarStore.getStars()
@@ -19,12 +22,9 @@ export default function StarredList() {
     }
 
     useEffect(() => {
+        console.log('INIT')
         refreshStarredList();
-    }, []);
-
-    navigation.addListener('focus', () => {
-        refreshStarredList();
-    });
+    }, [initialized]);
 
     return (
         <ScrollView refreshControl={<RefreshControl refreshing={loading}
@@ -69,7 +69,7 @@ export default function StarredList() {
                         />
                     )
                 })}
-                {/* Clear Saved Words buttons but only when the item exists at least one */}
+                {/* Clear Saved Words butt           ons but only when the item exists at least one */}
                 {Object.keys(starredList).length > 0 &&
                     <Button icon="trash-alt"
                             mode="text"
@@ -114,5 +114,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexWrap: 'wrap',
         textAlign: 'right',
+        marginRight: 3,
     }
 });
