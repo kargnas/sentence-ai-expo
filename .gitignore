@@ -7,6 +7,8 @@ node_modules/
 .expo/
 dist/
 web-build/
+ios/
+android/
 
 # Native
 *.orig.*
@@ -27,10 +29,10 @@ yarn-error.*
 # macOS
 .DS_Store
 *.pem
+.idea/
 
 # local env files
 .env*.local
 
 # typescript
 *.tsbuildinfo
-.idea
