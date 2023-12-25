@@ -43,11 +43,11 @@ export default function Word(props) {
     }, [component.word]);
 
     let summary = '';
-    if (results?.pinyins && results?.summary?.simplified && results?.summary?.traditional) {
-        if (results.summary.simplified === results.summary.traditional) {
-            summary = `${results?.summary?.simplified} ${results?.pinyins.join(' ')}`
+    if (results?.phonetics && results?.summary?.simplified) {
+        if (results.summary.simplified === results.summary.traditional || !results.summary.traditional) {
+            summary = `${results?.summary?.simplified} ${results?.phonetics.join(' ')}`
         } else {
-            summary = `${results?.summary?.simplified} / ${results?.summary?.traditional} ${results?.pinyins.join(' ')}`
+            summary = `${results?.summary?.simplified} / ${results?.summary?.traditional} ${results?.phonetics.join(' ')}`
         }
     }
 
@@ -60,8 +60,8 @@ export default function Word(props) {
                     fontWeight: 'bold',
                     color: theme.colors.primary,
                 },
-                // pinyins is an array of strings
-                // text: `${implode of results?.summary?.pinyins}, ${results?.summary?.simplified}, ${results?.summary?.traditional}`
+                // phonetics is an array of strings
+                // text: `${implode of results?.summary?.phonetics}, ${results?.summary?.simplified}, ${results?.summary?.traditional}`
                 text: summary
             }]
         },

@@ -7,9 +7,7 @@ import ApiService from "../../api/apiService";
 import WordItem from "./WordItem";
 import SavedSearchStore from "../../util/SavedSearchStore";
 import {useEffect} from "react";
-import StarStore from "../../util/StarStore";
 
-let cancelToken;
 let loadingStack = 0;
 
 export default function Search() {
@@ -61,7 +59,7 @@ export default function Search() {
         <View style={styles.container}>
             <TextInput
                 mode="outlined"
-                label="Chinese Sentences"
+                label="Sentences"
                 value={query}
                 onChangeText={text => setQuery(text)}
                 onSubmitEditing={handleSearch}

@@ -9,8 +9,8 @@ const LANGUAGES = [
     // { key: 1, value: null, text: 'Automatic' },
     { key: 2, value: 'Mandarin', text: 'Mandarin' },
     { key: 3, value: 'Cantonese', text: 'Cantonese' },
-    { key: 4, value: 'Japanese', text: 'Japanese (Beta)' },
-    { key: 5, value: 'Korean', text: 'Korean (Beta)' },
+    { key: 4, value: 'Japanese', text: 'Japanese' },
+    { key: 5, value: 'Korean', text: 'Korean' },
 ];
 
 export default function LearningLanguage() {
