@@ -15,7 +15,7 @@ export default function WordItem(props) {
     return (
         <List.Item
             title={component.word}
-            description={component.pinyin}
+            description={component.phonetic}
             left={props =>
                 <FavoriteButton word={component.word} style={{
                     marginLeft: 15
@@ -32,7 +32,7 @@ export default function WordItem(props) {
             }
             onPress={() =>
                 navigation.navigate('Word', {
-                    title: `${component.word} ${component.pinyin}`,
+                    title: `${component.word} ${component.phonetic}`,
                     component
                 })
             }
