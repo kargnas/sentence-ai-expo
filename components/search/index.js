@@ -5,7 +5,7 @@ import axios from "axios";
 import {useNavigation} from "@react-navigation/native";
 import ApiService from "../../api/apiService";
 import WordItem from "./WordItem";
-import SavedSearch from "../../util/SavedSearch";
+import SavedSearchStore from "../../util/SavedSearchStore";
 import {useEffect} from "react";
 import StarStore from "../../util/StarStore";
 
@@ -30,7 +30,8 @@ export default function Search() {
             const response = await apiService.analysis(query);
             setResults(response.data);
 
-            await SavedSearch.setSavedSearch(response.data);
+            await SavedSearchStore.setSavedSearch(response.data);
+            await SavedSearchStore.setSavedSearchKeyword(query);
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log("Cancelled previous request");
@@ -48,8 +49,10 @@ export default function Search() {
     useEffect(() => {
         console.log('INIT')
         const init = async () => {
-            const savedSearch = await SavedSearch.getSavedSearch();
+            const savedSearch = await SavedSearchStore.getSavedSearch();
             setResults(savedSearch);
+            const savedSearchKeyword = await SavedSearchStore.getSavedSearchKeyword();
+            setQuery(savedSearchKeyword);
         }
         init();
     }, [initialized]);
@@ -70,7 +73,8 @@ export default function Search() {
                         textColor={theme.colors.error}
                         onPress={() => {
                             setResults([]);
-                            SavedSearch.clearSavedSearch();
+                            SavedSearchStore.clearSavedSearch();
+                            SavedSearchStore.clearSavedSearchKeyword();
                         }}>
                     Clear Latest Search
                 </Button>

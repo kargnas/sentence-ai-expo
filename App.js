@@ -5,12 +5,9 @@ import {
 } from 'react-native-paper';
 
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import {createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
 import SearchNavigationScreen from "./screens/SearchNavigationScreen";
 import SavedWordNavigationScreen from "./screens/SavedWordNavigationScreen";
-import Search from "./components/search";
 import {NavigationContainer} from "@react-navigation/native";
-import SavedWords from "./components/savedWords";
 import {createMaterialBottomTabNavigator} from "react-native-paper/react-navigation";
 import SettingNavigationScreen from "./screens/SettingNavigationScreen";
 
@@ -62,7 +59,6 @@ const theme = {
 };
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: theme });
 
-const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
 export default function App() {
@@ -72,7 +68,7 @@ export default function App() {
                            icon: props => <FontAwesome5 {...props} />,
                        }}>
             <NavigationContainer theme={DarkTheme}>
-                <Tab.Navigator initialRouteName="Search">
+                <Tab.Navigator initialRouteName="Search" theme={DarkTheme}>
                     <Tab.Screen name="Search" component={SearchNavigationScreen}
                                 options={{
                                     tabBarLabel: 'Analysis',
