@@ -75,6 +75,16 @@ export default function SavedWordNavigationScreen() {
                                   headerLeft: (props) => (
                                       <Button {...props} icon="bars" onPress={() => navigation.toggleDrawer()}/>
                                   ),
+                                  headerRight: (props) => {
+                                      const navigation = useNavigation();
+                                      return (
+                                          <Button {...props} icon="sync"
+                                                  onPress={() => {
+                                                      navigation.setParams({ refresh: Date.now() })
+                                                  }}/>
+                                      )
+                                  },
+
                               }}
                 />
                 <Stack.Screen name="Word"

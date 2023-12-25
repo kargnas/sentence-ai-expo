@@ -8,12 +8,11 @@ import StarStore from "../../util/StarStore";
 
 let focus = 0;
 
-export default function SavedWords() {
+export default function SavedWords({ route, navigation }) {
     const theme = useTheme()
-    const navigation = useNavigation();
     const [starredList, setStarredList] = React.useState({})
     const [loading, setLoading] = React.useState(false);
-    const [initialized, setInitialized] = React.useState(true);
+    const refresh = route.params?.refresh;
 
     const refreshStarredList = async () => {
         const result = await StarStore.getStars()
@@ -22,9 +21,9 @@ export default function SavedWords() {
     }
 
     useEffect(() => {
-        console.log('INIT')
+        console.log('Refresh')
         refreshStarredList();
-    }, [initialized]);
+    }, [refresh]);
 
     return (
         <ScrollView refreshControl={<RefreshControl refreshing={loading}
