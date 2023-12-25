@@ -72,9 +72,6 @@ export default function SavedWordNavigationScreen() {
                               component={SavedWords}
                               options={{
                                   title: 'Saved Words',
-                                  headerLeft: (props) => (
-                                      <Button {...props} icon="bars" onPress={() => navigation.toggleDrawer()}/>
-                                  ),
                                   headerRight: (props) => {
                                       const navigation = useNavigation();
                                       return (

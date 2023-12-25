@@ -71,9 +71,6 @@ export default function SearchNavigationScreen() {
                               component={SearchScreen}
                               options={{
                                   title: 'Analysis',
-                                  headerLeft: (props) => (
-                                      <Button {...props} icon="bars" onPress={() => navigation.toggleDrawer()}/>
-                                  ),
                               }}
                 />
                 <Stack.Screen name="Word"

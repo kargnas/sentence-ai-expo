@@ -11,6 +11,7 @@ import SavedWordNavigationScreen from "./screens/SavedWordNavigationScreen";
 import Search from "./components/search";
 import {NavigationContainer} from "@react-navigation/native";
 import SavedWords from "./components/savedWords";
+import {createMaterialBottomTabNavigator} from "react-native-paper/react-navigation";
 
 const theme = {
     ...DefaultTheme,
@@ -61,6 +62,7 @@ const theme = {
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: theme });
 
 const Drawer = createDrawerNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 export default function App() {
     return (
@@ -69,33 +71,24 @@ export default function App() {
                            icon: props => <FontAwesome5 {...props} />,
                        }}>
             <NavigationContainer theme={DarkTheme}>
-                <Drawer.Navigator initialRouteName="DrawerSearch"
-                                  screenOptions={{
-                                      drawerStyle: { width: 180 },
-                                      drawerLabelStyle: {
-                                          marginLeft: -20
-                                      },
-                                      drawerContentContainerStyle: {
-                                          width: 210
-                                      },
-                }}>
-                    <Drawer.Screen name="DrawerSearch" component={SearchNavigationScreen}
+                <Tab.Navigator initialRouteName="DrawerSearch">
+                    <Tab.Screen name="DrawerSearch" component={SearchNavigationScreen}
                                    options={{
-                                       drawerLabel: 'Search',
-                                       drawerIcon: ({ focused, color, size }) => (
-                                           <FontAwesome5 name={'search'} size={size} color={color}/>
+                                       tabBarLabel: 'Search',
+                                       tabBarIcon: ({ focused, color }) => (
+                                           <FontAwesome5 name={'search'} size={23} color={color}/>
                                        ),
                                        headerShown: false,
                                    }}/>
-                    <Drawer.Screen name="DrawerSavedWords" component={SavedWordNavigationScreen}
+                    <Tab.Screen name="DrawerSavedWords" component={SavedWordNavigationScreen}
                                    options={{
-                                       drawerLabel: 'Saved Words',
-                                       drawerIcon: ({ focused, color, size }) => (
-                                           <FontAwesome5 name={'star'} size={size} color={color}/>
+                                       tabBarLabel: 'Saved Words',
+                                       tabBarIcon: ({ focused, color }) => (
+                                           <FontAwesome5 name={'star'} size={23} color={color}/>
                                        ),
                                        headerShown: false,
                                    }}/>
-                </Drawer.Navigator>
+                </Tab.Navigator>
             </NavigationContainer>
         </PaperProvider>
     );
