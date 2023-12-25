@@ -58,7 +58,6 @@ export default function SavedWords({ route, navigation }) {
                         />
                     )
                 })}
-                {/* Clear Saved Words butt           ons but only when the item exists at least one */}
                 {Object.keys(starredList).length > 0 &&
                     <Button icon="trash-alt"
                             mode="text"
@@ -70,7 +69,6 @@ export default function SavedWords({ route, navigation }) {
                         Clear Saved Words
                     </Button>
                 }
-
             </List.Section>
         </ScrollView>
     );

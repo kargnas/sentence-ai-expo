@@ -1,49 +1,16 @@
 import * as React from 'react';
-import {StatusBar} from 'expo-status-bar';
 import {StyleSheet, View, Text, FlatList} from 'react-native';
 import {List, Button, PaperProvider, TextInput, ActivityIndicator, useTheme} from "react-native-paper";
 import axios from "axios";
-import {SafeAreaView, SafeAreaProvider, SafeAreaInsetsContext, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useEffect} from "react";
 import {useNavigation} from "@react-navigation/native";
-import FavoriteButton from "../word/favoriteButton";
 import ApiService from "../../api/apiService";
+import WordItem from "./WordItem";
+import SavedSearch from "../../util/SavedSearch";
+import {useEffect} from "react";
+import StarStore from "../../util/StarStore";
 
 let cancelToken;
 let loadingStack = 0;
-
-function WordItem(props) {
-    const { component } = props;
-    const navigation = useNavigation();
-    const theme = useTheme()
-
-    return (
-        <List.Item
-            title={component.word}
-            description={component.pinyin}
-            left={props =>
-                <FavoriteButton word={component.word} style={{
-                    marginLeft: 15
-                }}/>
-            }
-            right={props =>
-                <View style={styles.wordRightContainer}>
-                    <Text style={{
-                        ...styles.meaning,
-                        color: theme.colors.outline,
-                    }}>{component.meaning}</Text>
-                    <List.Icon icon="chevron-right"/>
-                </View>
-            }
-            onPress={() =>
-                navigation.navigate('Word', {
-                    title: `${component.word} ${component.pinyin}`,
-                    component
-                })
-            }
-        />
-    )
-}
 
 export default function Search() {
     const [query, setQuery] = React.useState("");
@@ -51,6 +18,7 @@ export default function Search() {
     const [loading, setLoading] = React.useState(0);
     const navigation = useNavigation();
     const theme = useTheme()
+    const [initialized, setInitialized] = React.useState(true);
 
     const handleSearch = async () => {
         const apiService = new ApiService();
@@ -61,6 +29,8 @@ export default function Search() {
             apiService.prepareForRequest();
             const response = await apiService.analysis(query);
             setResults(response.data);
+
+            await SavedSearch.setSavedSearch(response.data);
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log("Cancelled previous request");
@@ -75,6 +45,15 @@ export default function Search() {
         }
     };
 
+    useEffect(() => {
+        console.log('INIT')
+        const init = async () => {
+            const savedSearch = await SavedSearch.getSavedSearch();
+            setResults(savedSearch);
+        }
+        init();
+    }, [initialized]);
+
     return (
         <View style={styles.container}>
             <TextInput
@@ -85,6 +64,18 @@ export default function Search() {
                 onSubmitEditing={handleSearch}
                 style={styles.searchBar}
             />
+            {loading === 0 && results?.sentences &&
+                <Button icon="trash-alt"
+                        mode="text"
+                        textColor={theme.colors.error}
+                        onPress={() => {
+                            setResults([]);
+                            SavedSearch.clearSavedSearch();
+                        }}>
+                    Clear Latest Search
+                </Button>
+            }
+
             {loading > 0 ? (
                 <ActivityIndicator animating={true} style={styles.loading}/>
             ) : (
@@ -148,17 +139,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         padding: 10
-    },
-    wordRightContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'center'
-    },
-    meaning: {
-        flex: 1,
-        flexWrap: 'wrap',
-        textAlign: 'right',
-        marginRight: 8,
     }
 });
