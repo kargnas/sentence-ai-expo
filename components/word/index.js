@@ -42,6 +42,15 @@ export default function Word(props) {
         handleQuery();
     }, [component.word]);
 
+    let summary = '';
+    if (results?.pinyins && results?.summary?.simplified && results?.summary?.traditional) {
+        if (results.summary.simplified === results.summary.traditional) {
+            summary = `${results?.summary?.simplified} ${results?.pinyins.join(' ')}`
+        } else {
+            summary = `${results?.summary?.simplified} / ${results?.summary?.traditional} ${results?.pinyins.join(' ')}`
+        }
+    }
+
     const sectionListData = [
         {
             title: '',
@@ -51,7 +60,9 @@ export default function Word(props) {
                     fontWeight: 'bold',
                     color: theme.colors.primary,
                 },
-                text: `${results?.summary?.simplified}, ${results?.summary?.traditional}`
+                // pinyins is an array of strings
+                // text: `${implode of results?.summary?.pinyins}, ${results?.summary?.simplified}, ${results?.summary?.traditional}`
+                text: summary
             }]
         },
         {

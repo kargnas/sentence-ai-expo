@@ -159,5 +159,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexWrap: 'wrap',
         textAlign: 'right',
+        marginRight: 8,
     }
 });
