@@ -31,7 +31,7 @@ export default function SavedWords({ route, navigation }) {
                                                     tintColor={theme.colors.onSurface}
                                                     onRefresh={refreshStarredList}/>}>
             <List.Section>
-                {Object.keys(starredList).map(key => {
+                {Object.keys(starredList).reverse().map(key => {
                     const component = starredList[key];
                     return (
                         <List.Item

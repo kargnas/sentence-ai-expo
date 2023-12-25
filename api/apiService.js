@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {getLocales} from 'expo-localization';
+import SettingStore from "../util/SettingStore";
 
 class ApiService {
     constructor() {
@@ -7,15 +8,13 @@ class ApiService {
         this.axiosInstance = axios.create({
             baseURL: this.BASE_URL,
             timeout: 180 * 1000,
-            headers: {
-                'Accept-Language': this.language(),
-            },
         });
         this.cancelToken = null;
     }
 
-    language() {
-        return getLocales()[0].languageTag;
+    async language() {
+        const language = await SettingStore.getLanguage();
+        return language ? language : getLocales()[0].languageCode;
     }
 
     prepareForRequest() {
@@ -27,14 +26,36 @@ class ApiService {
         this.cancelToken = axios.CancelToken.source();
     }
 
-    analysis(text) {
-        console.log(`Requesting analysis with text: ${text}`);
-        return this.axiosInstance.post('/api/analysis', { text }, { cancelToken: this.cancelToken.token });
+    async analysis(text) {
+        const lan = await this.language();
+        const learningLanguage = await SettingStore.getLearningLanguage();
+
+        console.log(`Requesting analysis with text: ${text}, with language ${lan}`);
+        return this.axiosInstance.post('/api/analysis', {
+            text,
+            learningLanguage: learningLanguage,
+        }, {
+            cancelToken: this.cancelToken.token,
+            headers: {
+                'Accept-Language': lan,
+            }
+        });
     }
 
-    word(text) {
-        console.log(`Requesting word with text: ${text}`);
-        return this.axiosInstance.post('/api/word', { text }, { cancelToken: this.cancelToken.token });
+    async word(text) {
+        const lan = await this.language();
+        const learningLanguage = await SettingStore.getLearningLanguage();
+
+        console.log(`Requesting word with text: ${text}, with language ${lan}`);
+        return this.axiosInstance.post('/api/word', {
+            text,
+            learningLanguage: learningLanguage,
+        }, {
+            cancelToken: this.cancelToken.token,
+            headers: {
+                'Accept-Language': lan,
+            }
+        });
     }
 }
 

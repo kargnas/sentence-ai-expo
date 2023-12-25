@@ -12,6 +12,7 @@ import Search from "./components/search";
 import {NavigationContainer} from "@react-navigation/native";
 import SavedWords from "./components/savedWords";
 import {createMaterialBottomTabNavigator} from "react-native-paper/react-navigation";
+import SettingNavigationScreen from "./screens/SettingNavigationScreen";
 
 const theme = {
     ...DefaultTheme,
@@ -71,23 +72,31 @@ export default function App() {
                            icon: props => <FontAwesome5 {...props} />,
                        }}>
             <NavigationContainer theme={DarkTheme}>
-                <Tab.Navigator initialRouteName="DrawerSearch">
-                    <Tab.Screen name="DrawerSearch" component={SearchNavigationScreen}
-                                   options={{
-                                       tabBarLabel: 'Search',
-                                       tabBarIcon: ({ focused, color }) => (
-                                           <FontAwesome5 name={'search'} size={23} color={color}/>
-                                       ),
-                                       headerShown: false,
-                                   }}/>
-                    <Tab.Screen name="DrawerSavedWords" component={SavedWordNavigationScreen}
-                                   options={{
-                                       tabBarLabel: 'Saved Words',
-                                       tabBarIcon: ({ focused, color }) => (
-                                           <FontAwesome5 name={'star'} size={23} color={color}/>
-                                       ),
-                                       headerShown: false,
-                                   }}/>
+                <Tab.Navigator initialRouteName="Search">
+                    <Tab.Screen name="Search" component={SearchNavigationScreen}
+                                options={{
+                                    tabBarLabel: 'Analysis',
+                                    tabBarIcon: ({ focused, color }) => (
+                                        <FontAwesome5 name={'magic'} size={23} color={color}/>
+                                    ),
+                                    headerShown: false,
+                                }}/>
+                    <Tab.Screen name="SavedWords" component={SavedWordNavigationScreen}
+                                options={{
+                                    tabBarLabel: 'Saved Words',
+                                    tabBarIcon: ({ focused, color }) => (
+                                        <FontAwesome5 name={'star'} size={23} color={color}/>
+                                    ),
+                                    headerShown: false,
+                                }}/>
+                    <Tab.Screen name="Setting" component={SettingNavigationScreen}
+                                options={{
+                                    tabBarLabel: 'Setting',
+                                    tabBarIcon: ({ focused, color }) => (
+                                        <FontAwesome5 name={'cog'} size={23} color={color}/>
+                                    ),
+                                    headerShown: false,
+                                }}/>
                 </Tab.Navigator>
             </NavigationContainer>
         </PaperProvider>
