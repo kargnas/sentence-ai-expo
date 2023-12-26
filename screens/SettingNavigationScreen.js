@@ -13,6 +13,7 @@ import FavoriteButton from "../components/word/favoriteButton";
 import Setting from "../components/setting";
 import LearningLanguage from "../components/setting/learningLanguage";
 import Language from "../components/setting/language";
+import GptVersion from "../components/setting/gptVersion";
 
 const theme = {
     ...DefaultTheme,
@@ -84,6 +85,11 @@ export default function SettingNavigationScreen() {
                               component={Language}
                               options={{
                                   title: 'App Language',
+                              }}/>
+                <Stack.Screen name={'GptVersion'}
+                              component={GptVersion}
+                              options={{
+                                  title: 'GPT Version',
                               }}/>
             </Stack.Navigator>
         </NavigationContainer>

@@ -3,17 +3,20 @@ import {StyleSheet, View, Text, FlatList} from 'react-native';
 import {List, MD3Colors, useTheme} from 'react-native-paper';
 import SettingStore from "../../util/SettingStore";
 import {useNavigation} from "@react-navigation/native";
+import {getLocales} from "expo-localization";
 
 export default function Setting() {
     const theme = useTheme()
     const navigation = useNavigation();
     const [settingLearningLanguage, setSettingLearningLanguage] = React.useState(null)
     const [settingLanguage, setSettingLanguage] = React.useState(null)
+    const [settingGPTVersion, setSettingGPTVersion] = React.useState(null)
     const [initialized, setInitialized] = React.useState(true);
 
     async function loadSetting() {
         setSettingLearningLanguage(await SettingStore.getLearningLanguage())
         setSettingLanguage(await SettingStore.getLanguage())
+        setSettingGPTVersion(await SettingStore.getGPTVersion())
     }
 
     React.useEffect(() => {
@@ -28,7 +31,7 @@ export default function Setting() {
 
     return (
         <List.Section>
-            <List.Subheader>Languages</List.Subheader>
+            <List.Subheader style={{ color: theme.colors.outline }}>Language Options</List.Subheader>
             <List.Item title="Studying Language"
                        right={props =>
                            <View style={styles.itemRightContainer}>
@@ -51,13 +54,30 @@ export default function Setting() {
                                    ...styles.itemRightValue,
                                    color: theme.colors.outline,
                                }}>
-                                   {settingLanguage ? settingLanguage : 'System'}
+                                   {settingLanguage ? settingLanguage : `Default (${getLocales()[0].languageTag})`}
                                </Text>
                                <List.Icon icon="chevron-right"/>
                            </View>
                        }
                        onPress={() => {
                            navigation.navigate('Language')
+                       }}/>
+
+            <List.Subheader style={{ color: theme.colors.outline }}>AI Options</List.Subheader>
+            <List.Item title="GPT Version"
+                       right={props =>
+                           <View style={styles.itemRightContainer}>
+                               <Text style={{
+                                   ...styles.itemRightValue,
+                                   color: theme.colors.outline,
+                               }}>
+                                   {settingGPTVersion ? settingGPTVersion : 'Default (3.5)'}
+                               </Text>
+                               <List.Icon icon="chevron-right"/>
+                           </View>
+                       }
+                       onPress={() => {
+                           navigation.navigate('GptVersion')
                        }}/>
         </List.Section>
     );

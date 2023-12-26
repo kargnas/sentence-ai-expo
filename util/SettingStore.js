@@ -52,6 +52,24 @@ class SettingStore {
             await this.setSetting(setting);
         }
     }
+
+    async getGPTVersion() {
+        const setting = await this.getSetting();
+        return setting.gptVersion || null;
+    }
+
+    async setGPTVersion(version) {
+        const setting = await this.getSetting();
+        if (version === null) {
+            delete setting.gptVersion;
+            await this.setSetting(setting);
+        } else {
+            setting.gptVersion = version;
+            await this.setSetting(setting);
+        }
+    }
+
+
 }
 
 export default new SettingStore();

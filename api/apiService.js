@@ -29,11 +29,13 @@ class ApiService {
     async analysis(text) {
         const lan = await this.language();
         const learningLanguage = await SettingStore.getLearningLanguage();
+        const gptVersion = await SettingStore.getGPTVersion();
 
         console.log(`Requesting analysis with text: ${text}, with language ${lan}`);
         return this.axiosInstance.post('/api/analysis', {
             text,
             learningLanguage: learningLanguage,
+            gptVersion: gptVersion,
         }, {
             cancelToken: this.cancelToken.token,
             headers: {
@@ -45,11 +47,13 @@ class ApiService {
     async word(text) {
         const lan = await this.language();
         const learningLanguage = await SettingStore.getLearningLanguage();
+        const gptVersion = await SettingStore.getGPTVersion();
 
         console.log(`Requesting word with text: ${text}, with language ${lan}`);
         return this.axiosInstance.post('/api/word', {
             text,
             learningLanguage: learningLanguage,
+            gptVersion: gptVersion,
         }, {
             cancelToken: this.cancelToken.token,
             headers: {

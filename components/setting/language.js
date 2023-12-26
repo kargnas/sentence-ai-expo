@@ -3,20 +3,21 @@ import {View, Text, FlatList, StyleSheet} from 'react-native';
 import {List} from "react-native-paper";
 import SettingStore from "../../util/SettingStore";
 import {Checkbox} from 'react-native-paper';
-
-// List of languages
-const LANGUAGES = [
-    { key: 1, value: null, text: 'System' },
-    { key: 2, value: 'English', text: 'English' },
-    { key: 3, value: 'Simplified Chinese', text: 'Simplified Chinese' },
-    { key: 4, value: 'Traditional Chinese', text: 'Traditional Chinese' },
-    { key: 5, value: 'Japanese', text: 'Japanese' },
-    { key: 6, value: 'Korean', text: 'Korean' },
-];
+import {getLocales} from 'expo-localization';
 
 export default function LearningLanguage() {
     const [selectedLanguage, setSelectedLanguage] = React.useState(null);
     const [initialized, setInitialized] = React.useState(true);
+
+    // List of languages
+    const LANGUAGES = [
+        { key: 1, value: null, text: getLocales()[0].languageTag, description: 'Default' },
+        { key: 2, value: 'English', text: 'English', description: 'For more accuracy, we recommend English for app language.' },
+        { key: 3, value: 'Simplified Chinese', text: 'Simplified Chinese' },
+        { key: 4, value: 'Traditional Chinese', text: 'Traditional Chinese' },
+        { key: 5, value: 'Japanese', text: 'Japanese' },
+        { key: 6, value: 'Korean', text: 'Korean' },
+    ];
 
     async function loadSetting() {
         const language = await SettingStore.getLanguage();
@@ -41,6 +42,7 @@ export default function LearningLanguage() {
                     <List.Item
                         key={item.key}
                         title={item.text}
+                        description={item.description}
                         right={props =>
                             <Checkbox
                                 status={item.value === selectedLanguage ? 'checked' : 'unchecked'}
