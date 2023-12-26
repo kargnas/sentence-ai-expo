@@ -7,8 +7,8 @@ import {Checkbox} from 'react-native-paper';
 // List of languages
 const LANGUAGES = [
     // { key: 1, value: null, text: 'Automatic' },
-    { key: 2, value: 'Mandarin', text: 'Mandarin' },
-    { key: 3, value: 'Cantonese', text: 'Cantonese' },
+    { key: 2, value: 'Mandarin', text: 'Mandarin (Mainland China)' },
+    { key: 3, value: 'Cantonese', text: 'Cantonese (Guangdong, Hong Kong)' },
     { key: 4, value: 'Japanese', text: 'Japanese' },
     { key: 5, value: 'Korean', text: 'Korean' },
 ];

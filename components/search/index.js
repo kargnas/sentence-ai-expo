@@ -27,9 +27,10 @@ export default function Search() {
             apiService.prepareForRequest();
             const response = await apiService.analysis(query);
             setResults(response.data);
+            console.log(response.data);
 
-            await SavedSearchStore.setSavedSearch(response.data);
             await SavedSearchStore.setSavedSearchKeyword(query);
+            await SavedSearchStore.setSavedSearch(response.data);
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log("Cancelled previous request");
