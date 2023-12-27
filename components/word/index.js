@@ -6,6 +6,7 @@ import {RefreshControl, ScrollView, SectionList, StyleSheet, View} from "react-n
 import FavoriteButton from "./favoriteButton";
 import ApiService from "../../api/apiService";
 import axios from "axios";
+import * as Haptics from "expo-haptics";
 
 export default function Word(props) {
     const { component } = props?.route?.params;
@@ -22,12 +23,18 @@ export default function Word(props) {
             const response = await apiService.word(component.word);
             console.log(response.data);
             setResults(response.data);
+            Haptics.notificationAsync(
+                Haptics.NotificationFeedbackType.Success
+            )
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log("Cancelled previous request");
             } else {
                 console.error(error);
             }
+            Haptics.notificationAsync(
+                Haptics.NotificationFeedbackType.Error
+            )
         } finally {
             setLoading(false);
         }

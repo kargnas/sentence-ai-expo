@@ -7,6 +7,8 @@ import ApiService from "../../api/apiService";
 import WordItem from "./WordItem";
 import SavedSearchStore from "../../util/SavedSearchStore";
 import {useEffect} from "react";
+import * as Haptics from "expo-haptics";
+import SettingStore from "../../util/SettingStore";
 
 let loadingStack = 0;
 
@@ -17,6 +19,7 @@ export default function Search() {
     const navigation = useNavigation();
     const theme = useTheme()
     const [initialized, setInitialized] = React.useState(true);
+    const [learningLanguage, setLearningLanguage] = React.useState(null);
 
     const handleSearch = async () => {
         const apiService = new ApiService();
@@ -29,8 +32,13 @@ export default function Search() {
             setResults(response.data);
             console.log(response.data);
 
+            Haptics.notificationAsync(
+                Haptics.NotificationFeedbackType.Success
+            )
             await SavedSearchStore.setSavedSearchKeyword(query);
             await SavedSearchStore.setSavedSearch(response.data);
+
+            setLearningLanguage(await SettingStore.getLearningLanguage());
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log("Cancelled previous request");
@@ -39,6 +47,9 @@ export default function Search() {
                 console.error(error);
                 console.error(error, error.stack)
             }
+            Haptics.notificationAsync(
+                Haptics.NotificationFeedbackType.Error
+            )
         } finally {
             loadingStack--;
             setLoading(loadingStack)
@@ -121,6 +132,20 @@ export default function Search() {
                         </List.Section>
                     )}
                 />
+            )}
+            {loading === 0 && (
+                <View style={{
+                    padding: 16,
+                }}>
+                    <Text style={{
+                        textAlign: 'center',
+                        color: theme.colors.outlineVariant,
+                        fontSize: 14,
+                        fontWeight: 'bold',
+                    }}>
+                        You are studying {learningLanguage}
+                    </Text>
+                </View>
             )}
         </View>
     );
