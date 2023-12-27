@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as SecureStore from 'expo-secure-store';
 import {useEffect, useState} from 'react'; // new import
-import {Button, FAB, List} from "react-native-paper";
+import {Button, FAB, List, Snackbar} from "react-native-paper";
 import {StyleSheet, View} from "react-native";
 import * as Haptics from "expo-haptics";
 import StarStore from "../../util/StarStore";
@@ -10,6 +10,7 @@ import {useNavigation} from "@react-navigation/native";
 export default function FavoriteButton(props) {
     const { word, pinyin } = props;
     const [starred, setStarred] = useState(false);
+    const [error, setError] = useState(null);
     const navigation = useNavigation();
 
     async function loadStarred() {
@@ -45,27 +46,38 @@ export default function FavoriteButton(props) {
         );
     } else {
         return (
-            <FAB
-                icon={'star'}
-                size={'small'}
-                mode={'flat'}
-                style={{
-                    ...styles.fab,
-                    ...props.style,
-                }}
-                onPress={() => {
-                    StarStore.addStar(word, pinyin);
-                    setStarred(true);
-                    Haptics.notificationAsync(
-                        Haptics.NotificationFeedbackType.Success
-                    )
-                }}
-            />
+            <>
+                <FAB
+                    icon={'star'}
+                    size={'small'}
+                    mode={'flat'}
+                    style={{
+                        ...styles.fab,
+                        ...props.style,
+                    }}
+                    onPress={() => {
+                        setStarred(true);
+                        StarStore.addStar(word, pinyin).then(() => {
+                            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+                        }).catch(e => {
+                            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+                            setError(e.message)
+                        })
+                    }}
+                />
+                <Snackbar
+                    visible={error !== null}
+                    onDismiss={() => setError(null)}
+                    action={{
+                        label: 'Close',
+                    }}>
+                    {error}
+                </Snackbar>
+            </>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    fab: {
-    },
+    fab: {},
 });

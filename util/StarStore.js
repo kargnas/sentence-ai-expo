@@ -10,12 +10,12 @@ class StarStore {
         }
 
         const existingStars = await this.getStars();
+        if (JSON.stringify(existingStars).length > 2000) {
+            throw new Error('Too many starred words. Please delete some.');
+        }
 
         existingStars[word] = {
             word: word,
-            pinyin: pinyin,
-            count: 1,
-            created_at: new Date().getTime(),
         };
 
         await SecureStore.setItemAsync(StarStore.STORAGE_KEY, JSON.stringify(existingStars));
