@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {StyleSheet, View, Text, FlatList} from 'react-native';
+import {StyleSheet, View, Text, FlatList, ScrollView, RefreshControl} from 'react-native';
 import {List, Button, PaperProvider, TextInput, ActivityIndicator, useTheme} from "react-native-paper";
 import axios from "axios";
 import {useNavigation} from "@react-navigation/native";
@@ -77,76 +77,70 @@ export default function Search() {
                 onSubmitEditing={handleSearch}
                 style={styles.searchBar}
             />
-            {loading === 0 && results?.sentences &&
-                <Button icon="trash-alt"
-                        mode="text"
-                        textColor={theme.colors.error}
-                        onPress={() => {
-                            setResults([]);
-                            SavedSearchStore.clearSavedSearch();
-                            SavedSearchStore.clearSavedSearchKeyword();
+            <ScrollView refreshControl={<RefreshControl refreshing={loading > 0}
+                                                        colors={[theme.colors.onSurface]}
+                                                        tintColor={theme.colors.onSurface}
+                                                        onRefresh={handleSearch}/>}>
+                {results?.sentences &&
+                    <Button icon="trash-alt"
+                            mode="text"
+                            textColor={theme.colors.error}
+                            onPress={() => {
+                                setResults([]);
+                                setLearningLanguage(null)
+                                SavedSearchStore.clearSavedSearch();
+                                SavedSearchStore.clearSavedSearchKeyword();
+                            }}>
+                        Clear Latest Search
+                    </Button>
+                }
+                {results?.sentences?.map((item, key) => (
+                    <List.Section key={key}>
+                        <Text style={{
+                            marginLeft: 15,
+                            marginRight: 15,
+                            marginBottom: 5,
+                            lineHeight: 20,
+                            fontWeight: 'bold',
+                            color: theme.colors.onSurfaceDisabled
                         }}>
-                    Clear Latest Search
-                </Button>
-            }
-
-            {loading > 0 ? (
-                <ActivityIndicator animating={true} style={styles.loading}/>
-            ) : (
-                <FlatList
-                    data={results.sentences}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => (
-                        <List.Section>
-                            <Text style={{
-                                marginLeft: 15,
-                                marginRight: 15,
-                                marginBottom: 5,
-                                lineHeight: 20,
-                                fontWeight: 'bold',
-                                color: theme.colors.onSurfaceDisabled
-                            }}>
-                                {item.sentence}
-                            </Text>
-                            <Text style={{
-                                marginLeft: 15,
-                                marginRight: 15,
-                                marginBottom: 5,
-                                lineHeight: 20,
-                                color: theme.colors.onSurface
-                            }}>
-                                {item.meaning}
-                            </Text>
-                            <Text style={{
-                                marginLeft: 15,
-                                marginRight: 15,
-                                marginBottom: 5,
-                                lineHeight: 20,
-                                color: theme.colors.onSurfaceVariant
-                            }}>
-                                {item.explain_structure}
-                            </Text>
-                            {item.components.map((component, idx) => (
-                                <WordItem key={idx} component={component}/>
-                            ))}
-                        </List.Section>
-                    )}
-                />
-            )}
-            {loading === 0 && (
-                <View style={{
-                    padding: 16,
-                }}>
+                            {item.sentence}
+                        </Text>
+                        <Text style={{
+                            marginLeft: 15,
+                            marginRight: 15,
+                            marginBottom: 5,
+                            lineHeight: 20,
+                            color: theme.colors.onSurface
+                        }}>
+                            {item.meaning}
+                        </Text>
+                        <Text style={{
+                            marginLeft: 15,
+                            marginRight: 15,
+                            marginBottom: 5,
+                            lineHeight: 20,
+                            color: theme.colors.onSurfaceVariant
+                        }}>
+                            {item.explain_structure}
+                        </Text>
+                        {item.components.map((component, idx) => (
+                            <WordItem key={idx} component={component}/>
+                        ))}
+                    </List.Section>
+                ))}
+                {learningLanguage &&
                     <Text style={{
                         textAlign: 'center',
-                        color: theme.colors.outlineVariant,
+                        color: theme.colors.outline,
                         fontSize: 14,
                         fontWeight: 'bold',
+                        marginBottom: 14,
                     }}>
-                        You are studying {learningLanguage}
+                        You are studying {learningLanguage}.
                     </Text>
-                </View>
-            )}
+                }
+            </ScrollView>
         </View>
     );
 }
@@ -157,9 +151,6 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         margin: 5,
-    },
-    loading: {
-        marginTop: 20,
     },
     componentList: {
         flexDirection: 'row',
