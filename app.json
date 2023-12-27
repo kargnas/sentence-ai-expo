@@ -14,6 +14,12 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "locales": {
+      "ko": "./assets/locales/ko.json",
+      "zh-CN": "./assets/locales/zh_cn.json",
+      "zh-TW": "./assets/locales/zh_tw.json",
+      "zh-HK": "./assets/locales/zh_tw.json"
+    },
     "ios": {
       "buildNumber": "11",
       "supportsTablet": true,
