@@ -12,29 +12,29 @@ export default function Word(props) {
     const { component } = props?.route?.params;
     const [results, setResults] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
+    const [error, setError] = React.useState(null);
     const theme = useTheme()
 
     const handleQuery = async () => {
         const apiService = new ApiService();
         setLoading(true);
+        setError(null);
 
         try {
             apiService.prepareForRequest();
             const response = await apiService.word(component.word);
             console.log(response.data);
             setResults(response.data);
-            Haptics.notificationAsync(
-                Haptics.NotificationFeedbackType.Success
-            )
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log("Cancelled previous request");
             } else {
                 console.error(error);
             }
-            Haptics.notificationAsync(
-                Haptics.NotificationFeedbackType.Error
-            )
+            setResults(null)
+            setError(error.message);
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
         } finally {
             setLoading(false);
         }
@@ -125,7 +125,16 @@ export default function Word(props) {
                                                         tintColor={theme.colors.onSurface}
                                                         onRefresh={handleQuery}/>}
                         style={styles.scrollView}>
-                {!results && !loading && <Text>Request Error</Text>}
+                {!results && !loading && error &&
+                    <Text style={{
+                        textAlign: 'center',
+                        color: theme.colors.error,
+                        fontSize: 14,
+                        margin: 14,
+                    }}>
+                        {error}
+                    </Text>
+                }
             </ScrollView>
         );
     }

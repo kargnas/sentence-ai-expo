@@ -20,6 +20,7 @@ export default function Search() {
     const theme = useTheme()
     const [initialized, setInitialized] = React.useState(true);
     const [learningLanguage, setLearningLanguage] = React.useState(null);
+    const [error, setError] = React.useState(null);
 
     const handleSearch = async () => {
         const apiService = new ApiService();
@@ -29,16 +30,18 @@ export default function Search() {
         try {
             apiService.prepareForRequest();
             const response = await apiService.analysis(query);
+            setError(null)
             setResults(response.data);
             console.log(response.data);
 
             Haptics.notificationAsync(
                 Haptics.NotificationFeedbackType.Success
             )
-            await SavedSearchStore.setSavedSearchKeyword(query);
-            await SavedSearchStore.setSavedSearch(response.data);
 
             setLearningLanguage(await SettingStore.getLearningLanguage());
+
+            await SavedSearchStore.setSavedSearchKeyword(query);
+            await SavedSearchStore.setSavedSearch(response.data);
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log("Cancelled previous request");
@@ -46,6 +49,10 @@ export default function Search() {
                 // trace
                 console.error(error);
                 console.error(error, error.stack)
+
+                setResults(null)
+                setLearningLanguage(null)
+                setError(error.message)
             }
             Haptics.notificationAsync(
                 Haptics.NotificationFeedbackType.Error
@@ -81,6 +88,16 @@ export default function Search() {
                                                         colors={[theme.colors.onSurface]}
                                                         tintColor={theme.colors.onSurface}
                                                         onRefresh={handleSearch}/>}>
+                {error &&
+                    <Text style={{
+                        textAlign: 'center',
+                        color: theme.colors.error,
+                        fontSize: 14,
+                        margin: 14,
+                    }}>
+                        {error}
+                    </Text>
+                }
                 {results?.sentences?.map((item, key) => (
                     <List.Section key={key}>
                         <Text style={{
