@@ -81,19 +81,6 @@ export default function Search() {
                                                         colors={[theme.colors.onSurface]}
                                                         tintColor={theme.colors.onSurface}
                                                         onRefresh={handleSearch}/>}>
-                {results?.sentences &&
-                    <Button icon="trash-alt"
-                            mode="text"
-                            textColor={theme.colors.error}
-                            onPress={() => {
-                                setResults([]);
-                                setLearningLanguage(null)
-                                SavedSearchStore.clearSavedSearch();
-                                SavedSearchStore.clearSavedSearchKeyword();
-                            }}>
-                        Clear Latest Search
-                    </Button>
-                }
                 {results?.sentences?.map((item, key) => (
                     <List.Section key={key}>
                         <Text style={{
@@ -139,6 +126,19 @@ export default function Search() {
                     }}>
                         You are studying {learningLanguage}.
                     </Text>
+                }
+                {results?.sentences &&
+                    <Button icon="trash-alt"
+                            mode="text"
+                            textColor={theme.colors.error}
+                            onPress={() => {
+                                setResults([]);
+                                setLearningLanguage(null)
+                                SavedSearchStore.clearSavedSearch();
+                                SavedSearchStore.clearSavedSearchKeyword();
+                            }}>
+                        Clear Latest Search
+                    </Button>
                 }
             </ScrollView>
         </View>
