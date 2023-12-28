@@ -5,9 +5,9 @@ import SettingStore from "../../util/SettingStore";
 import {Checkbox} from 'react-native-paper';
 
 const ITEMS = [
-    { key: 1, value: null, text: 'GPT-3.5 Turbo (Default)', description: 'Faster. But idiot.'},
+    { key: 1, value: null, text: 'Normal AI (Default)', description: 'Faster. But idiot.'},
     // { key: 2, value: '3.5', text: '3.5', description: 'Faster' },
-    { key: 3, value: '4', text: 'GPT-4 Preview', description: 'Slower. But much more accurate.' },
+    { key: 3, value: '4', text: 'Advanced (Preview)', description: 'Slower. But much more accurate.' },
 ];
 
 export default function GptVersion() {

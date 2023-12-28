@@ -89,7 +89,7 @@ export default function SettingNavigationScreen() {
                 <Stack.Screen name={'GptVersion'}
                               component={GptVersion}
                               options={{
-                                  title: 'GPT Version',
+                                  title: 'AI Version',
                               }}/>
             </Stack.Navigator>
         </NavigationContainer>

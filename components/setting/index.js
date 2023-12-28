@@ -64,14 +64,14 @@ export default function Setting() {
                        }}/>
 
             <List.Subheader style={{ color: theme.colors.outline }}>AI Options</List.Subheader>
-            <List.Item title="GPT Version"
+            <List.Item title="AI Version"
                        right={props =>
                            <View style={styles.itemRightContainer}>
                                <Text style={{
                                    ...styles.itemRightValue,
                                    color: theme.colors.outline,
                                }}>
-                                   {settingGPTVersion ? settingGPTVersion : 'Default (3.5)'}
+                                   {settingGPTVersion ? settingGPTVersion : 'Default (Slower)'}
                                </Text>
                                <List.Icon icon="chevron-right"/>
                            </View>
