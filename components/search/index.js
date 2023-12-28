@@ -22,14 +22,64 @@ export default function Search() {
     const [learningLanguage, setLearningLanguage] = React.useState(null);
     const [error, setError] = React.useState(null);
 
-    const handleSearch = async () => {
+    const Example = () => {
+        // Click to copy example sentence
+        const copyToClipboard = async () => {
+            const learningLanguage = await SettingStore.getLearningLanguage();
+            let copyText = '';
+            switch (learningLanguage) {
+                case 'Japanese':
+                    copyText = '家から図書館までどのくらいかかりますか？';
+                    break;
+
+                case 'Korean':
+                    copyText = '도서관에서 학교까지 얼마나 걸리나요? 저 지금 빨리 가야되는데...';
+                    break;
+
+                case 'Mandarin':
+                    copyText = '我可以得到一杯冰美式咖啡吗';
+                    break;
+
+                case 'Cantonese':
+                    copyText = '佢睇呢場戲';
+                    break;
+            }
+
+            setQuery(copyText);
+            // handleSearch after 0.5 seconds
+            setTimeout(() => {
+                handleSearch(copyText);
+            }, 300);
+        }
+
+        return (
+            <View style={{
+                textAlign: 'center',
+            }}>
+                <Button icon="copy"
+                        mode="elevated"
+                        style={{
+                            marginTop: 3,
+                            marginBottom: 3,
+                            marginLeft: 4,
+                            marginRight: 4,
+                        }}
+                        onPress={copyToClipboard}>
+                    See Sample
+                </Button>
+            </View>
+        );
+    };
+
+    const handleSearch = async (customQuery) => {
         const apiService = new ApiService();
+        const realQuery = customQuery ? customQuery : query;
         loadingStack++;
         setLoading(loadingStack)
 
         try {
             apiService.prepareForRequest();
-            const response = await apiService.analysis(query);
+            const response = await apiService.analysis(realQuery);
             setError(null)
             setResults(response.data);
             console.log(response.data);
@@ -40,7 +90,7 @@ export default function Search() {
 
             setLearningLanguage(await SettingStore.getLearningLanguage());
 
-            await SavedSearchStore.setSavedSearchKeyword(query);
+            await SavedSearchStore.setSavedSearchKeyword(realQuery);
             await SavedSearchStore.setSavedSearch(response.data);
         } catch (error) {
             if (axios.isCancel(error)) {
@@ -50,7 +100,7 @@ export default function Search() {
                 console.error(error);
                 console.error(error, error.stack)
 
-                setResults(null)
+                setResults([])
                 setLearningLanguage(null)
                 setError(error.message)
             }
@@ -84,6 +134,9 @@ export default function Search() {
                 onSubmitEditing={handleSearch}
                 style={styles.searchBar}
             />
+            {!query &&
+                <Example/>
+            }
             <ScrollView refreshControl={<RefreshControl refreshing={loading > 0}
                                                         colors={[theme.colors.onSurface]}
                                                         tintColor={theme.colors.onSurface}
@@ -150,6 +203,7 @@ export default function Search() {
                             textColor={theme.colors.error}
                             onPress={() => {
                                 setResults([]);
+                                setQuery('')
                                 setLearningLanguage(null)
                                 SavedSearchStore.clearSavedSearch();
                                 SavedSearchStore.clearSavedSearchKeyword();
