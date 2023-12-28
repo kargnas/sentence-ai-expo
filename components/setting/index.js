@@ -71,7 +71,8 @@ export default function Setting() {
                                    ...styles.itemRightValue,
                                    color: theme.colors.outline,
                                }}>
-                                   {settingGPTVersion ? settingGPTVersion : 'Default (Slower)'}
+                                   {settingGPTVersion === '4' ? 'Advanced AI' : ''}
+                                   {settingGPTVersion === null ? 'Default (Normal AI)' : ''}
                                </Text>
                                <List.Icon icon="chevron-right"/>
                            </View>
