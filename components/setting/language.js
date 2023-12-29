@@ -4,6 +4,7 @@ import {List} from "react-native-paper";
 import SettingStore from "../../util/SettingStore";
 import {Checkbox} from 'react-native-paper';
 import {getLocales} from 'expo-localization';
+import {i18n, loadLocale} from "../../util/i18n";
 
 export default function LearningLanguage() {
     const [selectedLanguage, setSelectedLanguage] = React.useState(null);
@@ -28,6 +29,9 @@ export default function LearningLanguage() {
     React.useEffect(() => {
         console.log('Save', selectedLanguage)
         SettingStore.setLanguage(selectedLanguage)
+        setTimeout(() => {
+            loadLocale();
+        }, 300);
     }, [selectedLanguage]);
 
     React.useEffect(() => {

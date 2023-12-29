@@ -9,6 +9,7 @@ import SavedSearchStore from "../../util/SavedSearchStore";
 import {useEffect} from "react";
 import * as Haptics from "expo-haptics";
 import SettingStore from "../../util/SettingStore";
+import {trans} from "../../util/i18n";
 
 let loadingStack = 0;
 
@@ -54,7 +55,7 @@ export default function Search() {
 
         return (
             <View style={{
-                textAlign: 'center',
+                textAlign: 'center'
             }}>
                 <Button icon="copy"
                         mode="elevated"
@@ -65,7 +66,7 @@ export default function Search() {
                             marginRight: 4,
                         }}
                         onPress={copyToClipboard}>
-                    See Sample
+                    {trans('btn_see_demo')}
                 </Button>
             </View>
         );
@@ -73,7 +74,7 @@ export default function Search() {
 
     const handleSearch = async (customQuery) => {
         const apiService = new ApiService();
-        const realQuery = customQuery ? customQuery : query;
+        const realQuery = customQuery?.length > 0 ? customQuery : query;
         loadingStack++;
         setLoading(loadingStack)
 

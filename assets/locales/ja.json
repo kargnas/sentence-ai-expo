@@ -1,3 +1,4 @@
 {
-  "CFBundleDisplayName": "センテンスAIアナライザー"
+  "CFBundleDisplayName": "センテンスAIアナライザー",
+  "btn_see_demo": "{learningLanguage}のサンプル文を見る",
 }

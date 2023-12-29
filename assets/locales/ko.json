@@ -1,3 +1,4 @@
 {
-  "CFBundleDisplayName": "AI 문장 분석기"
+  "CFBundleDisplayName": "AI 문장 분석기",
+  "btn_see_demo": "{learningLanguage}의 예제 문장 보기"
 }

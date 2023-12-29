@@ -4,12 +4,15 @@ import {
     PaperProvider,
 } from 'react-native-paper';
 
+import * as React from 'react';
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import SearchNavigationScreen from "./screens/SearchNavigationScreen";
 import SavedWordNavigationScreen from "./screens/SavedWordNavigationScreen";
 import {NavigationContainer} from "@react-navigation/native";
 import {createMaterialBottomTabNavigator} from "react-native-paper/react-navigation";
 import SettingNavigationScreen from "./screens/SettingNavigationScreen";
+import {useCallback, useEffect, useState} from "react";
+import {default as I18n, i18n, loadLocale} from "./util/i18n";
 
 const theme = {
     ...DefaultTheme,
@@ -62,6 +65,23 @@ const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: theme });
 const Tab = createMaterialBottomTabNavigator();
 
 export default function App() {
+    const [initialized, setInitialized] = React.useState(true);
+    const [, updateState] = useState();
+    const forceUpdate = useCallback(() => updateState({}), []);
+
+    useEffect(() => {
+        // Load locale
+        if (initialized) {
+            setInitialized(false);
+            loadLocale();
+
+            i18n.onChange(async () => {
+                console.log('언어 변경: ', i18n.locale)
+                forceUpdate();
+            });
+        }
+    }, [initialized]);
+
     return (
         <PaperProvider theme={theme}
                        settings={{

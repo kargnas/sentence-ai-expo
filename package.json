@@ -22,6 +22,7 @@
     "expo-splash-screen": "~0.20.5",
     "expo-sqlite": "~11.3.3",
     "expo-status-bar": "~1.6.0",
+    "i18n-js": "4.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.72.6",
