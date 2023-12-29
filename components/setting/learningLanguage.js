@@ -3,6 +3,7 @@ import {View, Text, FlatList, StyleSheet} from 'react-native';
 import {List} from "react-native-paper";
 import SettingStore from "../../util/SettingStore";
 import {Checkbox} from 'react-native-paper';
+import {loadLocale} from "../../util/i18n";
 
 // List of languages
 const LANGUAGES = [
@@ -26,6 +27,9 @@ export default function LearningLanguage() {
     React.useEffect(() => {
         console.log('Save', selectedLanguage)
         SettingStore.setLearningLanguage(selectedLanguage)
+        setTimeout(() => {
+            loadLocale();
+        }, 300);
     }, [selectedLanguage]);
 
     React.useEffect(() => {

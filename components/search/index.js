@@ -1,15 +1,23 @@
 import * as React from 'react';
+import {useEffect} from "react";
 import {StyleSheet, View, Text, FlatList, ScrollView, RefreshControl} from 'react-native';
 import {List, Button, PaperProvider, TextInput, ActivityIndicator, useTheme} from "react-native-paper";
-import axios from "axios";
 import {useNavigation} from "@react-navigation/native";
-import ApiService from "../../api/apiService";
-import WordItem from "./WordItem";
-import SavedSearchStore from "../../util/SavedSearchStore";
-import {useEffect} from "react";
+import Clipboard from "@react-native-clipboard/clipboard";
+
 import * as Haptics from "expo-haptics";
+import axios from "axios";
+
+import ApiService from "../../api/apiService";
+
+import SavedSearchStore from "../../util/SavedSearchStore";
 import SettingStore from "../../util/SettingStore";
 import {trans} from "../../util/i18n";
+
+import WordItem from "./WordItem";
+import ButtonDemo from "./ButtonDemo";
+import GuessLanguage from "../../util/guessLanguage.js";
+import ButtonClipboard from "./ButtonClipboard";
 
 let loadingStack = 0;
 
@@ -23,54 +31,27 @@ export default function Search() {
     const [learningLanguage, setLearningLanguage] = React.useState(null);
     const [error, setError] = React.useState(null);
 
-    const Example = () => {
-        // Click to copy example sentence
-        const copyToClipboard = async () => {
-            const learningLanguage = await SettingStore.getLearningLanguage();
-            let copyText = '';
-            switch (learningLanguage) {
-                case 'Japanese':
-                    copyText = '家から図書館までどのくらいかかりますか？';
-                    break;
+    const handleClipboard = (myquery) => {
+        if (query.length > 0) return;
+        console.log('query: ' + myquery);
+        setQuery(myquery);
+    }
 
-                case 'Korean':
-                    copyText = '도서관에서 학교까지 얼마나 걸리나요? 저 지금 빨리 가야되는데...';
-                    break;
+    const handleClipboardButton = (myquery) => {
+        setQuery(myquery);
+        // handleSearch after 0.5 seconds
+        setTimeout(() => {
+            handleSearch(myquery);
+        }, 300);
+    }
 
-                case 'Mandarin':
-                    copyText = '我可以得到一杯冰美式咖啡吗';
-                    break;
-
-                case 'Cantonese':
-                    copyText = '佢睇呢場戲';
-                    break;
-            }
-
-            setQuery(copyText);
-            // handleSearch after 0.5 seconds
-            setTimeout(() => {
-                handleSearch(copyText);
-            }, 300);
-        }
-
-        return (
-            <View style={{
-                textAlign: 'center'
-            }}>
-                <Button icon="copy"
-                        mode="elevated"
-                        style={{
-                            marginTop: 3,
-                            marginBottom: 3,
-                            marginLeft: 4,
-                            marginRight: 4,
-                        }}
-                        onPress={copyToClipboard}>
-                    {trans('btn_see_demo')}
-                </Button>
-            </View>
-        );
-    };
+    const handleDemoSearch = (demoString) => {
+        setQuery(demoString);
+        // handleSearch after 0.5 seconds
+        setTimeout(() => {
+            handleSearch(demoString);
+        }, 300);
+    }
 
     const handleSearch = async (customQuery) => {
         const apiService = new ApiService();
@@ -115,12 +96,18 @@ export default function Search() {
     };
 
     useEffect(() => {
-        console.log('INIT')
+        console.log('검색창 초기화')
         const init = async () => {
             const savedSearch = await SavedSearchStore.getSavedSearch();
-            setResults(savedSearch);
-            const savedSearchKeyword = await SavedSearchStore.getSavedSearchKeyword();
-            setQuery(savedSearchKeyword);
+            if (savedSearch.length > 0) {
+                setResults(savedSearch);
+                const savedSearchKeyword = await SavedSearchStore.getSavedSearchKeyword();
+                setQuery(savedSearchKeyword);
+
+                console.log('저장된 검색어가 있습니다: ' + savedSearchKeyword);
+            } else {
+                console.log('저장된 검색어가 없습니다.');
+            }
         }
         init();
     }, [initialized]);
@@ -135,9 +122,8 @@ export default function Search() {
                 onSubmitEditing={handleSearch}
                 style={styles.searchBar}
             />
-            {!query &&
-                <Example/>
-            }
+            <ButtonClipboard onPress={handleClipboardButton} onClipboard={handleClipboard}/>
+            {!query && <ButtonDemo onPress={handleDemoSearch}/>}
             <ScrollView refreshControl={<RefreshControl refreshing={loading > 0}
                                                         colors={[theme.colors.onSurface]}
                                                         tintColor={theme.colors.onSurface}
@@ -193,7 +179,8 @@ export default function Search() {
                         color: theme.colors.outline,
                         fontSize: 14,
                         fontWeight: 'bold',
-                        marginBottom: 14,
+                        margin: 10,
+                        marginBottom: 0,
                     }}>
                         You are studying {learningLanguage}.
                     </Text>
@@ -202,6 +189,9 @@ export default function Search() {
                     <Button icon="trash-alt"
                             mode="text"
                             textColor={theme.colors.error}
+                            style={{
+                                margin: 10
+                            }}
                             onPress={() => {
                                 setResults([]);
                                 setQuery('')
