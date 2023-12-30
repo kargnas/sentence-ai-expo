@@ -69,6 +69,22 @@ class SettingStore {
         }
     }
 
+    async getVoice() {
+        const setting = await this.getSetting();
+        return setting.voice || null;
+    }
+
+    async setVoice(voice) {
+        const setting = await this.getSetting();
+        if (voice === null) {
+            delete setting.voice;
+            await this.setSetting(setting);
+        } else {
+            setting.voice = voice;
+            await this.setSetting(setting);
+        }
+    }
+
 
 }
 

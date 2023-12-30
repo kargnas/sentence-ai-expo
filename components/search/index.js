@@ -92,8 +92,32 @@ export default function Search() {
         } finally {
             loadingStack--;
             setLoading(loadingStack)
+            setLoadingSound(false)
         }
     };
+
+    const [sound, setSound] = React.useState();
+    const [loadingSound, setLoadingSound] = React.useState(false);
+
+    const playSound = async (query) => {
+        setLoadingSound(true)
+        const apiService = new ApiService();
+        const sound = await apiService.getSound(query);
+        console.log('Got sound', query)
+        setSound(sound);
+        await sound.playAsync();
+        console.log('Played Async', query)
+        setLoadingSound(false)
+    }
+
+    useEffect(() => {
+        return sound ? () => {
+            console.log('Unload Sound');
+            sound.unloadAsync();
+            setLoadingSound(false)
+        } : undefined
+    }, [sound]);
+
 
     useEffect(() => {
         console.log('검색창 초기화')
@@ -122,7 +146,32 @@ export default function Search() {
                 onSubmitEditing={handleSearch}
                 style={styles.searchBar}
             />
-            <ButtonClipboard onPress={handleClipboardButton} onClipboard={handleClipboard}/>
+            <View style={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'nowrap',
+                justifyContent: 'space-between',
+                alignItems: 'stretch',
+                alignContent: 'stretch',
+            }}>
+                <ButtonClipboard onPress={handleClipboardButton} onClipboard={handleClipboard}
+                                 style={{
+                                     display: 'block',
+                                     flexGrow: '0',
+                                     flexShrink: '1',
+                                     flexBasis: 'auto',
+                                     alignSelf: 'center',
+                                     order: '0',
+                                 }}/>
+                <Button icon="backspace"
+                        mode="elevated"
+                        onPress={() => {
+                            setQuery('')
+                        }}
+                        style={{ margin: 3, marginLeft: 4, marginRight: 4 }}>
+                    Clear
+                </Button>
+            </View>
             {!query && <ButtonDemo onPress={handleDemoSearch}/>}
             <ScrollView refreshControl={<RefreshControl refreshing={loading > 0}
                                                         colors={[theme.colors.onSurface]}
@@ -140,34 +189,38 @@ export default function Search() {
                 }
                 {results?.sentences?.map((item, key) => (
                     <List.Section key={key}>
-                        <Text style={{
-                            marginLeft: 15,
-                            marginRight: 15,
-                            marginBottom: 5,
-                            lineHeight: 20,
-                            fontWeight: 'bold',
-                            color: theme.colors.onSurfaceDisabled
+                        <View style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            alignItems: 'stretch',
+                            alignContent: 'stretch',
                         }}>
-                            {item.sentence}
-                        </Text>
-                        <Text style={{
-                            marginLeft: 15,
-                            marginRight: 15,
-                            marginBottom: 5,
-                            lineHeight: 20,
-                            color: theme.colors.onSurface
-                        }}>
-                            {item.meaning}
-                        </Text>
-                        <Text style={{
-                            marginLeft: 15,
-                            marginRight: 15,
-                            marginBottom: 5,
-                            lineHeight: 20,
-                            color: theme.colors.onSurfaceVariant
-                        }}>
-                            {item.explain_structure}
-                        </Text>
+                            <View style={{ display: 'block', flex: '0', alignSelf: 'center' }}>
+                                {loadingSound ?
+                                    <Button mode="text" loading={true} style={{ marginLeft: 20, marginRight: -12 }}></Button>
+                                    :
+                                    <Button onPress={(e) => {
+                                        playSound(item.sentence, e)
+                                    }} mode="text" icon="play" style={{ marginLeft: 20, marginRight: -12 }}></Button>
+                                }
+                            </View>
+                            <View style={{ display: 'block', flex: '1', alignSelf: 'center' }}>
+                                <Text style={{ ...styles.sentence, color: theme.colors.onSurfaceDisabled }}>
+                                    {item.sentence}
+                                </Text>
+                                <Text style={{ ...styles.sentenceMeaning, color: theme.colors.onSurface }}>
+                                    {item.meaning}
+                                </Text>
+                                {item.explain_structure &&
+                                    <Text style={{ ...styles.sentenceStructure, color: theme.colors.onSurfaceVariant }}>
+                                        {item.explain_structure}
+                                    </Text>
+                                }
+                            </View>
+                        </View>
+
+
                         {item.components.map((component, idx) => (
                             <WordItem key={idx} component={component}/>
                         ))}
@@ -220,5 +273,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         padding: 10
+    },
+    sentence: {
+        marginLeft: 15,
+        marginRight: 15,
+        marginBottom: 5,
+        lineHeight: 20,
+        fontWeight: 'bold',
+    },
+    sentenceMeaning: {
+        marginLeft: 15,
+        marginRight: 15,
+        marginBottom: 5,
+        lineHeight: 20,
+    },
+    sentenceStructure: {
+        marginLeft: 15,
+        marginRight: 15,
+        marginBottom: 5,
+        lineHeight: 20,
     }
 });

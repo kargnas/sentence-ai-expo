@@ -6,7 +6,7 @@ import {Text, View} from "react-native";
 import {Button, useTheme} from "react-native-paper";
 import {trans} from "../../util/i18n";
 
-export default ({ onPress, onClipboard }) => {
+export default ({ onPress, onClipboard, style }) => {
     const [clipboardContent, setClipboardContent] = React.useState('');
     const [initialized, setInitialized] = React.useState(true);
     const theme = useTheme()
@@ -43,7 +43,7 @@ export default ({ onPress, onClipboard }) => {
     }
 
     return (
-        <View style={{ textAlign: 'center', alignItems: 'center' }}>
+        <View style={{ textAlign: 'center', alignItems: 'center', ...style }}>
             <Button icon="copy"
                     mode="elevated"
                     onPress={onPressClipboard}

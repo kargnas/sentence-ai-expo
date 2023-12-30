@@ -11,12 +11,14 @@ export default function Setting() {
     const [settingLearningLanguage, setSettingLearningLanguage] = React.useState(null)
     const [settingLanguage, setSettingLanguage] = React.useState(null)
     const [settingGPTVersion, setSettingGPTVersion] = React.useState(null)
+    const [settingVoice, setSettingVoice] = React.useState(null)
     const [initialized, setInitialized] = React.useState(true);
 
     async function loadSetting() {
         setSettingLearningLanguage(await SettingStore.getLearningLanguage())
         setSettingLanguage(await SettingStore.getLanguage())
         setSettingGPTVersion(await SettingStore.getGPTVersion())
+        setSettingVoice(await SettingStore.getVoice())
     }
 
     React.useEffect(() => {
@@ -64,7 +66,7 @@ export default function Setting() {
                        }}/>
 
             <List.Subheader style={{ color: theme.colors.outline }}>AI Options</List.Subheader>
-            <List.Item title="AI Version"
+            <List.Item title="Intelligence"
                        right={props =>
                            <View style={styles.itemRightContainer}>
                                <Text style={{
@@ -79,6 +81,21 @@ export default function Setting() {
                        }
                        onPress={() => {
                            navigation.navigate('GptVersion')
+                       }}/>
+            <List.Item title="Voice"
+                       right={props =>
+                           <View style={styles.itemRightContainer}>
+                               <Text style={{
+                                   ...styles.itemRightValue,
+                                   color: theme.colors.outline,
+                               }}>
+                                   {settingVoice ? settingVoice : `Default`}
+                               </Text>
+                               <List.Icon icon="chevron-right"/>
+                           </View>
+                       }
+                       onPress={() => {
+                           navigation.navigate('Voice')
                        }}/>
         </List.Section>
     );

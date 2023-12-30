@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {getLocales} from 'expo-localization';
 import SettingStore from "../util/SettingStore";
+import {Audio} from 'expo-av';
 
 class ApiService {
     constructor() {
@@ -60,6 +61,19 @@ class ApiService {
                 'Accept-Language': lan,
             }
         });
+    }
+
+    async getSound(text) {
+        const voice = await SettingStore.getVoice();
+        let url = this.BASE_URL + '/api/speech?query=' + encodeURIComponent(text);
+        if (voice !== null) {
+            url += '&voice=' + encodeURIComponent(voice);
+        }
+        console.log('Request Voice: ', url)
+        const { sound } = await Audio.Sound.createAsync({
+            uri: url
+        });
+        return sound;
     }
 }
 

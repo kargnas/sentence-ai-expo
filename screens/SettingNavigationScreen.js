@@ -14,6 +14,7 @@ import Setting from "../components/setting";
 import LearningLanguage from "../components/setting/learningLanguage";
 import Language from "../components/setting/language";
 import GptVersion from "../components/setting/gptVersion";
+import Voice from "../components/setting/voice";
 
 const theme = {
     ...DefaultTheme,
@@ -90,6 +91,11 @@ export default function SettingNavigationScreen() {
                               component={GptVersion}
                               options={{
                                   title: 'AI Version',
+                              }}/>
+                <Stack.Screen name={'Voice'}
+                              component={Voice}
+                              options={{
+                                  title: 'Voice',
                               }}/>
             </Stack.Navigator>
         </NavigationContainer>
