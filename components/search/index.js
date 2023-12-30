@@ -18,6 +18,7 @@ import WordItem from "./WordItem";
 import ButtonDemo from "./ButtonDemo";
 import GuessLanguage from "../../util/guessLanguage.js";
 import ButtonClipboard from "./ButtonClipboard";
+import TTSPlayer from "./TTSPlayer";
 
 let loadingStack = 0;
 
@@ -95,29 +96,6 @@ export default function Search() {
             setLoadingSound(false)
         }
     };
-
-    const [sound, setSound] = React.useState();
-    const [loadingSound, setLoadingSound] = React.useState(false);
-
-    const playSound = async (query) => {
-        setLoadingSound(true)
-        const apiService = new ApiService();
-        const sound = await apiService.getSound(query);
-        console.log('Got sound', query)
-        setSound(sound);
-        await sound.playAsync();
-        console.log('Played Async', query)
-        setLoadingSound(false)
-    }
-
-    useEffect(() => {
-        return sound ? () => {
-            console.log('Unload Sound');
-            sound.unloadAsync();
-            setLoadingSound(false)
-        } : undefined
-    }, [sound]);
-
 
     useEffect(() => {
         console.log('검색창 초기화')
@@ -197,13 +175,7 @@ export default function Search() {
                             alignContent: 'stretch',
                         }}>
                             <View style={{ display: 'block', flex: '0', alignSelf: 'center' }}>
-                                {loadingSound ?
-                                    <Button mode="text" loading={true} style={{ marginLeft: 20, marginRight: -12 }}></Button>
-                                    :
-                                    <Button onPress={(e) => {
-                                        playSound(item.sentence, e)
-                                    }} mode="text" icon="play" style={{ marginLeft: 20, marginRight: -12 }}></Button>
-                                }
+                                <TTSPlayer text={item.sentence}/>
                             </View>
                             <View style={{ display: 'block', flex: '1', alignSelf: 'center' }}>
                                 <Text style={{ ...styles.sentence, color: theme.colors.onSurfaceDisabled }}>
