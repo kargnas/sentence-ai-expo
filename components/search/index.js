@@ -19,6 +19,7 @@ import ButtonDemo from "./ButtonDemo";
 import GuessLanguage from "../../util/guessLanguage.js";
 import ButtonClipboard from "./ButtonClipboard";
 import TTSPlayer from "./TTSPlayer";
+import ResultList from "./ResultList";
 
 let loadingStack = 0;
 
@@ -117,8 +118,7 @@ export default function Search() {
     return (
         <View style={styles.container}>
             <TextInput
-                mode="outlined"
-                label="Sentences"
+                mode="outlined" label="Sentences"
                 value={query}
                 onChangeText={text => setQuery(text)}
                 onSubmitEditing={handleSearch}
@@ -141,13 +141,13 @@ export default function Search() {
                                      alignSelf: 'center',
                                      order: '0',
                                  }}/>
-                <Button icon="backspace"
-                        mode="elevated"
+                <Button icon="backspace" mode="text"
+                        textColor={theme.colors.outline}
                         onPress={() => {
                             setQuery('')
                         }}
-                        style={{ margin: 3, marginLeft: 4, marginRight: 4 }}>
-                    Clear
+                        style={{ margin: 3, marginLeft: 4, marginRight: -4 }}>
+                    Delete
                 </Button>
             </View>
             {!query && <ButtonDemo onPress={handleDemoSearch}/>}
@@ -156,63 +156,19 @@ export default function Search() {
                                                         tintColor={theme.colors.onSurface}
                                                         onRefresh={handleSearch}/>}>
                 {error &&
-                    <Text style={{
-                        textAlign: 'center',
-                        color: theme.colors.error,
-                        fontSize: 14,
-                        margin: 14,
-                    }}>
+                    <Text style={{ textAlign: 'center', color: theme.colors.error, fontSize: 14, margin: 14, }}>
                         {error}
-                    </Text>
-                }
-                {results?.sentences?.map((item, key) => (
-                    <List.Section key={key}>
-                        <View style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            alignItems: 'stretch',
-                            alignContent: 'stretch',
-                        }}>
-                            <View style={{ display: 'block', flex: '0', alignSelf: 'center' }}>
-                                <TTSPlayer text={item.sentence}/>
-                            </View>
-                            <View style={{ display: 'block', flex: '1', alignSelf: 'center' }}>
-                                <Text style={{ ...styles.sentence, color: theme.colors.onSurfaceDisabled }}>
-                                    {item.sentence}
-                                </Text>
-                                <Text style={{ ...styles.sentenceMeaning, color: theme.colors.onSurface }}>
-                                    {item.meaning}
-                                </Text>
-                                {item.explain_structure &&
-                                    <Text style={{ ...styles.sentenceStructure, color: theme.colors.onSurfaceVariant }}>
-                                        {item.explain_structure}
-                                    </Text>
-                                }
-                            </View>
-                        </View>
+                    </Text>}
 
+                <ResultList sentences={results?.sentences}/>
 
-                        {item.components.map((component, idx) => (
-                            <WordItem key={idx} component={component}/>
-                        ))}
-                    </List.Section>
-                ))}
                 {learningLanguage &&
-                    <Text style={{
-                        textAlign: 'center',
-                        color: theme.colors.outline,
-                        fontSize: 14,
-                        fontWeight: 'bold',
-                        margin: 10,
-                        marginBottom: 0,
-                    }}>
+                    <Text style={{ ...styles.descriptionStudyingLanguage, color: theme.colors.outline }}>>
                         You are studying {learningLanguage}.
-                    </Text>
-                }
+                    </Text>}
+
                 {results?.sentences &&
-                    <Button icon="trash-alt"
-                            mode="text"
+                    <Button icon="trash-alt" mode="text"
                             textColor={theme.colors.error}
                             style={{
                                 margin: 10
@@ -225,8 +181,7 @@ export default function Search() {
                                 SavedSearchStore.clearSavedSearchKeyword();
                             }}>
                         Clear Latest Search
-                    </Button>
-                }
+                    </Button>}
             </ScrollView>
         </View>
     );
@@ -246,23 +201,11 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         padding: 10
     },
-    sentence: {
-        marginLeft: 15,
-        marginRight: 15,
-        marginBottom: 5,
-        lineHeight: 20,
+    descriptionStudyingLanguage: {
+        textAlign: 'center',
+        fontSize: 14,
         fontWeight: 'bold',
-    },
-    sentenceMeaning: {
-        marginLeft: 15,
-        marginRight: 15,
-        marginBottom: 5,
-        lineHeight: 20,
-    },
-    sentenceStructure: {
-        marginLeft: 15,
-        marginRight: 15,
-        marginBottom: 5,
-        lineHeight: 20,
+        margin: 10,
+        marginBottom: 0,
     }
 });

@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import {StyleSheet, View, Text, FlatList, ScrollView, RefreshControl} from 'react-native';
 import ApiService from "../../api/apiService";
 import {Button} from "react-native-paper";
+import * as Haptics from "expo-haptics";
 
 export default ({ text }) => {
     const [loading, setLoading] = React.useState(false)
@@ -9,6 +10,7 @@ export default ({ text }) => {
 
     const playSound = async (query) => {
         setLoading(true)
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
 
         // Logic
         const apiService = new ApiService();
@@ -21,6 +23,7 @@ export default ({ text }) => {
 
         // Finish
         setLoading(false)
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     }
 
     useEffect(() => {
