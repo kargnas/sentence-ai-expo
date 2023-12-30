@@ -94,7 +94,6 @@ export default function Search() {
         } finally {
             loadingStack--;
             setLoading(loadingStack)
-            setLoadingSound(false)
         }
     };
 
@@ -163,7 +162,7 @@ export default function Search() {
                 <ResultList sentences={results?.sentences}/>
 
                 {learningLanguage &&
-                    <Text style={{ ...styles.descriptionStudyingLanguage, color: theme.colors.outline }}>>
+                    <Text style={{ ...styles.descriptionStudyingLanguage, color: theme.colors.outline }}>
                         You are studying {learningLanguage}.
                     </Text>}
 

@@ -7,6 +7,7 @@ import FavoriteButton from "./favoriteButton";
 import ApiService from "../../api/apiService";
 import axios from "axios";
 import * as Haptics from "expo-haptics";
+import ResultList from "../search/ResultList";
 
 export default function Word(props) {
     const { component } = props?.route?.params;
@@ -66,8 +67,8 @@ export default function Word(props) {
                     textAlign: 'center',
                     fontWeight: 'bold',
                     color: theme.colors.primary,
-                    lineHeight: 30,
-                    fontSize: 25,
+                    lineHeight: 23 * 1.5,
+                    fontSize: 23,
                 },
                 // phonetics is an array of strings
                 // text: `${implode of results?.summary?.phonetics}, ${results?.summary?.simplified}, ${results?.summary?.traditional}`
@@ -107,7 +108,8 @@ export default function Word(props) {
                                  <Text variant="titleSmall"
                                        style={{
                                            ...styles.sectionHeader,
-                                           color: theme.colors.outline
+                                           color: theme.colors.outline,
+                                           backgroundColor: theme.colors.surface,
                                        }}
                                  >{title}</Text>
                              )}
@@ -118,6 +120,8 @@ export default function Word(props) {
                                                              }}>{item.text}</Text>}
                              style={styles.sectionList}
                 />
+
+                <ResultList sentences={results?.sentences}/>
             </>
         );
     } else {

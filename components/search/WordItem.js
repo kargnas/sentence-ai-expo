@@ -31,7 +31,7 @@ export default function WordItem(props) {
                 </View>
             }
             onPress={() =>
-                navigation.navigate('Word', {
+                navigation.push('Word', {
                     title: `${component.word} ${component.phonetic}`,
                     component
                 })
