@@ -52,9 +52,9 @@ export default function Word(props) {
     let summary = '';
     if (results?.phonetics && results?.summary?.simplified) {
         if (results.summary.simplified === results.summary.traditional || !results.summary.traditional) {
-            summary = `${results?.summary?.simplified} ${results?.phonetics.join(' ')}`
+            summary = `${results?.summary?.simplified} / ${results?.phonetics.join(', ')}`
         } else {
-            summary = `${results?.summary?.simplified} / ${results?.summary?.traditional} ${results?.phonetics.join(' ')}`
+            summary = `${results?.summary?.simplified} / ${results?.summary?.traditional} / ${results?.phonetics.join(' ')}`
         }
     }
 
@@ -66,6 +66,8 @@ export default function Word(props) {
                     textAlign: 'center',
                     fontWeight: 'bold',
                     color: theme.colors.primary,
+                    lineHeight: 30,
+                    fontSize: 25,
                 },
                 // phonetics is an array of strings
                 // text: `${implode of results?.summary?.phonetics}, ${results?.summary?.simplified}, ${results?.summary?.traditional}`
