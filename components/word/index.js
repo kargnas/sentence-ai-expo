@@ -53,7 +53,11 @@ export default function Word(props) {
     let summary = '';
     if (results?.phonetics && results?.summary?.simplified) {
         if (results.summary.simplified === results.summary.traditional || !results.summary.traditional) {
-            summary = `${results?.summary?.simplified} / ${results?.phonetics.join(', ')}`
+            if (results?.phonetics.join(', ') === results?.summary?.simplified) {
+                summary = `${results?.summary?.simplified}`
+            } else {
+                summary = `${results?.summary?.simplified} / ${results?.phonetics.join(', ')}`
+            }
         } else {
             summary = `${results?.summary?.simplified} / ${results?.summary?.traditional} / ${results?.phonetics.join(' ')}`
         }
