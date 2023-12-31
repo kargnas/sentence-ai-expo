@@ -3,6 +3,7 @@ import {StyleSheet, View, Text, FlatList, ScrollView, RefreshControl} from 'reac
 import ApiService from "../../api/apiService";
 import {Button} from "react-native-paper";
 import * as Haptics from "expo-haptics";
+import {Audio} from "expo-av";
 
 export default ({ text }) => {
     const [loading, setLoading] = React.useState(false)
@@ -18,7 +19,8 @@ export default ({ text }) => {
         console.log(query, '사운드를 다운받았습니다.')
 
         setSound(sound);
-        await sound.playAsync();
+        await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+        sound.playAsync();
         console.log(query, '재생합니다.')
 
         // Finish
