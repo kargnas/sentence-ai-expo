@@ -123,10 +123,24 @@ export default function Search() {
                 onSubmitEditing={handleSearch}
                 style={styles.searchBar}
             />
+            {query.length > 0 &&
+                <Button icon="times-circle"
+                        mode="text"
+                        textColor={theme.colors.outline}
+                        onPress={() => {
+                            setQuery('')
+                        }}
+                        style={{
+                            position: 'absolute',
+                            right: 0,
+                            top: 17,
+                            margin: 3,
+                            marginLeft: 4,
+                            marginRight: -4
+                        }}></Button>}
             <View style={{
                 display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'nowrap',
+                // flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'stretch',
                 alignContent: 'stretch',
@@ -134,20 +148,10 @@ export default function Search() {
                 <ButtonClipboard onPress={handleClipboardButton} onClipboard={handleClipboard}
                                  style={{
                                      display: 'block',
-                                     flexGrow: '0',
-                                     flexShrink: '1',
-                                     flexBasis: 'auto',
+                                     flex: '0 1',
                                      alignSelf: 'center',
-                                     order: '0',
+                                     textAlign: 'center',
                                  }}/>
-                <Button icon="backspace" mode="text"
-                        textColor={theme.colors.outline}
-                        onPress={() => {
-                            setQuery('')
-                        }}
-                        style={{ margin: 3, marginLeft: 4, marginRight: -4 }}>
-                    Delete
-                </Button>
             </View>
             {!query && <ButtonDemo onPress={handleDemoSearch}/>}
             <ScrollView refreshControl={<RefreshControl refreshing={loading > 0}
@@ -188,6 +192,7 @@ export default function Search() {
 
 const styles = StyleSheet.create({
     container: {
+        position: 'relative',
         flex: 1,
     },
     searchBar: {
