@@ -52,9 +52,38 @@ export const loadLocale = async () => {
             break;
 
         case 'English':
-        default:
             i18n.locale = 'en';
+            break;
+
+        default:
+            switch (i18n.locale.replace('_', '-').toLowerCase()) {
+                case 'zh-cn':
+                    i18n.locale = 'zh_cn';
+                    break;
+
+                case 'zh-tw':
+                case 'zh-hk':
+                    i18n.locale = 'zh_tw';
+                    break;
+
+                default:
+                    switch (i18n.locale.substring(0, 2)) {
+                        case 'ko':
+                        case 'ja':
+                        case 'en':
+                            i18n.locale = i18n.locale.substring(0, 2);
+                            break;
+
+                        case 'zh':
+                            i18n.locale = 'zh_cn';
+                            break;
+
+                        default:
+                            i18n.locale = 'en';
+                    }
+            }
     }
+
 
     i18n.enableFallback = true;
 
