@@ -1,20 +1,28 @@
 import * as React from 'react';
 import * as SecureStore from 'expo-secure-store';
 import {useEffect, useState} from 'react'; // new import
-import {ActivityIndicator, Button, Card, List, Text, useTheme} from "react-native-paper";
-import {RefreshControl, ScrollView, SectionList, StyleSheet, View} from "react-native";
+import {ActivityIndicator, Button, Card, List, Snackbar, Text, useTheme} from "react-native-paper";
+import {RefreshControl, ScrollView, SectionList, StyleSheet, TouchableOpacity, View} from "react-native";
 import FavoriteButton from "./favoriteButton";
 import ApiService from "../../api/apiService";
 import axios from "axios";
 import * as Haptics from "expo-haptics";
 import ResultList from "../search/ResultList";
+import Clipboard from "@react-native-clipboard/clipboard";
+import {trans} from "../../util/i18n";
 
 export default function Word(props) {
     const { component } = props?.route?.params;
     const [results, setResults] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
+    const [showCopy, setShowCopy] = React.useState(false);
     const theme = useTheme()
+
+    const copyClipboard = async (text) => {
+        Clipboard.setString(text);
+        setShowCopy(true);
+    }
 
     const handleQuery = async () => {
         const apiService = new ApiService();
@@ -117,15 +125,24 @@ export default function Word(props) {
                                        }}
                                  >{title}</Text>
                              )}
-                             renderItem={({ item }) => <Text variant="bodyMedium"
-                                                             style={{
-                                                                 ...styles.sectionItem,
-                                                                 ...item.styles
-                                                             }}>{item.text}</Text>}
+                             renderItem={({ item }) => <TouchableOpacity onPress={() => copyClipboard(item.text)}>
+                                 <Text variant="bodyMedium"
+                                       style={{
+                                           ...styles.sectionItem,
+                                           ...item.styles
+                                       }}>{item.text}</Text>
+                             </TouchableOpacity>}
                              style={styles.sectionList}
                 />
-
                 <ResultList sentences={results?.sentences}/>
+                <Snackbar
+                    visible={showCopy}
+                    onDismiss={() => setShowCopy(false)}
+                    action={{
+                        label: 'Close',
+                    }}>
+                    {trans('toast_successful_copied')}
+                </Snackbar>
             </>
         );
     } else {

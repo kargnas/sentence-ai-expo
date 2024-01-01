@@ -1,5 +1,6 @@
 {
   "CFBundleDisplayName": "Sentence AI",
   "btn_see_demo": "See Sample Sentences of {learningLanguage}",
-  "btn_paste_from_clipboard": "Clipboard"
+  "btn_paste_from_clipboard": "Clipboard",
+  "toast_successful_copied": "Successfully copied."
 }
