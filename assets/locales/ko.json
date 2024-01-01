@@ -1,5 +1,5 @@
 {
   "CFBundleDisplayName": "AI 문장 분석기",
   "btn_see_demo": "{learningLanguage}의 예제 문장 보기",
-  "btn_clipboard": "클립보드에서 붙여넣기"
+  "btn_paste_from_clipboard": "붙여넣기"
 }

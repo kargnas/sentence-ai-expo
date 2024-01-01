@@ -125,36 +125,27 @@ export default function Search() {
                 onChangeText={text => setQuery(text)}
                 onSubmitEditing={handleSearch}
                 style={styles.searchBar}
+                contentStyle={{ marginRight: 65 }}
             />
-            {query.length > 0 &&
-                <Button icon="times-circle"
-                        mode="text"
-                        textColor={theme.colors.outline}
-                        onPress={() => {
-                            setQuery('')
-                        }}
-                        style={{
-                            position: 'absolute',
-                            right: 0,
-                            top: 17,
-                            margin: 3,
-                            marginLeft: 4,
-                            marginRight: -4
-                        }}></Button>}
             <View style={{
-                display: 'flex',
-                // flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'stretch',
-                alignContent: 'stretch',
+                position: 'absolute',
+                right: 0,
+                top: 14,
+                margin: 3,
+                marginLeft: 4,
+                marginRight: 0
             }}>
-                <ButtonClipboard onPress={handleClipboardButton} onClipboard={handleClipboard}
-                                 style={{
-                                     display: 'block',
-                                     flex: '0 1',
-                                     alignSelf: 'center',
-                                     textAlign: 'center',
-                                 }}/>
+                {query.length > 0 ?
+                    <Button icon="times-circle"
+                            mode="text"
+                            textColor={theme.colors.outline}
+                            rippleColor={"transparent"}
+                            onPress={() => {
+                                setQuery('')
+                            }}>Clear</Button>
+                    :
+                    <ButtonClipboard onPress={handleClipboardButton}
+                                     onClipboard={handleClipboard}/>}
             </View>
             {!query && <ButtonDemo onPress={handleDemoSearch}/>}
             <ScrollView refreshControl={<RefreshControl refreshing={loading > 0}

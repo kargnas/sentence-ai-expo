@@ -1,5 +1,5 @@
 {
   "CFBundleDisplayName": "センテンスAIアナライザー",
   "btn_see_demo": "{learningLanguage}のサンプル文を見る",
-  "btn_clipboard": "クリップボードから貼り付け"
+  "btn_paste_from_clipboard": "貼り付け"
 }

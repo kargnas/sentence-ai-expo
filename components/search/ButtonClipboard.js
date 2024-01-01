@@ -43,13 +43,11 @@ export default ({ onPress, onClipboard, style }) => {
     }
 
     return (
-        <View style={{ textAlign: 'center', alignItems: 'center', ...style }}>
-            <Button icon="copy"
-                    mode="elevated"
-                    onPress={onPressClipboard}
-                    style={{ margin: 3, marginLeft: 4, marginRight: 4 }}>
-                {trans('btn_clipboard')}
-            </Button>
-        </View>
+        <Button icon="copy"
+                mode="text"
+                rippleColor={"transparent"}
+                onPress={onPressClipboard}>
+            {trans('btn_paste_from_clipboard')}
+        </Button>
     )
 }
