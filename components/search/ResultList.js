@@ -28,7 +28,6 @@ export default ({ sentences }) => {
                             }
                         </View>
                     </View>
-
                     {item.components.map((component, idx) => (
                         <WordItem key={idx} component={component}/>
                     ))}

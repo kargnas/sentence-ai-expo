@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useEffect} from "react";
-import {StyleSheet, View, Text, FlatList, ScrollView, RefreshControl} from 'react-native';
+import {StyleSheet, View, Text, FlatList, ScrollView, RefreshControl, Keyboard} from 'react-native';
 import {List, Button, PaperProvider, TextInput, ActivityIndicator, useTheme} from "react-native-paper";
 import {useNavigation} from "@react-navigation/native";
 import Clipboard from "@react-native-clipboard/clipboard";
@@ -41,6 +41,7 @@ export default function Search() {
 
     const handleClipboardButton = (myquery) => {
         setQuery(myquery);
+        Keyboard.dismiss();
         // handleSearch after 0.5 seconds
         setTimeout(() => {
             handleSearch(myquery);
@@ -49,6 +50,7 @@ export default function Search() {
 
     const handleDemoSearch = (demoString) => {
         setQuery(demoString);
+        Keyboard.dismiss();
         // handleSearch after 0.5 seconds
         setTimeout(() => {
             handleSearch(demoString);
@@ -60,6 +62,7 @@ export default function Search() {
         const realQuery = customQuery?.length > 0 ? customQuery : query;
         loadingStack++;
         setLoading(loadingStack)
+        Keyboard.dismiss();
 
         try {
             apiService.prepareForRequest();
