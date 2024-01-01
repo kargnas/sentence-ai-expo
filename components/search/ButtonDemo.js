@@ -34,7 +34,7 @@ export default ({ onPress }) => {
             textAlign: 'center',
             alignItems: 'center',
         }}>
-            <Button icon="question"
+            <Button icon="question-circle"
                     mode="elevated"
                     style={{
                         marginTop: 3,
