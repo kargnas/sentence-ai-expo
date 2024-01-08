@@ -1,6 +1,7 @@
 {
   "CFBundleDisplayName": "センテンスAIアナライザー",
   "btn_see_demo": "{learningLanguage}のサンプル文を見る",
-  "btn_paste_from_clipboard": "貼り付け",
-  "toast_successful_copied": "正常にコピーされました。"
+  "btn_paste_from_clipboard": "クリップボード",
+  "toast_successful_copied": "正常にコピーされました。",
+  "placeholder_input_text": "ここにさまざまな言語のテキストを入力してください。"
 }

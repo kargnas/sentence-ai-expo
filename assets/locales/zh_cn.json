@@ -1,6 +1,7 @@
 {
-  "CFBundleDisplayName": "智能句解析",
+  "CFBundleDisplayName": "AI句子分析器",
   "btn_see_demo": "查看{learningLanguage}的示例句子",
   "btn_paste_from_clipboard": "粘贴",
-  "toast_successful_copied": "成功复制。"
+  "toast_successful_copied": "复制成功。",
+  "placeholder_input_text": "在这里输入不同语言的文本。"
 }

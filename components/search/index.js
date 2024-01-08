@@ -120,7 +120,7 @@ export default function Search() {
     return (
         <View style={styles.container}>
             <TextInput
-                mode="outlined" label="Sentences"
+                mode="outlined" label={trans('placeholder_input_text')}
                 value={query}
                 onChangeText={text => setQuery(text)}
                 onSubmitEditing={handleSearch}
