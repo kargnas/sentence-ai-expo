@@ -2,7 +2,7 @@
   "expo": {
     "name": "Sentence AI",
     "slug": "chinese-learning",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -46,6 +46,12 @@
     "owner": "kargnas",
     "plugins": [
       "expo-localization"
-    ]
+    ],
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/21217879-3fd9-4910-b23c-d62a50bf41ac"
+    }
   }
 }
