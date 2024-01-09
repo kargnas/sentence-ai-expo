@@ -12,6 +12,7 @@ const LANGUAGES = [
     { key: 3, value: 'Cantonese', text: 'Cantonese (Guangdong, Hong Kong)' },
     { key: 4, value: 'Japanese', text: 'Japanese' },
     { key: 5, value: 'Korean', text: 'Korean' },
+    { key: 6, value: 'English', text: 'English (Beta)' },
 ];
 
 export default function LearningLanguage() {
