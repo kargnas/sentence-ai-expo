@@ -24,6 +24,10 @@ export default ({ onPress }) => {
             case 'Cantonese':
                 copyText = '佢睇呢場戲';
                 break;
+
+            case 'English':
+                copyText = 'Where are you from? What kind of country do you want to travel?';
+                break;
         }
 
         onPress(copyText);
