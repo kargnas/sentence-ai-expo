@@ -21,7 +21,7 @@ export default ({ onPress }) => {
                 copyText = '도서관에서 학교까지 얼마나 걸리나요? 저 지금 빨리 가야되는데...';
                 break;
 
-            case 'Korean (Casual)':
+            case 'Korean (Casual, Inpolite)':
                 copyText = '도서관에서 학교까지 얼마나 걸려? 나 지금 빨리 가야되는데...';
                 break;
 
