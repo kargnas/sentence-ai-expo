@@ -12,7 +12,12 @@ const LANGUAGES = [
     { key: 3, value: 'Cantonese', text: 'Cantonese (Guangdong, Hong Kong)' },
     { key: 4, value: 'Japanese', text: 'Japanese' },
     { key: 5, value: 'Korean (Polite)', text: 'Korean (Polite)' },
-    { key: 5, value: 'Korean (Casual, Inpolite)', text: 'Korean (Casual, Inpolite) - Beta', description: 'Consider using the Advanced AI.' },
+    {
+        key: 5,
+        value: 'Korean (Casual, Inpolite)',
+        text: 'Korean (Casual, Inpolite) - Beta',
+        description: 'Consider using the Advanced AI.'
+    },
     { key: 6, value: 'English', text: 'English - Beta' },
 ];
 
@@ -40,27 +45,25 @@ export default function LearningLanguage() {
     }, [initialized]);
 
     return (
-        <>
-            <List.Section>
-                {LANGUAGES.map((item) => (
-                    <List.Item
-                        key={item.key}
-                        title={item.text}
-                        description={item.description}
-                        right={props =>
-                            <Checkbox
-                                status={item.value === selectedLanguage ? 'checked' : 'unchecked'}
-                                onPress={() => {
-                                    setSelectedLanguage(item.value)
-                                }}/>
-                        }
-                        onPress={() => {
-                            setSelectedLanguage(item.value)
-                        }}
-                    />
-                ))}
-            </List.Section>
-        </>
+        <List.Section>
+            {LANGUAGES.map((item) => (
+                <List.Item
+                    key={item.key}
+                    title={item.text}
+                    description={item.description}
+                    right={props =>
+                        <Checkbox
+                            status={item.value === selectedLanguage ? 'checked' : 'unchecked'}
+                            onPress={() => {
+                                setSelectedLanguage(item.value)
+                            }}/>
+                    }
+                    onPress={() => {
+                        setSelectedLanguage(item.value)
+                    }}
+                />
+            ))}
+        </List.Section>
     )
         ;
 }

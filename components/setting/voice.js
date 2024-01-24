@@ -37,27 +37,25 @@ export default function Voice() {
     }, [initialized]);
 
     return (
-        <>
-            <List.Section>
-                {ITEMS.map((item) => (
-                    <List.Item
-                        key={item.key}
-                        title={item.text}
-                        description={item.description}
-                        right={props =>
-                            <Checkbox
-                                status={item.value === selectedValue ? 'checked' : 'unchecked'}
-                                onPress={() => {
-                                    setSelectedValue(item.value)
-                                }}/>
-                        }
-                        onPress={() => {
-                            setSelectedValue(item.value)
-                        }}
-                    />
-                ))}
-            </List.Section>
-        </>
+        <List.Section>
+            {ITEMS.map((item) => (
+                <List.Item
+                    key={item.key}
+                    title={item.text}
+                    description={item.description}
+                    right={props =>
+                        <Checkbox
+                            status={item.value === selectedValue ? 'checked' : 'unchecked'}
+                            onPress={() => {
+                                setSelectedValue(item.value)
+                            }}/>
+                    }
+                    onPress={() => {
+                        setSelectedValue(item.value)
+                    }}
+                />
+            ))}
+        </List.Section>
     )
         ;
 }

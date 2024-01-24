@@ -5,7 +5,7 @@ import SettingStore from "../../util/SettingStore";
 import {Checkbox} from 'react-native-paper';
 
 const ITEMS = [
-    { key: 1, value: null, text: 'Normal AI (Default)', description: 'Faster. But idiot.'},
+    { key: 1, value: null, text: 'Normal AI (Default)', description: 'Faster. But idiot.' },
     // { key: 2, value: '3.5', text: '3.5', description: 'Faster' },
     { key: 3, value: '4', text: 'Advanced AI (Beta)', description: 'Slower. But much more smart.' },
 ];
@@ -31,27 +31,25 @@ export default function GptVersion() {
     }, [initialized]);
 
     return (
-        <>
-            <List.Section>
-                {ITEMS.map((item) => (
-                    <List.Item
-                        key={item.key}
-                        title={item.text}
-                        description={item.description}
-                        right={props =>
-                            <Checkbox
-                                status={item.value === selectedGptVersion ? 'checked' : 'unchecked'}
-                                onPress={() => {
-                                    setSelectedGptVersion(item.value)
-                                }}/>
-                        }
-                        onPress={() => {
-                            setSelectedGptVersion(item.value)
-                        }}
-                    />
-                ))}
-            </List.Section>
-        </>
+        <List.Section>
+            {ITEMS.map((item) => (
+                <List.Item
+                    key={item.key}
+                    title={item.text}
+                    description={item.description}
+                    right={props =>
+                        <Checkbox
+                            status={item.value === selectedGptVersion ? 'checked' : 'unchecked'}
+                            onPress={() => {
+                                setSelectedGptVersion(item.value)
+                            }}/>
+                    }
+                    onPress={() => {
+                        setSelectedGptVersion(item.value)
+                    }}
+                />
+            ))}
+        </List.Section>
     )
         ;
 }

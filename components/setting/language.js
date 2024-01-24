@@ -13,7 +13,12 @@ export default function LearningLanguage() {
     // List of languages
     const LANGUAGES = [
         { key: 1, value: null, text: getLocales()[0].languageTag, description: 'Default' },
-        { key: 2, value: 'English', text: 'English', description: 'For more accuracy, we recommend English for app language.' },
+        {
+            key: 2,
+            value: 'English',
+            text: 'English',
+            description: 'For more accuracy, we recommend English for app language.'
+        },
         { key: 3, value: 'Simplified Chinese', text: 'Simplified Chinese' },
         { key: 4, value: 'Traditional Chinese', text: 'Traditional Chinese' },
         { key: 5, value: 'Japanese', text: 'Japanese' },
@@ -40,27 +45,25 @@ export default function LearningLanguage() {
     }, [initialized]);
 
     return (
-        <>
-            <List.Section>
-                {LANGUAGES.map((item) => (
-                    <List.Item
-                        key={item.key}
-                        title={item.text}
-                        description={item.description}
-                        right={props =>
-                            <Checkbox
-                                status={item.value === selectedLanguage ? 'checked' : 'unchecked'}
-                                onPress={() => {
-                                    setSelectedLanguage(item.value)
-                                }}/>
-                        }
-                        onPress={() => {
-                            setSelectedLanguage(item.value)
-                        }}
-                    />
-                ))}
-            </List.Section>
-        </>
+        <List.Section>
+            {LANGUAGES.map((item) => (
+                <List.Item
+                    key={item.key}
+                    title={item.text}
+                    description={item.description}
+                    right={props =>
+                        <Checkbox
+                            status={item.value === selectedLanguage ? 'checked' : 'unchecked'}
+                            onPress={() => {
+                                setSelectedLanguage(item.value)
+                            }}/>
+                    }
+                    onPress={() => {
+                        setSelectedLanguage(item.value)
+                    }}
+                />
+            ))}
+        </List.Section>
     )
         ;
 }
