@@ -11,10 +11,10 @@ export default ({ sentences }) => {
             {sentences?.map((item, key) => (
                 <List.Section key={key}>
                     <View style={{ display: 'flex', flexDirection: 'row' }}>
-                        <View style={{ display: 'block', flex: '0', alignSelf: 'center' }}>
+                        <View style={{ display: 'block', flex: 0, alignSelf: 'center' }}>
                             <TTSPlayer text={item.sentence}/>
                         </View>
-                        <View style={{ display: 'block', flex: '1', alignSelf: 'center' }}>
+                        <View style={{ display: 'block', flex: 1, alignSelf: 'center' }}>
                             <Text style={{ ...styles.sentence, color: theme.colors.onSurfaceDisabled }}>
                                 {item.sentence}
                             </Text>
