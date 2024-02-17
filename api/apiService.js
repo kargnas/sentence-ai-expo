@@ -15,7 +15,7 @@ class ApiService {
 
     async language() {
         const language = await SettingStore.getLanguage();
-        return language ? language : getLocales()[0].languageCode;
+        return language ? language : (getLocales()[0]?.languageCode ? getLocales()[0]?.languageCode : 'en');
     }
 
     prepareForRequest() {

@@ -1,8 +1,7 @@
 import React from 'react';
 import {View, Text, FlatList, StyleSheet} from 'react-native';
-import {List} from "react-native-paper";
+import {List, Checkbox} from "react-native-paper";
 import SettingStore from "../../util/SettingStore";
-import {Checkbox} from 'react-native-paper';
 
 const ITEMS = [
     { key: 1, value: null, text: 'Normal AI (Default)', description: 'Faster. But idiot.' },
