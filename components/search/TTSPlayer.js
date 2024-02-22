@@ -39,12 +39,19 @@ export default ({ text }) => {
         <>
             {loading ?
                 <Button mode="text" loading={true}
-                        style={{ marginLeft: 20, marginRight: -12 }}></Button>
+                        style={styles.button}></Button>
                 :
                 <Button onPress={(e) => {
                     playSound(text, e)
-                }} mode="text" icon="play" style={{ marginLeft: 20, marginRight: -12 }}></Button>
+                }} mode="text" icon="play" style={styles.button}></Button>
             }
         </>
     )
 }
+
+const styles = StyleSheet.create({
+    button: {
+        borderRadius: 50,
+        marginRight: -15,
+    }
+});

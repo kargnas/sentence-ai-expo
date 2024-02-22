@@ -10,10 +10,7 @@ export default ({ sentences }) => {
         <>
             {sentences?.map((item, key) => (
                 <List.Section key={key}>
-                    <View style={{ display: 'flex', flexDirection: 'row' }}>
-                        <View style={{ display: 'block', flex: 0, alignSelf: 'center' }}>
-                            <TTSPlayer text={item.sentence}/>
-                        </View>
+                    <View style={{ display: 'flex', flexDirection: 'row', alignContent: 'space-between' }}>
                         <View style={{ display: 'block', flex: 1, alignSelf: 'center' }}>
                             <Text style={{ ...styles.sentence, color: theme.colors.onSurfaceDisabled }}>
                                 {item.sentence}
@@ -26,6 +23,9 @@ export default ({ sentences }) => {
                                     {item.explain_structure}
                                 </Text>
                             }
+                        </View>
+                        <View style={{ display: 'block', flex: 0, flexBasis: 80, alignSelf: 'center', alignItems: 'center' }}>
+                            <TTSPlayer text={item.sentence}/>
                         </View>
                     </View>
                     {item.components.map((component, idx) => (
