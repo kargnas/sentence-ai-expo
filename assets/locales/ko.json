@@ -1,5 +1,5 @@
 {
-  "CFBundleDisplayName": "AI 문장 분석기",
+  "CFBundleDisplayName": "만다린 AI",
   "btn_see_demo": "{learningLanguage}의 예제 문장 보기",
   "btn_paste_from_clipboard": "붙여넣기",
   "toast_successful_copied": "성공적으로 복사되었습니다.",

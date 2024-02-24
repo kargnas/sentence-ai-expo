@@ -1,5 +1,5 @@
 {
-  "CFBundleDisplayName": "AI句子分析器",
+  "CFBundleDisplayName": "普通話AI",
   "btn_see_demo": "查看{learningLanguage}的範例句子",
   "btn_paste_from_clipboard": "貼上",
   "toast_successful_copied": "複製成功。",
