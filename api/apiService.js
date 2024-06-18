@@ -5,7 +5,7 @@ import {Audio} from 'expo-av';
 
 class ApiService {
     constructor() {
-        this.BASE_URL = 'https://translate.sh'
+        this.BASE_URL = 'https://origin.study'
         this.axiosInstance = axios.create({
             baseURL: this.BASE_URL,
             timeout: 180 * 1000,
