@@ -11,13 +11,7 @@ const LANGUAGES = [
     { key: 2, value: 'Mandarin', text: 'Mandarin (Mainland China)' },
     { key: 3, value: 'Cantonese', text: 'Cantonese (Guangdong, Hong Kong)' },
     { key: 4, value: 'Japanese', text: 'Japanese' },
-    { key: 5, value: 'Korean (Polite)', text: 'Korean (Polite)' },
-    {
-        key: 5,
-        value: 'Korean (Casual, Inpolite)',
-        text: 'Korean (Casual, Inpolite) - Beta',
-        description: 'Consider using the Advanced AI.'
-    },
+    { key: 5, value: 'Korean', text: 'Korean' },
     { key: 6, value: 'English', text: 'English - Beta' },
 ];
 
