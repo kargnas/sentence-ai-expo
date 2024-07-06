@@ -15,13 +15,13 @@ export default function LearningLanguage() {
         { key: 1, value: null, text: getLocales()[0].languageTag, description: 'Default' },
         {
             key: 2,
-            value: 'English',
+            value: 'en-us',
             text: 'English',
             description: 'For more accuracy, we recommend English for app language.'
         },
-        { key: 3, value: 'Simplified Chinese', text: 'Simplified Chinese' },
-        { key: 5, value: 'Japanese', text: 'Japanese' },
-        { key: 6, value: 'Korean', text: 'Korean' },
+        { key: 3, value: 'zh-cn', text: 'Simplified Chinese' },
+        { key: 4, value: 'ja-jp', text: 'Japanese' },
+        { key: 5, value: 'ko-kr', text: 'Korean' },
     ];
 
     async function loadSetting() {
