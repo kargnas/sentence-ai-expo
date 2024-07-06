@@ -20,7 +20,6 @@ export default function LearningLanguage() {
             description: 'For more accuracy, we recommend English for app language.'
         },
         { key: 3, value: 'Simplified Chinese', text: 'Simplified Chinese' },
-        { key: 4, value: 'Traditional Chinese', text: 'Traditional Chinese' },
         { key: 5, value: 'Japanese', text: 'Japanese' },
         { key: 6, value: 'Korean', text: 'Korean' },
     ];
