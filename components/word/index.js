@@ -88,15 +88,21 @@ export default function Word(props) {
             }]
         },
         {
-            title: 'Structure',
-            data: [{
-                text: results?.summary_structure,
-            }]
-        },
-        {
             title: 'Meaning & Concept',
             data: [{
                 text: results?.summary_meaning_concept,
+            }]
+        },
+        {
+            title: 'Example',
+            data: [{
+                text: results?.examples,
+            }]
+        },
+        {
+            title: 'Structure',
+            data: [{
+                text: results?.summary_structure,
             }]
         },
         {
