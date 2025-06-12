@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {
     MD3DarkTheme as DefaultTheme,
@@ -70,8 +70,7 @@ export default function SettingNavigationScreen() {
     const navigation = useNavigation();
 
     return (
-        <NavigationContainer theme={DarkTheme} independent={true}>
-            <Stack.Navigator initialRouteName="Search">
+        <Stack.Navigator initialRouteName="Setting">
                 <Stack.Screen name="Setting"
                               component={Setting}
                               options={{
@@ -97,8 +96,7 @@ export default function SettingNavigationScreen() {
                               options={{
                                   title: 'Voice',
                               }}/>
-            </Stack.Navigator>
-        </NavigationContainer>
+        </Stack.Navigator>
     );
 }
 

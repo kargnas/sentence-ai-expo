@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {
     MD3DarkTheme as DefaultTheme,
@@ -65,28 +65,26 @@ export default function SearchNavigationScreen() {
     const navigation = useNavigation();
 
     return (
-        <NavigationContainer theme={DarkTheme} independent={true}>
-            <Stack.Navigator initialRouteName="Search">
-                <Stack.Screen name="Search"
-                              component={SearchScreen}
-                              options={{
-                                  title: 'Analysis',
-                              }}
-                />
-                <Stack.Screen name="Word"
-                              component={WordScreen}
-                              options={({ route }) => ({
-                                  title: route.params.title,
-                                  headerRight: () => (
-                                      <FavoriteButton word={route.params.component.word} style={{
-                                          marginRight: 15,
-                                          backgroundColor: 'transparent'
-                                      }}/>
-                                  ),
-                              })}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <Stack.Navigator initialRouteName="Search">
+            <Stack.Screen name="Search"
+                          component={SearchScreen}
+                          options={{
+                              title: 'Analysis',
+                          }}
+            />
+            <Stack.Screen name="Word"
+                          component={WordScreen}
+                          options={({ route }) => ({
+                              title: route.params.title,
+                              headerRight: () => (
+                                  <FavoriteButton word={route.params.component.word} style={{
+                                      marginRight: 15,
+                                      backgroundColor: 'transparent'
+                                  }}/>
+                              ),
+                          })}
+            />
+        </Stack.Navigator>
     );
 }
 

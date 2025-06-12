@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {
     MD3DarkTheme as DefaultTheme,
@@ -66,8 +66,7 @@ export default function SavedWordNavigationScreen() {
     const navigation = useNavigation();
 
     return (
-        <NavigationContainer theme={DarkTheme} independent={true}>
-            <Stack.Navigator initialRouteName="SavedWords">
+        <Stack.Navigator initialRouteName="SavedWords">
                 <Stack.Screen name="SavedWords"
                               component={SavedWords}
                               options={{
@@ -96,8 +95,7 @@ export default function SavedWordNavigationScreen() {
                                   ),
                               })}
                 />
-            </Stack.Navigator>
-        </NavigationContainer>
+        </Stack.Navigator>
     );
 }
 

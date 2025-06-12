@@ -152,6 +152,15 @@ export default function Search() {
                                                         colors={[theme.colors.onSurface]}
                                                         tintColor={theme.colors.onSurface}
                                                         onRefresh={handleSearch}/>}>
+                {loading > 0 && (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" color={theme.colors.primary} />
+                        <Text style={{ color: theme.colors.onSurface, marginTop: 10 }}>
+                            {trans('loading')}
+                        </Text>
+                    </View>
+                )}
+                
                 {error &&
                     <Text style={{ textAlign: 'center', color: theme.colors.error, fontSize: 14, margin: 14, }}>
                         {error}
@@ -205,5 +214,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         margin: 10,
         marginBottom: 0,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 50,
+        minHeight: 200,
     }
 });

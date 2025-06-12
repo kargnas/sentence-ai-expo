@@ -9,7 +9,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import SearchNavigationScreen from "./screens/SearchNavigationScreen";
 import SavedWordNavigationScreen from "./screens/SavedWordNavigationScreen";
 import {NavigationContainer} from "@react-navigation/native";
-import {createMaterialBottomTabNavigator} from "react-native-paper/react-navigation";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import SettingNavigationScreen from "./screens/SettingNavigationScreen";
 import {useCallback, useEffect, useState} from "react";
 import {default as I18n, i18n, loadLocale} from "./util/i18n";
@@ -62,7 +62,7 @@ const theme = {
 };
 const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: theme });
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
     const [initialized, setInitialized] = React.useState(true);
@@ -88,14 +88,23 @@ export default function App() {
                            icon: props => <FontAwesome5 {...props} />,
                        }}>
             <NavigationContainer theme={DarkTheme}>
-                <Tab.Navigator initialRouteName="Search" theme={DarkTheme}>
+                <Tab.Navigator 
+                    initialRouteName="Search" 
+                    screenOptions={{
+                        tabBarStyle: {
+                            backgroundColor: theme.colors.surface,
+                            borderTopColor: theme.colors.outline,
+                        },
+                        tabBarActiveTintColor: theme.colors.primary,
+                        tabBarInactiveTintColor: theme.colors.onSurfaceVariant,
+                        headerShown: false,
+                    }}>
                     <Tab.Screen name="Search" component={SearchNavigationScreen}
                                 options={{
                                     tabBarLabel: 'Analysis',
                                     tabBarIcon: ({ focused, color }) => (
                                         <FontAwesome5 name={'magic'} size={23} color={color}/>
                                     ),
-                                    headerShown: false,
                                 }}/>
                     <Tab.Screen name="SavedWords" component={SavedWordNavigationScreen}
                                 options={{
@@ -103,7 +112,6 @@ export default function App() {
                                     tabBarIcon: ({ focused, color }) => (
                                         <FontAwesome5 name={'star'} size={23} color={color}/>
                                     ),
-                                    headerShown: false,
                                 }}/>
                     <Tab.Screen name="Setting" component={SettingNavigationScreen}
                                 options={{
@@ -111,7 +119,6 @@ export default function App() {
                                     tabBarIcon: ({ focused, color }) => (
                                         <FontAwesome5 name={'cog'} size={23} color={color}/>
                                     ),
-                                    headerShown: false,
                                 }}/>
                 </Tab.Navigator>
             </NavigationContainer>

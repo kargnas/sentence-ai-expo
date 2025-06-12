@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -45,7 +46,8 @@
     },
     "owner": "kargnas",
     "plugins": [
-      "expo-localization"
+      "expo-localization",
+      "expo-build-properties"
     ],
     "runtimeVersion": {
       "policy": "appVersion"
