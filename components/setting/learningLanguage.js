@@ -4,6 +4,7 @@ import {List} from "react-native-paper";
 import SettingStore from "../../util/SettingStore";
 import {Checkbox} from 'react-native-paper';
 import {loadLocale} from "../../util/i18n";
+import {useTheme} from '@react-navigation/native';
 
 // List of languages
 const LANGUAGES = [
@@ -16,6 +17,7 @@ const LANGUAGES = [
 ];
 
 export default function LearningLanguage() {
+    const theme = useTheme();
     const [selectedLanguage, setSelectedLanguage] = React.useState(null);
     const [initialized, setInitialized] = React.useState(true);
 
@@ -39,27 +41,35 @@ export default function LearningLanguage() {
     }, [initialized]);
 
     return (
-        <List.Section>
-            {LANGUAGES.map((item) => (
-                <List.Item
-                    key={item.key}
-                    title={item.text}
-                    description={item.description}
-                    right={props =>
-                        <Checkbox
-                            status={item.value === selectedLanguage ? 'checked' : 'unchecked'}
-                            onPress={() => {
-                                setSelectedLanguage(item.value)
-                            }}/>
-                    }
-                    onPress={() => {
-                        setSelectedLanguage(item.value)
-                    }}
-                />
-            ))}
-        </List.Section>
-    )
-        ;
+        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+            <List.Section>
+                {LANGUAGES.map((item) => (
+                    <List.Item
+                        key={item.key}
+                        title={item.text}
+                        description={item.description}
+                        titleStyle={{ color: theme.colors.text }}
+                        descriptionStyle={{ color: theme.colors.secondaryText }}
+                        style={{ backgroundColor: theme.colors.card }}
+                        right={props =>
+                            <Checkbox
+                                status={item.value === selectedLanguage ? 'checked' : 'unchecked'}
+                                onPress={() => {
+                                    setSelectedLanguage(item.value)
+                                }}/>
+                        }
+                        onPress={() => {
+                            setSelectedLanguage(item.value)
+                        }}
+                    />
+                ))}
+            </List.Section>
+        </View>
+    );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});

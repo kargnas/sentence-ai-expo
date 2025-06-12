@@ -5,8 +5,10 @@ import SettingStore from "../../util/SettingStore";
 import {Checkbox} from 'react-native-paper';
 import {getLocales} from 'expo-localization';
 import {i18n, loadLocale} from "../../util/i18n";
+import {useTheme} from '@react-navigation/native';
 
 export default function Voice() {
+    const theme = useTheme();
     const [selectedValue, setSelectedValue] = React.useState(null);
     const [initialized, setInitialized] = React.useState(true);
 
@@ -37,27 +39,35 @@ export default function Voice() {
     }, [initialized]);
 
     return (
-        <List.Section>
-            {ITEMS.map((item) => (
-                <List.Item
-                    key={item.key}
-                    title={item.text}
-                    description={item.description}
-                    right={props =>
-                        <Checkbox
-                            status={item.value === selectedValue ? 'checked' : 'unchecked'}
-                            onPress={() => {
-                                setSelectedValue(item.value)
-                            }}/>
-                    }
-                    onPress={() => {
-                        setSelectedValue(item.value)
-                    }}
-                />
-            ))}
-        </List.Section>
-    )
-        ;
+        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+            <List.Section>
+                {ITEMS.map((item) => (
+                    <List.Item
+                        key={item.key}
+                        title={item.text}
+                        description={item.description}
+                        titleStyle={{ color: theme.colors.text }}
+                        descriptionStyle={{ color: theme.colors.secondaryText }}
+                        style={{ backgroundColor: theme.colors.card }}
+                        right={props =>
+                            <Checkbox
+                                status={item.value === selectedValue ? 'checked' : 'unchecked'}
+                                onPress={() => {
+                                    setSelectedValue(item.value)
+                                }}/>
+                        }
+                        onPress={() => {
+                            setSelectedValue(item.value)
+                        }}
+                    />
+                ))}
+            </List.Section>
+        </View>
+    );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});

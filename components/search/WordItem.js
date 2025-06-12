@@ -1,11 +1,9 @@
 import * as React from 'react';
-import {StyleSheet, View, Text, FlatList} from 'react-native';
-import {List, Button, PaperProvider, TextInput, ActivityIndicator, useTheme} from "react-native-paper";
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {useTheme} from "@react-navigation/native";
 import {useNavigation} from "@react-navigation/native";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import FavoriteButton from "../word/favoriteButton";
-
-let cancelToken;
-let loadingStack = 0;
 
 export default function WordItem(props) {
     const { component } = props;
@@ -13,44 +11,75 @@ export default function WordItem(props) {
     const theme = useTheme()
 
     return (
-        <List.Item
-            title={component.word}
-            description={component.phonetic}
-            left={props =>
-                <FavoriteButton word={component.word} style={{
-                    marginLeft: 15
-                }}/>
-            }
-            right={props =>
-                <View style={styles.wordRightContainer}>
-                    <Text style={{
-                        ...styles.meaning,
-                        color: theme.colors.outline,
-                    }}>{component.meaning}</Text>
-                    <List.Icon icon="chevron-right"/>
-                </View>
-            }
+        <TouchableOpacity
+            style={[styles.container, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
             onPress={() =>
                 navigation.push('Word', {
                     title: `${component.word} ${component.phonetic}`,
                     component
                 })
             }
-        />
+        >
+            <View style={styles.leftSection}>
+                <FavoriteButton word={component.word} style={styles.favoriteButton}/>
+                <View style={styles.wordInfo}>
+                    <Text style={[styles.word, { color: theme.colors.text }]}>{component.word}</Text>
+                    <Text style={[styles.phonetic, { color: theme.colors.secondaryText }]}>{component.phonetic}</Text>
+                </View>
+            </View>
+            
+            <View style={styles.rightSection}>
+                <Text style={[styles.meaning, { color: theme.colors.secondaryText }]} numberOfLines={2}>
+                    {component.meaning}
+                </Text>
+                <FontAwesome5 name="chevron-right" size={14} color={theme.colors.secondaryText} />
+            </View>
+        </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
-    wordRightContainer: {
-        flex: 1,
+    container: {
         flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        marginHorizontal: 8,
+        marginVertical: 4,
+        borderRadius: 8,
+        borderWidth: 0.5,
+        minHeight: 60,
+    },
+    leftSection: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+    },
+    favoriteButton: {
+        marginRight: 12,
+    },
+    wordInfo: {
+        flex: 1,
+    },
+    word: {
+        fontSize: 17,
+        fontWeight: '600',
+        marginBottom: 2,
+    },
+    phonetic: {
+        fontSize: 14,
+        fontWeight: '400',
+    },
+    rightSection: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        maxWidth: '40%',
+        gap: 8,
     },
     meaning: {
-        flex: 1,
-        flexWrap: 'wrap',
+        fontSize: 15,
+        fontWeight: '400',
         textAlign: 'right',
-        marginRight: 15,
-    }
+        flex: 1,
+    },
 });

@@ -1,66 +1,51 @@
-import {
-    adaptNavigationTheme,
-    MD3DarkTheme as DefaultTheme,
-    PaperProvider,
-} from 'react-native-paper';
-
 import * as React from 'react';
+import {StatusBar, Platform, useColorScheme} from 'react-native';
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import SearchNavigationScreen from "./screens/SearchNavigationScreen";
 import SavedWordNavigationScreen from "./screens/SavedWordNavigationScreen";
-import {NavigationContainer} from "@react-navigation/native";
+import {NavigationContainer, DarkTheme, DefaultTheme} from "@react-navigation/native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import SettingNavigationScreen from "./screens/SettingNavigationScreen";
 import {useCallback, useEffect, useState} from "react";
 import {default as I18n, i18n, loadLocale} from "./util/i18n";
 
-const theme = {
-    ...DefaultTheme,
-    roundness: 2,
+const iOSDarkTheme = {
+    ...DarkTheme,
     colors: {
-        primary: "rgb(165, 200, 255)",
-        onPrimary: "rgb(0, 49, 95)",
-        primaryContainer: "rgb(0, 71, 134)",
-        onPrimaryContainer: "rgb(212, 227, 255)",
-        secondary: "rgb(188, 199, 220)",
-        onSecondary: "rgb(39, 49, 65)",
-        secondaryContainer: "rgb(61, 71, 88)",
-        onSecondaryContainer: "rgb(216, 227, 248)",
-        tertiary: "rgb(99, 211, 255)",
-        onTertiary: "rgb(0, 53, 69)",
-        tertiaryContainer: "rgb(0, 77, 99)",
-        onTertiaryContainer: "rgb(188, 233, 255)",
-        error: "rgb(255, 180, 171)",
-        onError: "rgb(105, 0, 5)",
-        errorContainer: "rgb(147, 0, 10)",
-        onErrorContainer: "rgb(255, 180, 171)",
-        background: "rgb(26, 28, 30)",
-        onBackground: "rgb(227, 226, 230)",
-        surface: "rgb(26, 28, 30)",
-        onSurface: "rgb(227, 226, 230)",
-        surfaceVariant: "rgb(67, 71, 78)",
-        onSurfaceVariant: "rgb(195, 198, 207)",
-        outline: "rgb(141, 145, 153)",
-        outlineVariant: "rgb(67, 71, 78)",
-        shadow: "rgb(0, 0, 0)",
-        scrim: "rgb(0, 0, 0)",
-        inverseSurface: "rgb(227, 226, 230)",
-        inverseOnSurface: "rgb(47, 48, 51)",
-        inversePrimary: "rgb(0, 95, 175)",
-        elevation: {
-            level0: "transparent",
-            level1: "rgb(33, 37, 41)",
-            level2: "rgb(37, 42, 48)",
-            level3: "rgb(41, 47, 55)",
-            level4: "rgb(43, 49, 57)",
-            level5: "rgb(46, 52, 62)"
-        },
-        surfaceDisabled: "rgba(227, 226, 230, 0.12)",
-        onSurfaceDisabled: "rgba(227, 226, 230, 0.38)",
-        backdrop: "rgba(45, 49, 56, 0.4)"
-    }
+        ...DarkTheme.colors,
+        primary: '#007AFF',      // iOS blue
+        background: '#000000',   // iOS dark background
+        card: '#1C1C1E',        // iOS card background
+        text: '#FFFFFF',        // Primary text
+        border: '#38383A',      // iOS border color
+        notification: '#FF453A', // iOS red
+        surface: '#1C1C1E',     // Surface color
+        onSurface: '#FFFFFF',   // Text on surface
+        placeholder: '#8E8E93', // iOS placeholder gray
+        secondaryText: '#8E8E93', // Secondary text color
+        accent: '#30D158',      // iOS green
+        warning: '#FF9500',     // iOS orange
+    },
 };
-const { DarkTheme } = adaptNavigationTheme({ reactNavigationDark: theme });
+
+const iOSLightTheme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        primary: '#007AFF',      // iOS blue
+        background: '#FFFFFF',   // iOS light background
+        card: '#F2F2F7',        // iOS light card background
+        text: '#000000',        // Primary text
+        border: '#C6C6C8',      // iOS light border color
+        notification: '#FF3B30', // iOS red
+        surface: '#FFFFFF',     // Surface color
+        onSurface: '#000000',   // Text on surface
+        placeholder: '#8E8E93', // iOS placeholder gray
+        secondaryText: '#8E8E93', // Secondary text color
+        accent: '#34C759',      // iOS green
+        warning: '#FF9500',     // iOS orange
+    },
+};
 
 const Tab = createBottomTabNavigator();
 
@@ -68,6 +53,10 @@ export default function App() {
     const [initialized, setInitialized] = React.useState(true);
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []);
+    const colorScheme = useColorScheme();
+    
+    // Choose theme based on system color scheme
+    const theme = colorScheme === 'dark' ? iOSDarkTheme : iOSLightTheme;
 
     useEffect(() => {
         // Load locale
@@ -83,46 +72,71 @@ export default function App() {
     }, [initialized]);
 
     return (
-        <PaperProvider theme={theme}
-                       settings={{
-                           icon: props => <FontAwesome5 {...props} />,
-                       }}>
-            <NavigationContainer theme={DarkTheme}>
+        <>
+            <StatusBar 
+                barStyle={colorScheme === 'dark' ? "light-content" : "dark-content"}
+                backgroundColor={theme.colors.background}
+                translucent={false}
+            />
+            <NavigationContainer theme={theme}>
                 <Tab.Navigator 
                     initialRouteName="Search" 
                     screenOptions={{
                         tabBarStyle: {
-                            backgroundColor: theme.colors.surface,
-                            borderTopColor: theme.colors.outline,
+                            backgroundColor: theme.colors.card,
+                            borderTopColor: theme.colors.border,
+                            borderTopWidth: 0.5,
+                            height: Platform.OS === 'ios' ? 88 : 60,
+                            paddingBottom: Platform.OS === 'ios' ? 25 : 8,
+                            paddingTop: 8,
                         },
                         tabBarActiveTintColor: theme.colors.primary,
-                        tabBarInactiveTintColor: theme.colors.onSurfaceVariant,
+                        tabBarInactiveTintColor: theme.colors.secondaryText,
                         headerShown: false,
+                        tabBarLabelStyle: {
+                            fontSize: 10,
+                            fontWeight: '500',
+                        },
                     }}>
                     <Tab.Screen name="Search" component={SearchNavigationScreen}
                                 options={{
                                     tabBarLabel: 'Analysis',
-                                    tabBarIcon: ({ focused, color }) => (
-                                        <FontAwesome5 name={'magic'} size={23} color={color}/>
+                                    tabBarIcon: ({ focused, color, size }) => (
+                                        <FontAwesome5 
+                                            name={'magic'} 
+                                            size={focused ? 26 : 24} 
+                                            color={color}
+                                            style={{ opacity: focused ? 1 : 0.8 }}
+                                        />
                                     ),
                                 }}/>
                     <Tab.Screen name="SavedWords" component={SavedWordNavigationScreen}
                                 options={{
-                                    tabBarLabel: 'Saved Words',
-                                    tabBarIcon: ({ focused, color }) => (
-                                        <FontAwesome5 name={'star'} size={23} color={color}/>
+                                    tabBarLabel: 'Saved',
+                                    tabBarIcon: ({ focused, color, size }) => (
+                                        <FontAwesome5 
+                                            name={focused ? 'star' : 'star'} 
+                                            size={focused ? 26 : 24} 
+                                            color={color}
+                                            style={{ opacity: focused ? 1 : 0.8 }}
+                                        />
                                     ),
                                 }}/>
                     <Tab.Screen name="Setting" component={SettingNavigationScreen}
                                 options={{
-                                    tabBarLabel: 'Setting',
-                                    tabBarIcon: ({ focused, color }) => (
-                                        <FontAwesome5 name={'cog'} size={23} color={color}/>
+                                    tabBarLabel: 'Settings',
+                                    tabBarIcon: ({ focused, color, size }) => (
+                                        <FontAwesome5 
+                                            name={'cog'} 
+                                            size={focused ? 26 : 24} 
+                                            color={color}
+                                            style={{ opacity: focused ? 1 : 0.8 }}
+                                        />
                                     ),
                                 }}/>
                 </Tab.Navigator>
             </NavigationContainer>
-        </PaperProvider>
+        </>
     );
 }
 

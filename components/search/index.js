@@ -1,8 +1,20 @@
 import * as React from 'react';
 import {useEffect} from "react";
-import {StyleSheet, View, Text, FlatList, ScrollView, RefreshControl, Keyboard} from 'react-native';
-import {List, Button, PaperProvider, TextInput, ActivityIndicator, useTheme} from "react-native-paper";
-import {useNavigation} from "@react-navigation/native";
+import {
+    StyleSheet, 
+    View, 
+    Text, 
+    FlatList, 
+    ScrollView, 
+    RefreshControl, 
+    Keyboard, 
+    TextInput, 
+    TouchableOpacity, 
+    ActivityIndicator,
+    Platform,
+    Pressable
+} from 'react-native';
+import {useNavigation, useTheme} from "@react-navigation/native";
 import Clipboard from "@react-native-clipboard/clipboard";
 
 import * as Haptics from "expo-haptics";
@@ -15,9 +27,7 @@ import SettingStore from "../../util/SettingStore";
 import {trans} from "../../util/i18n";
 
 import WordItem from "./WordItem";
-import ButtonDemo from "./ButtonDemo";
 import GuessLanguage from "../../util/guessLanguage.js";
-import ButtonClipboard from "./ButtonClipboard";
 import TTSPlayer from "./TTSPlayer";
 import ResultList from "./ResultList";
 
@@ -39,13 +49,19 @@ export default function Search() {
         setQuery(myquery);
     }
 
-    const handleClipboardButton = (myquery) => {
-        setQuery(myquery);
-        Keyboard.dismiss();
-        // handleSearch after 0.5 seconds
-        setTimeout(() => {
-            handleSearch(myquery);
-        }, 300);
+    const handleClipboardButton = async () => {
+        try {
+            const clipboardContent = await Clipboard.getString();
+            if (clipboardContent && clipboardContent.trim().length > 0) {
+                setQuery(clipboardContent.trim());
+                Keyboard.dismiss();
+                setTimeout(() => {
+                    handleSearch(clipboardContent.trim());
+                }, 300);
+            }
+        } catch (error) {
+            console.error('Failed to get clipboard content:', error);
+        }
     }
 
     const handleDemoSearch = (demoString) => {
@@ -118,76 +134,114 @@ export default function Search() {
     }, [initialized]);
 
     return (
-        <View style={styles.container}>
-            <TextInput
-                mode="outlined" label={trans('placeholder_input_text')}
-                value={query}
-                onChangeText={text => setQuery(text)}
-                onSubmitEditing={handleSearch}
-                style={styles.searchBar}
-                contentStyle={{ marginRight: 65 }}
-            />
-            <View style={{
-                position: 'absolute',
-                right: 0,
-                top: 14,
-                margin: 3,
-                marginLeft: 4,
-                marginRight: 0
-            }}>
-                {query.length > 0 ?
-                    <Button icon="times-circle"
-                            mode="text"
-                            textColor={theme.colors.outline}
-                            rippleColor={"transparent"}
-                            onPress={() => {
-                                setQuery('')
-                            }}>Clear</Button>
-                    :
-                    <ButtonClipboard onPress={handleClipboardButton}
-                                     onClipboard={handleClipboard}/>}
+        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+            {/* Search Bar Container */}
+            <View style={[styles.searchContainer, { backgroundColor: theme.colors.card }]}>
+                <View style={[styles.searchInputContainer, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
+                    <TextInput
+                        style={[styles.searchInput, { color: theme.colors.text }]}
+                        placeholder={trans('placeholder_input_text')}
+                        placeholderTextColor={theme.colors.placeholder}
+                        value={query}
+                        onChangeText={setQuery}
+                        onSubmitEditing={handleSearch}
+                        returnKeyType="search"
+                        clearButtonMode="while-editing"
+                    />
+                    <TouchableOpacity 
+                        style={[styles.clearButton, { opacity: query.length > 0 ? 1 : 0 }]}
+                        onPress={() => {
+                            if (query.length > 0) {
+                                setQuery('');
+                            }
+                        }}
+                        activeOpacity={0.7}
+                        disabled={query.length === 0}
+                    >
+                        <Text style={[styles.clearButtonText, { color: theme.colors.primary }]}>
+                            ✕
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                
+                {/* Action Buttons */}
+                {!query && (
+                    <View style={styles.actionButtonsContainer}>
+                        <TouchableOpacity 
+                            style={[styles.actionButton, { backgroundColor: theme.colors.primary }]}
+                            onPress={() => handleClipboardButton()}
+                        >
+                            <Text style={[styles.actionButtonText, { color: '#FFFFFF' }]}>
+                                Paste & Analyze
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                            style={[styles.demoButton, { borderColor: theme.colors.border }]}
+                            onPress={() => handleDemoSearch("我今天很开心")}
+                        >
+                            <Text style={[styles.demoButtonText, { color: theme.colors.primary }]}>
+                                Try Demo
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
             </View>
-            {!query && <ButtonDemo onPress={handleDemoSearch}/>}
-            <ScrollView refreshControl={<RefreshControl refreshing={loading > 0}
-                                                        colors={[theme.colors.onSurface]}
-                                                        tintColor={theme.colors.onSurface}
-                                                        onRefresh={handleSearch}/>}>
+
+            {/* Content Area */}
+            <ScrollView 
+                style={styles.contentContainer}
+                refreshControl={
+                    <RefreshControl 
+                        refreshing={loading > 0}
+                        tintColor={theme.colors.primary}
+                        onRefresh={handleSearch}
+                    />
+                }
+                showsVerticalScrollIndicator={false}
+            >
                 {loading > 0 && (
                     <View style={styles.loadingContainer}>
                         <ActivityIndicator size="large" color={theme.colors.primary} />
-                        <Text style={{ color: theme.colors.onSurface, marginTop: 10 }}>
-                            {trans('loading')}
+                        <Text style={[styles.loadingText, { color: theme.colors.secondaryText }]}>
+                            Analyzing...
                         </Text>
                     </View>
                 )}
                 
-                {error &&
-                    <Text style={{ textAlign: 'center', color: theme.colors.error, fontSize: 14, margin: 14, }}>
-                        {error}
-                    </Text>}
+                {error && (
+                    <View style={[styles.errorContainer, { backgroundColor: theme.colors.card, borderColor: theme.colors.notification }]}>
+                        <Text style={[styles.errorText, { color: theme.colors.notification }]}>
+                            {error}
+                        </Text>
+                    </View>
+                )}
 
                 <ResultList sentences={results?.sentences}/>
 
-                {learningLanguage &&
-                    <Text style={{ ...styles.descriptionStudyingLanguage, color: theme.colors.outline }}>
-                        You are studying {learningLanguage}.
-                    </Text>}
+                {learningLanguage && (
+                    <View style={[styles.languageIndicator, { backgroundColor: theme.colors.card }]}>
+                        <Text style={[styles.languageText, { color: theme.colors.secondaryText }]}>
+                            You are studying {learningLanguage}
+                        </Text>
+                    </View>
+                )}
 
-                {results?.sentences &&
-                    <Button icon="trash-alt" mode="text"
-                            textColor={theme.colors.error}
-                            style={{
-                                margin: 10
-                            }}
-                            onPress={() => {
-                                setResults([]);
-                                setQuery('')
-                                setLearningLanguage(null)
-                                SavedSearchStore.clearSavedSearch();
-                                SavedSearchStore.clearSavedSearchKeyword();
-                            }}>
-                        Clear Latest Search
-                    </Button>}
+                {results?.sentences && (
+                    <TouchableOpacity 
+                        style={[styles.clearSearchButton, { borderColor: theme.colors.notification }]}
+                        onPress={() => {
+                            setResults([]);
+                            setQuery('');
+                            setLearningLanguage(null);
+                            SavedSearchStore.clearSavedSearch();
+                            SavedSearchStore.clearSavedSearchKeyword();
+                        }}
+                    >
+                        <Text style={[styles.clearSearchText, { color: theme.colors.notification }]}>
+                            Clear Latest Search
+                        </Text>
+                    </TouchableOpacity>
+                )}
             </ScrollView>
         </View>
     );
@@ -195,31 +249,113 @@ export default function Search() {
 
 const styles = StyleSheet.create({
     container: {
-        position: 'relative',
         flex: 1,
     },
-    searchBar: {
-        margin: 5,
+    searchContainer: {
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        borderBottomWidth: 0.5,
     },
-    componentList: {
+    searchInputContainer: {
         flexDirection: 'row',
-        flexWrap: 'wrap',
         alignItems: 'center',
-        justifyContent: 'flex-start',
-        padding: 10
+        borderRadius: 10,
+        borderWidth: 1,
+        paddingHorizontal: 12,
+        height: 44,
+        marginBottom: 12,
     },
-    descriptionStudyingLanguage: {
-        textAlign: 'center',
-        fontSize: 14,
-        fontWeight: 'bold',
-        margin: 10,
-        marginBottom: 0,
-    },
-    loadingContainer: {
+    searchInput: {
         flex: 1,
+        fontSize: 17,
+        fontWeight: '400',
+        paddingVertical: 8,
+    },
+    clearButton: {
+        paddingHorizontal: 8,
+        paddingVertical: 4,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 50,
-        minHeight: 200,
-    }
+        minWidth: 24,
+        minHeight: 24,
+    },
+    clearButtonText: {
+        fontSize: 18,
+        fontWeight: '300',
+        textAlign: 'center',
+    },
+    actionButtonsContainer: {
+        flexDirection: 'row',
+        gap: 12,
+    },
+    actionButton: {
+        flex: 1,
+        paddingVertical: 12,
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    actionButtonText: {
+        fontSize: 16,
+        fontWeight: '600',
+    },
+    demoButton: {
+        flex: 1,
+        paddingVertical: 12,
+        borderRadius: 8,
+        borderWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    demoButtonText: {
+        fontSize: 16,
+        fontWeight: '500',
+    },
+    contentContainer: {
+        flex: 1,
+    },
+    loadingContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 60,
+    },
+    loadingText: {
+        fontSize: 16,
+        fontWeight: '500',
+        marginTop: 12,
+    },
+    errorContainer: {
+        margin: 16,
+        padding: 16,
+        borderRadius: 12,
+        borderWidth: 1,
+    },
+    errorText: {
+        fontSize: 16,
+        fontWeight: '500',
+        textAlign: 'center',
+        lineHeight: 22,
+    },
+    languageIndicator: {
+        margin: 16,
+        padding: 12,
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+    languageText: {
+        fontSize: 14,
+        fontWeight: '500',
+    },
+    clearSearchButton: {
+        margin: 16,
+        marginTop: 8,
+        padding: 12,
+        borderRadius: 8,
+        borderWidth: 1,
+        alignItems: 'center',
+    },
+    clearSearchText: {
+        fontSize: 16,
+        fontWeight: '500',
+    },
 });

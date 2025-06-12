@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, FlatList, StyleSheet} from 'react-native';
 import {List, Checkbox} from "react-native-paper";
 import SettingStore from "../../util/SettingStore";
+import {useTheme} from '@react-navigation/native';
 
 const ITEMS = [
     { key: 1, value: null, text: 'Normal AI (Default)', description: 'Faster. But idiot.' },
@@ -10,6 +11,7 @@ const ITEMS = [
 ];
 
 export default function GptVersion() {
+    const theme = useTheme();
     const [selectedGptVersion, setSelectedGptVersion] = React.useState(null);
     const [initialized, setInitialized] = React.useState(true);
 
@@ -30,27 +32,35 @@ export default function GptVersion() {
     }, [initialized]);
 
     return (
-        <List.Section>
-            {ITEMS.map((item) => (
-                <List.Item
-                    key={item.key}
-                    title={item.text}
-                    description={item.description}
-                    right={props =>
-                        <Checkbox
-                            status={item.value === selectedGptVersion ? 'checked' : 'unchecked'}
-                            onPress={() => {
-                                setSelectedGptVersion(item.value)
-                            }}/>
-                    }
-                    onPress={() => {
-                        setSelectedGptVersion(item.value)
-                    }}
-                />
-            ))}
-        </List.Section>
-    )
-        ;
+        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+            <List.Section>
+                {ITEMS.map((item) => (
+                    <List.Item
+                        key={item.key}
+                        title={item.text}
+                        description={item.description}
+                        titleStyle={{ color: theme.colors.text }}
+                        descriptionStyle={{ color: theme.colors.secondaryText }}
+                        style={{ backgroundColor: theme.colors.card }}
+                        right={props =>
+                            <Checkbox
+                                status={item.value === selectedGptVersion ? 'checked' : 'unchecked'}
+                                onPress={() => {
+                                    setSelectedGptVersion(item.value)
+                                }}/>
+                        }
+                        onPress={() => {
+                            setSelectedGptVersion(item.value)
+                        }}
+                    />
+                ))}
+            </List.Section>
+        </View>
+    );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});

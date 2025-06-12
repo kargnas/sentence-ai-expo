@@ -1,4 +1,4 @@
-import {List, useTheme} from "react-native-paper";
+import {useTheme} from "@react-navigation/native";
 import {StyleSheet, Text, View} from "react-native";
 import TTSPlayer from "./TTSPlayer";
 import WordItem from "./WordItem";
@@ -9,51 +9,76 @@ export default ({ sentences }) => {
     return (
         <>
             {sentences?.map((item, key) => (
-                <List.Section key={key}>
-                    <View style={{ display: 'flex', flexDirection: 'row', alignContent: 'space-between' }}>
-                        <View style={{ display: 'block', flex: 1, alignSelf: 'center' }}>
-                            <Text style={{ ...styles.sentence, color: theme.colors.onSurfaceDisabled }}>
+                <View key={key} style={[styles.sentenceContainer, { backgroundColor: theme.colors.card }]}>
+                    <View style={styles.sentenceHeader}>
+                        <View style={styles.sentenceContent}>
+                            <Text style={[styles.sentence, { color: theme.colors.text }]}>
                                 {item.sentence}
                             </Text>
-                            <Text style={{ ...styles.sentenceMeaning, color: theme.colors.onSurface }}>
+                            <Text style={[styles.sentenceMeaning, { color: theme.colors.secondaryText }]}>
                                 {item.meaning}
                             </Text>
-                            {item.explain_structure &&
-                                <Text style={{ ...styles.sentenceStructure, color: theme.colors.onSurfaceVariant }}>
+                            {item.explain_structure && (
+                                <Text style={[styles.sentenceStructure, { color: theme.colors.secondaryText }]}>
                                     {item.explain_structure}
                                 </Text>
-                            }
+                            )}
                         </View>
-                        <View style={{ display: 'block', flex: 0, flexBasis: 80, alignSelf: 'center', alignItems: 'center' }}>
+                        <View style={styles.ttsContainer}>
                             <TTSPlayer text={item.sentence}/>
                         </View>
                     </View>
-                    {item.components.map((component, idx) => (
-                        <WordItem key={idx} component={component}/>
-                    ))}
-                </List.Section>
+                    
+                    <View style={styles.wordsContainer}>
+                        {item.components.map((component, idx) => (
+                            <WordItem key={idx} component={component}/>
+                        ))}
+                    </View>
+                </View>
             ))}
         </>
     )
 }
 const styles = StyleSheet.create({
+    sentenceContainer: {
+        marginHorizontal: 16,
+        marginVertical: 8,
+        borderRadius: 12,
+        overflow: 'hidden',
+    },
+    sentenceHeader: {
+        flexDirection: 'row',
+        padding: 16,
+    },
+    sentenceContent: {
+        flex: 1,
+        paddingRight: 12,
+    },
     sentence: {
-        marginLeft: 15,
-        marginRight: 15,
-        marginBottom: 5,
-        lineHeight: 20,
-        fontWeight: 'bold',
+        fontSize: 18,
+        fontWeight: '600',
+        lineHeight: 24,
+        marginBottom: 8,
     },
     sentenceMeaning: {
-        marginLeft: 15,
-        marginRight: 15,
-        marginBottom: 5,
-        lineHeight: 20,
+        fontSize: 16,
+        fontWeight: '400',
+        lineHeight: 22,
+        marginBottom: 6,
     },
     sentenceStructure: {
-        marginLeft: 15,
-        marginRight: 15,
-        marginBottom: 5,
+        fontSize: 14,
+        fontWeight: '400',
         lineHeight: 20,
+        fontStyle: 'italic',
+    },
+    ttsContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 60,
+    },
+    wordsContainer: {
+        paddingHorizontal: 8,
+        paddingBottom: 8,
     },
 });

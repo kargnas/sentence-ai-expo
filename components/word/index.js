@@ -1,8 +1,9 @@
 import * as React from 'react';
 import * as SecureStore from 'expo-secure-store';
 import {useEffect, useState} from 'react'; // new import
-import {ActivityIndicator, Button, Card, List, Snackbar, Text, useTheme} from "react-native-paper";
-import {RefreshControl, ScrollView, SectionList, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Snackbar} from "react-native-paper";
+import {useTheme} from '@react-navigation/native';
+import {RefreshControl, ScrollView, SectionList, StyleSheet, TouchableOpacity, View, Text, ActivityIndicator} from "react-native";
 import FavoriteButton from "./favoriteButton";
 import ApiService from "../../api/apiService";
 import axios from "axios";
@@ -113,32 +114,42 @@ export default function Word(props) {
         },
     ]
 
+    if (loading && !results) {
+        return (
+            <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
+                <ActivityIndicator size="large" color={theme.colors.primary} />
+                <Text style={[styles.loadingText, { color: theme.colors.text }]}>
+                    Loading word details...
+                </Text>
+            </View>
+        );
+    }
+
     if (results && results?.summary) {
         return (
             <>
                 <SectionList sections={sectionListData}
                              keyExtractor={(item, index) => item + index}
                              refreshControl={<RefreshControl refreshing={loading}
-                                                             colors={[theme.colors.onSurface]}
-                                                             tintColor={theme.colors.onSurface}
+                                                             colors={[theme.colors.primary]}
+                                                             tintColor={theme.colors.primary}
                                                              onRefresh={handleQuery}/>}
                              renderSectionHeader={({ section: { title } }) => (
-                                 <Text variant="titleSmall"
-                                       style={{
+                                 <Text style={{
                                            ...styles.sectionHeader,
-                                           color: theme.colors.outline,
-                                           backgroundColor: theme.colors.surface,
+                                           color: theme.colors.secondaryText,
+                                           backgroundColor: theme.colors.background,
                                        }}
                                  >{title}</Text>
                              )}
                              renderItem={({ item }) => <TouchableOpacity onPress={() => copyClipboard(item.text)}>
-                                 <Text variant="bodyMedium"
-                                       style={{
+                                 <Text style={{
                                            ...styles.sectionItem,
+                                           color: theme.colors.text,
                                            ...item.styles
                                        }}>{item.text}</Text>
                              </TouchableOpacity>}
-                             style={styles.sectionList}
+                             style={styles.scrollView}
                 />
                 <ResultList sentences={results?.sentences}/>
                 <Snackbar
@@ -154,14 +165,14 @@ export default function Word(props) {
     } else {
         return (
             <ScrollView refreshControl={<RefreshControl refreshing={loading}
-                                                        colors={[theme.colors.onSurface]}
-                                                        tintColor={theme.colors.onSurface}
+                                                        colors={[theme.colors.primary]}
+                                                        tintColor={theme.colors.primary}
                                                         onRefresh={handleQuery}/>}
                         style={styles.scrollView}>
                 {!results && !loading && error &&
                     <Text style={{
                         textAlign: 'center',
-                        color: theme.colors.error,
+                        color: theme.colors.notification,
                         fontSize: 14,
                         margin: 14,
                     }}>
@@ -176,6 +187,17 @@ export default function Word(props) {
 const styles = StyleSheet.create({
     loading: {
         margin: 20,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 60,
+    },
+    loadingText: {
+        fontSize: 16,
+        fontWeight: '500',
+        marginTop: 12,
     },
     scrollView: {},
     card: {
