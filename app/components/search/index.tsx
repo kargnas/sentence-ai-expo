@@ -146,7 +146,7 @@ export default function Search() {
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
             {/* Search Bar Container */}
-            <View style={[styles.searchContainer, { backgroundColor: theme.colors.card }]}>
+            <View style={[styles.searchContainer, { backgroundColor: theme.colors.card, zIndex: 10 }]}>
                 <View style={[styles.searchInputContainer, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
                     <TextInput
                         style={[styles.searchInput, { color: theme.colors.text }]}
@@ -223,8 +223,8 @@ export default function Search() {
 
             {/* Content Area */}
             <ScrollView 
-                style={styles.contentContainer}
-                contentContainerStyle={{ paddingBottom: 100 }} // 탭바 여백 추가
+                style={[styles.contentContainer, { marginBottom: -100 }]} // 탭바 영역까지 확장
+                contentContainerStyle={{ paddingBottom: 150 }} // 더 큰 패딩으로 조정
                 refreshControl={
                     <RefreshControl 
                         refreshing={loading > 0}

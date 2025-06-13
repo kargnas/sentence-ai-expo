@@ -29,7 +29,8 @@ export default function SavedWords({ route, navigation }) {
 
     return (
         <ScrollView 
-            style={{ backgroundColor: theme.colors.background }}
+            style={{ backgroundColor: theme.colors.background, marginBottom: -100 }} // 탭바 영역까지 확장
+            contentContainerStyle={{ paddingBottom: 150 }} // 더 큰 패딩으로 조정
             refreshControl={<RefreshControl refreshing={loading}
                                                     colors={[theme.colors.text]}
                                                     tintColor={theme.colors.text}

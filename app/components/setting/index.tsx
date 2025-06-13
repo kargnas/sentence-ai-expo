@@ -55,7 +55,10 @@ export default function Setting() {
     );
 
     return (
-        <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <ScrollView 
+            style={[styles.container, { backgroundColor: theme.colors.background, marginBottom: -100 }]} // 탭바 영역까지 확장
+            contentContainerStyle={{ paddingBottom: 150 }} // 더 큰 패딩으로 조정
+        >
             {/* Language Options Section */}
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, { color: theme.colors.secondaryText }]}>LANGUAGE OPTIONS</Text>

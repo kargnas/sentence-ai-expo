@@ -12,7 +12,15 @@ export default function TabLayout() {
   console.log('TabLayout: Rendering tabs layout');
   
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        translucent: true,
+        scrollEdgeAppearance: 'transparent',
+        tabBarStyle: {
+          backgroundColor: 'rgba(28, 28, 30, 0.7)',
+        },
+      }}
+    >
       <Tabs.Screen
         name="search"
         options={{
