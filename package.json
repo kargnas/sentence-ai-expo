@@ -54,5 +54,12 @@
   "devDependencies": {
     "@babel/core": "^7.20.0"
   },
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "listUnknownPackages": false
+      }
+    }
+  },
   "private": true
 }

@@ -4,44 +4,59 @@ import {useTheme} from "@react-navigation/native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import ApiService from "../../api/apiService";
 import * as Haptics from "expo-haptics";
-import { Audio } from "expo-audio";
+import { useAudioPlayer } from "expo-audio";
 
 export default ({ text }) => {
-    const [loading, setLoading] = React.useState(false)
-    const [sound, setSound] = React.useState();
+    const [loading, setLoading] = React.useState(false);
+    const [audioSource, setAudioSource] = React.useState(null);
+    const player = useAudioPlayer(audioSource);
     const theme = useTheme();
 
     const playSound = async (query) => {
-        setLoading(true)
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+        setLoading(true);
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
         try {
             // Logic
             const apiService = new ApiService();
             const sound = await apiService.getSound(query);
-            console.log(query, '사운드를 다운받았습니다.')
+            console.log(query, '사운드를 다운받았습니다.');
 
-            setSound(sound);
-            await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
-            await sound.playAsync();
-            console.log(query, '재생합니다.')
+            // Set the audio source and play
+            if (sound.uri) {
+                // If same audio source, just replay
+                if (audioSource === sound.uri && player) {
+                    player.seekTo(0);
+                    player.play();
+                    console.log(query, '같은 오디오 재생.');
+                } else {
+                    setAudioSource(sound.uri);
+                    console.log(query, '새 오디오 소스 설정 완료.');
+                }
+            }
 
             // Finish
-            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         } catch (error) {
             console.error('Sound play error:', error);
-            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
+    // Play when audioSource changes
     useEffect(() => {
-        return sound ? () => {
-            console.log('사운드를 제거합니다.');
-            sound.unloadAsync();
-        } : undefined
-    }, [sound]);
+        if (audioSource && player) {
+            try {
+                player.seekTo(0); // Reset to beginning
+                player.play();
+                console.log('재생 시작:', audioSource);
+            } catch (error) {
+                console.error('재생 오류:', error);
+            }
+        }
+    }, [audioSource, player]);
 
     return (
         <TouchableOpacity
