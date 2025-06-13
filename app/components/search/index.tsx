@@ -30,12 +30,12 @@ import axios from "axios";
 
 import ApiService from "../../api/apiService";
 
-import SavedSearchStore from "../../util/SavedSearchStore";
-import SettingStore from "../../util/SettingStore";
-import {trans} from "../../util/i18n";
+import SavedSearchStore from "../../utils/SavedSearchStore";
+import SettingStore from "../../utils/SettingStore";
+import {trans} from "../../utils/i18n";
 
 import WordItem from "./WordItem";
-import GuessLanguage from "../../util/guessLanguage.js";
+import GuessLanguage from "../../utils/guessLanguage";
 import TTSPlayer from "./TTSPlayer";
 import ResultList from "./ResultList";
 

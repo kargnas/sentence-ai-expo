@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, Text, FlatList, StyleSheet} from 'react-native';
 import {List} from "react-native-paper";
-import SettingStore from "../../util/SettingStore";
+import SettingStore from "../../utils/SettingStore";
 import {Checkbox} from 'react-native-paper';
 import {getLocales} from 'expo-localization';
-import {i18n, loadLocale} from "../../util/i18n";
+import {i18n, loadLocale} from "../../utils/i18n";
 import {useTheme} from '@react-navigation/native';
 
 export default function LearningLanguage() {

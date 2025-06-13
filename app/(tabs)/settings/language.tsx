@@ -1,3 +1,3 @@
-import Language from '../../../components/setting/language';
+import Language from '../../components/setting/language';
 
 export default Language;

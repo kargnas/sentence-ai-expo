@@ -4,7 +4,7 @@ import { ThemeProvider, DarkTheme, DefaultTheme } from '@react-navigation/native
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { loadLocale, i18n } from '../util/i18n';
+import { loadLocale, i18n } from './utils/i18n';
 import * as Linking from 'expo-linking';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.

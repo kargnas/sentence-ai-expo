@@ -1,3 +1,3 @@
-import LearningLanguage from '../../../components/setting/learningLanguage';
+import LearningLanguage from '../../components/setting/learningLanguage';
 
 export default LearningLanguage;

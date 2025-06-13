@@ -2,7 +2,7 @@ import * as React from 'react';
 import {StyleSheet, View, Text, FlatList, TouchableOpacity, ScrollView} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import SettingStore from "../../util/SettingStore";
+import SettingStore from "../../utils/SettingStore";
 import {useNavigation} from "@react-navigation/native";
 import {getLocales} from "expo-localization";
 

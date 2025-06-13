@@ -7,11 +7,11 @@ try {
     // Fallback to expo-clipboard for Expo Go
     Clipboard = require("expo-clipboard");
 }
-import SettingStore from "../../util/SettingStore";
-import GuessLanguage from "../../util/guessLanguage.js";
+import SettingStore from "../../utils/SettingStore";
+import GuessLanguage from "../../utils/guessLanguage";
 import {Text, View} from "react-native";
 import {Button, useTheme} from "react-native-paper";
-import {trans} from "../../util/i18n";
+import {trans} from "../../utils/i18n";
 
 export default ({ onPress, onClipboard, style }) => {
     const [clipboardContent, setClipboardContent] = React.useState('');

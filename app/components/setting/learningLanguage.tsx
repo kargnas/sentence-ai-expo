@@ -1,37 +1,39 @@
 import React from 'react';
 import {View, Text, FlatList, StyleSheet} from 'react-native';
 import {List} from "react-native-paper";
-import SettingStore from "../../util/SettingStore";
+import SettingStore from "../../utils/SettingStore";
 import {Checkbox} from 'react-native-paper';
-import {getLocales} from 'expo-localization';
-import {i18n, loadLocale} from "../../util/i18n";
+import {loadLocale} from "../../utils/i18n";
 import {useTheme} from '@react-navigation/native';
 
-export default function Voice() {
+// List of languages
+const LANGUAGES = [
+    // { key: 1, value: null, text: 'Automatic' },
+    { key: 2, value: 'Mandarin', text: 'Mandarin (Mainland China)' },
+    { key: 3, value: 'Cantonese', text: 'Cantonese (Guangdong, Hong Kong)' },
+    { key: 4, value: 'Japanese', text: 'Japanese' },
+    { key: 5, value: 'Korean', text: 'Korean' },
+    { key: 6, value: 'English', text: 'English - Beta' },
+];
+
+export default function LearningLanguage() {
     const theme = useTheme();
-    const [selectedValue, setSelectedValue] = React.useState(null);
+    const [selectedLanguage, setSelectedLanguage] = React.useState(null);
     const [initialized, setInitialized] = React.useState(true);
 
-    // List of languages
-    const ITEMS = [
-        { key: 1, value: null, text: 'Default' },
-        { key: 2, value: 'alloy', text: 'Alloy' },
-        { key: 3, value: 'echo', text: 'Echo' },
-        { key: 4, value: 'fable', text: 'Fable' },
-        { key: 5, value: 'onyx', text: 'Onyx' },
-        { key: 6, value: 'nova', text: 'Nova' },
-        { key: 7, value: 'shimmer', text: 'Shimmer' },
-    ];
-
     async function loadSetting() {
-        const value = await SettingStore.getVoice()
-        setSelectedValue(value);
+        const learningLanguage = await SettingStore.getLearningLanguage();
+        console.log(learningLanguage)
+        setSelectedLanguage(learningLanguage);
     }
 
     React.useEffect(() => {
-        console.log('Save', selectedValue)
-        SettingStore.setVoice(selectedValue)
-    }, [selectedValue]);
+        console.log('Save', selectedLanguage)
+        SettingStore.setLearningLanguage(selectedLanguage)
+        setTimeout(() => {
+            loadLocale();
+        }, 300);
+    }, [selectedLanguage]);
 
     React.useEffect(() => {
         console.log('INIT')
@@ -41,7 +43,7 @@ export default function Voice() {
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
             <List.Section>
-                {ITEMS.map((item) => (
+                {LANGUAGES.map((item) => (
                     <List.Item
                         key={item.key}
                         title={item.text}
@@ -51,13 +53,13 @@ export default function Voice() {
                         style={{ backgroundColor: theme.colors.card }}
                         right={props =>
                             <Checkbox
-                                status={item.value === selectedValue ? 'checked' : 'unchecked'}
+                                status={item.value === selectedLanguage ? 'checked' : 'unchecked'}
                                 onPress={() => {
-                                    setSelectedValue(item.value)
+                                    setSelectedLanguage(item.value)
                                 }}/>
                         }
                         onPress={() => {
-                            setSelectedValue(item.value)
+                            setSelectedLanguage(item.value)
                         }}
                     />
                 ))}

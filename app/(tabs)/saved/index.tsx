@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import SavedWordsScreen from '../../../components/savedWords';
+import SavedWordsScreen from '../../components/savedWords';
 
 console.log('Saved index: Loading saved words screen');
 

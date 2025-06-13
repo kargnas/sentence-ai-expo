@@ -1,7 +1,7 @@
-import SettingStore from "../../util/SettingStore";
+import SettingStore from "../../utils/SettingStore";
 import {View} from "react-native";
 import {Button} from "react-native-paper";
-import {trans} from "../../util/i18n";
+import {trans} from "../../utils/i18n";
 
 export default ({ onPress }) => {
     // Click to copy example sentence

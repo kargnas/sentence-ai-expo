@@ -6,7 +6,7 @@ import {StyleSheet, View, TouchableOpacity, Text} from "react-native";
 import {useTheme} from '@react-navigation/native';
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import * as Haptics from "expo-haptics";
-import StarStore from "../../util/StarStore";
+import StarStore from "../../utils/StarStore";
 import {useNavigation} from "@react-navigation/native";
 
 export default function FavoriteButton(props) {

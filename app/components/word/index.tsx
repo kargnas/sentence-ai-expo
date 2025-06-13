@@ -18,7 +18,7 @@ try {
     // Fallback to expo-clipboard for Expo Go
     Clipboard = require("expo-clipboard");
 }
-import {trans} from "../../util/i18n";
+import {trans} from "../../utils/i18n";
 
 export default function Word(props) {
     const { component } = props?.route?.params;

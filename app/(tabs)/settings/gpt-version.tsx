@@ -1,3 +1,3 @@
-import GptVersion from '../../../components/setting/gptVersion';
+import GptVersion from '../../components/setting/gptVersion';
 
 export default GptVersion;

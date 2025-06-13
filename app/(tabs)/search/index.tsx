@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import SearchScreen from '../../../components/search';
+import SearchScreen from '../../components/search';
 
 console.log('Search index: Loading search screen');
 

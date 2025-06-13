@@ -4,7 +4,7 @@ import {List, Button, PaperProvider, Text, ActivityIndicator, useTheme} from "re
 import {useEffect} from "react";
 import { useRouter } from 'expo-router';
 import FavoriteButton from "../word/favoriteButton";
-import StarStore from "../../util/StarStore";
+import StarStore from "../../utils/StarStore";
 
 let focus = 0;
 

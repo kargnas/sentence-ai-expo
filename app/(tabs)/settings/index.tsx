@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import SettingScreen from '../../../components/setting';
+import SettingScreen from '../../components/setting';
 
 console.log('Settings index: Loading settings screen');
 

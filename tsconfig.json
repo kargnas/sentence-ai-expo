@@ -4,19 +4,16 @@
     "strict": false,
     "paths": {
       "@/*": [
-        "./*"
+        "./app/*"
       ],
       "@/components/*": [
-        "./components/*"
+        "./app/components/*"
       ],
-      "@/util/*": [
-        "./util/*"
+      "@/utils/*": [
+        "./app/utils/*"
       ],
       "@/api/*": [
-        "./api/*"
-      ],
-      "@/screens/*": [
-        "./screens/*"
+        "./app/api/*"
       ]
     }
   },

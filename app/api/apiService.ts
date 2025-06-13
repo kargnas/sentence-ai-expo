@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {getLocales} from 'expo-localization';
-import SettingStore from "../util/SettingStore";
+import SettingStore from "../utils/SettingStore";
 import { Audio } from 'expo-audio';
 
 class ApiService {

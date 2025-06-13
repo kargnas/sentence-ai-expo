@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import WordScreen from '../../../components/word';
+import WordScreen from '../../components/word';
 
 export default function WordScreenWrapper() {
   const params = useLocalSearchParams();

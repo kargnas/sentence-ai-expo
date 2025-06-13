@@ -6,11 +6,11 @@ I18n.fallbacks = true;
 I18n.defaultLocale = 'en';
 I18n.locale = 'en';
 
-import en from '../assets/locales/en.json';
-import ja from '../assets/locales/ja.json';
-import ko from '../assets/locales/ko.json';
-import zh_cn from '../assets/locales/zh_cn.json';
-import zh_tw from '../assets/locales/zh_tw.json';
+import en from '../../assets/locales/en.json';
+import ja from '../../assets/locales/ja.json';
+import ko from '../../assets/locales/ko.json';
+import zh_cn from '../../assets/locales/zh_cn.json';
+import zh_tw from '../../assets/locales/zh_tw.json';
 import SettingStore from "./SettingStore";
 
 let learningLanguage = null;

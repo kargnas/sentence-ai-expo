@@ -1,39 +1,30 @@
 import React from 'react';
 import {View, Text, FlatList, StyleSheet} from 'react-native';
-import {List} from "react-native-paper";
-import SettingStore from "../../util/SettingStore";
-import {Checkbox} from 'react-native-paper';
-import {loadLocale} from "../../util/i18n";
+import {List, Checkbox} from "react-native-paper";
+import SettingStore from "../../utils/SettingStore";
 import {useTheme} from '@react-navigation/native';
 
-// List of languages
-const LANGUAGES = [
-    // { key: 1, value: null, text: 'Automatic' },
-    { key: 2, value: 'Mandarin', text: 'Mandarin (Mainland China)' },
-    { key: 3, value: 'Cantonese', text: 'Cantonese (Guangdong, Hong Kong)' },
-    { key: 4, value: 'Japanese', text: 'Japanese' },
-    { key: 5, value: 'Korean', text: 'Korean' },
-    { key: 6, value: 'English', text: 'English - Beta' },
+const ITEMS = [
+    { key: 1, value: null, text: 'Normal AI (Default)', description: 'Faster. But idiot.' },
+    // { key: 2, value: '3.5', text: '3.5', description: 'Faster' },
+    { key: 3, value: '4', text: 'Advanced AI (Beta)', description: 'Slower. But much more smart.' },
 ];
 
-export default function LearningLanguage() {
+export default function GptVersion() {
     const theme = useTheme();
-    const [selectedLanguage, setSelectedLanguage] = React.useState(null);
+    const [selectedGptVersion, setSelectedGptVersion] = React.useState(null);
     const [initialized, setInitialized] = React.useState(true);
 
     async function loadSetting() {
-        const learningLanguage = await SettingStore.getLearningLanguage();
-        console.log(learningLanguage)
-        setSelectedLanguage(learningLanguage);
+        const gptVersion = await SettingStore.getGPTVersion()
+        console.log(gptVersion)
+        setSelectedGptVersion(gptVersion);
     }
 
     React.useEffect(() => {
-        console.log('Save', selectedLanguage)
-        SettingStore.setLearningLanguage(selectedLanguage)
-        setTimeout(() => {
-            loadLocale();
-        }, 300);
-    }, [selectedLanguage]);
+        console.log('Save', selectedGptVersion)
+        SettingStore.setGPTVersion(selectedGptVersion)
+    }, [selectedGptVersion]);
 
     React.useEffect(() => {
         console.log('INIT')
@@ -43,7 +34,7 @@ export default function LearningLanguage() {
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
             <List.Section>
-                {LANGUAGES.map((item) => (
+                {ITEMS.map((item) => (
                     <List.Item
                         key={item.key}
                         title={item.text}
@@ -53,13 +44,13 @@ export default function LearningLanguage() {
                         style={{ backgroundColor: theme.colors.card }}
                         right={props =>
                             <Checkbox
-                                status={item.value === selectedLanguage ? 'checked' : 'unchecked'}
+                                status={item.value === selectedGptVersion ? 'checked' : 'unchecked'}
                                 onPress={() => {
-                                    setSelectedLanguage(item.value)
+                                    setSelectedGptVersion(item.value)
                                 }}/>
                         }
                         onPress={() => {
-                            setSelectedLanguage(item.value)
+                            setSelectedGptVersion(item.value)
                         }}
                     />
                 ))}
