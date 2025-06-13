@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {StyleSheet, View, FlatList, ScrollView, RefreshControl} from 'react-native';
-import {List, Button, PaperProvider, Text, ActivityIndicator, useTheme} from "react-native-paper";
+import {List, Button, PaperProvider, Text, ActivityIndicator} from "react-native-paper";
+import {useTheme} from '@react-navigation/native';
 import {useEffect} from "react";
 import { useRouter } from 'expo-router';
 import FavoriteButton from "../word/favoriteButton";
@@ -27,9 +28,11 @@ export default function SavedWords({ route, navigation }) {
     }, [refresh]);
 
     return (
-        <ScrollView refreshControl={<RefreshControl refreshing={loading}
-                                                    colors={[theme.colors.onSurface]}
-                                                    tintColor={theme.colors.onSurface}
+        <ScrollView 
+            style={{ backgroundColor: theme.colors.background }}
+            refreshControl={<RefreshControl refreshing={loading}
+                                                    colors={[theme.colors.text]}
+                                                    tintColor={theme.colors.text}
                                                     onRefresh={refreshStarredList}/>}>
             <List.Section>
                 {Object.keys(starredList).reverse().map(key => {
@@ -38,6 +41,7 @@ export default function SavedWords({ route, navigation }) {
                         <List.Item
                             key={key}
                             title={key}
+                            titleStyle={{ color: theme.colors.text }}
                             left={props =>
                                 <FavoriteButton word={key} {...props}/>
                             }
@@ -45,9 +49,9 @@ export default function SavedWords({ route, navigation }) {
                                 <View style={styles.wordRightContainer}>
                                     <Text style={{
                                         ...styles.meaning,
-                                        color: theme.colors.outline,
+                                        color: theme.colors.secondaryText || theme.colors.text,
                                     }}>{component?.meaning}</Text>
-                                    <List.Icon icon="chevron-right"/>
+                                    <List.Icon icon="chevron-right" color={theme.colors.secondaryText || theme.colors.text}/>
                                 </View>
                             }
                             onPress={() =>
@@ -63,7 +67,7 @@ export default function SavedWords({ route, navigation }) {
                     )
                 })}
                 {Object.keys(starredList).length > 0 &&
-                    <Button icon="trash-alt"
+                    <Button icon="delete"
                             mode="text"
                             textColor={theme.colors.error}
                             onPress={() => {

@@ -4,11 +4,13 @@ import {useTheme} from '@react-navigation/native';
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import SettingStore from "../../utils/SettingStore";
 import {useNavigation} from "@react-navigation/native";
+import { useRouter } from 'expo-router';
 import {getLocales} from "expo-localization";
 
 export default function Setting() {
     const theme = useTheme()
     const navigation = useNavigation();
+    const router = useRouter();
     const [settingLearningLanguage, setSettingLearningLanguage] = React.useState(null)
     const [settingLanguage, setSettingLanguage] = React.useState(null)
     const [settingGPTVersion, setSettingGPTVersion] = React.useState(null)
@@ -61,12 +63,12 @@ export default function Setting() {
                     <SettingRow 
                         title="Studying Language"
                         value={settingLearningLanguage || 'Automatic'}
-                        onPress={() => navigation.navigate('LearningLanguage')}
+                        onPress={() => router.push('/settings/learning-language')}
                     />
                     <SettingRow 
                         title="App Language"
                         value={settingLanguage || `Default (${getLocales()[0].languageTag})`}
-                        onPress={() => navigation.navigate('Language')}
+                        onPress={() => router.push('/settings/language')}
                         isLast={true}
                     />
                 </View>
@@ -82,12 +84,12 @@ export default function Setting() {
                             settingGPTVersion === '4' ? 'Advanced AI' : 
                             settingGPTVersion === null ? 'Default (Normal AI)' : 'Normal AI'
                         }
-                        onPress={() => navigation.navigate('GptVersion')}
+                        onPress={() => router.push('/settings/gpt-version')}
                     />
                     <SettingRow 
                         title="Voice"
                         value={settingVoice || 'Default'}
-                        onPress={() => navigation.navigate('Voice')}
+                        onPress={() => router.push('/settings/voice')}
                         isLast={true}
                     />
                 </View>
