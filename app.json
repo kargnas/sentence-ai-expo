@@ -2,7 +2,7 @@
   "expo": {
     "name": "Mandarin AI",
     "slug": "chinese-learning",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -47,12 +47,8 @@
     "owner": "kargnas",
     "plugins": [
       "expo-localization",
-      [
-        "react-native-bottom-tabs",
-        {
-          "translucent": true
-        }
-      ],
+      "react-native-bottom-tabs",
+      "expo-router",
       [
         "expo-build-properties",
         {
