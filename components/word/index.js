@@ -10,7 +10,14 @@ import ApiService from "../../api/apiService";
 import axios from "axios";
 import * as Haptics from "expo-haptics";
 import ResultList from "../search/ResultList";
-import Clipboard from "@react-native-clipboard/clipboard";
+// Conditional clipboard import for Expo Go compatibility
+let Clipboard;
+try {
+    Clipboard = require("@react-native-clipboard/clipboard").default;
+} catch (error) {
+    // Fallback to expo-clipboard for Expo Go
+    Clipboard = require("expo-clipboard");
+}
 import {trans} from "../../util/i18n";
 
 export default function Word(props) {

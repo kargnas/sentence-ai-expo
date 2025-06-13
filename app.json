@@ -2,11 +2,12 @@
   "expo": {
     "name": "Mandarin AI",
     "slug": "chinese-learning",
+    "scheme": "mandarinai",
     "version": "1.2.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -47,7 +48,12 @@
     "owner": "kargnas",
     "plugins": [
       "expo-localization",
-      "react-native-bottom-tabs",
+      [
+        "react-native-bottom-tabs",
+        {
+          "translucent": true
+        }
+      ],
       "expo-router",
       [
         "expo-build-properties",
@@ -56,7 +62,9 @@
             "useFrameworks": "static"
           }
         }
-      ]
+      ],
+      "expo-secure-store",
+      "expo-sqlite"
     ],
     "runtimeVersion": {
       "policy": "appVersion"

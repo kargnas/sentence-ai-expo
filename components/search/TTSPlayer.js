@@ -4,7 +4,7 @@ import {useTheme} from "@react-navigation/native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import ApiService from "../../api/apiService";
 import * as Haptics from "expo-haptics";
-import {Audio} from "expo-av";
+import { Audio } from "expo-audio";
 
 export default ({ text }) => {
     const [loading, setLoading] = React.useState(false)
@@ -23,7 +23,7 @@ export default ({ text }) => {
 
             setSound(sound);
             await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
-            sound.playAsync();
+            await sound.playAsync();
             console.log(query, '재생합니다.')
 
             // Finish

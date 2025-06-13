@@ -1,22 +1,25 @@
 import * as React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {useTheme} from "@react-navigation/native";
-import {useNavigation} from "@react-navigation/native";
+import { useRouter } from 'expo-router';
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import FavoriteButton from "../word/favoriteButton";
 
 export default function WordItem(props) {
     const { component } = props;
-    const navigation = useNavigation();
+    const router = useRouter();
     const theme = useTheme()
 
     return (
         <TouchableOpacity
             style={[styles.container, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
             onPress={() =>
-                navigation.push('Word', {
-                    title: `${component.word} ${component.phonetic}`,
-                    component
+                router.push({
+                    pathname: '/search/word',
+                    params: {
+                        title: `${component.word} ${component.phonetic}`,
+                        component: JSON.stringify(component)
+                    }
                 })
             }
         >

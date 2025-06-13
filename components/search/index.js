@@ -16,7 +16,14 @@ import {
 } from 'react-native';
 import {SafeAreaView} from "react-native-safe-area-context";
 import {useNavigation, useTheme} from "@react-navigation/native";
-import Clipboard from "@react-native-clipboard/clipboard";
+// Conditional clipboard import for Expo Go compatibility
+let Clipboard;
+try {
+    Clipboard = require("@react-native-clipboard/clipboard").default;
+} catch (error) {
+    // Fallback to expo-clipboard for Expo Go
+    Clipboard = require("expo-clipboard");
+}
 
 import * as Haptics from "expo-haptics";
 import axios from "axios";
@@ -35,6 +42,8 @@ import ResultList from "./ResultList";
 let loadingStack = 0;
 
 export default function Search() {
+    console.log('Search component: Rendering');
+    
     const [query, setQuery] = React.useState("");
     const [results, setResults] = React.useState([]);
     const [loading, setLoading] = React.useState(0);

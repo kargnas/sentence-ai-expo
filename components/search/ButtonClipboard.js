@@ -1,5 +1,12 @@
 import * as React from 'react';
-import Clipboard from "@react-native-clipboard/clipboard";
+// Conditional clipboard import for Expo Go compatibility
+let Clipboard;
+try {
+    Clipboard = require("@react-native-clipboard/clipboard").default;
+} catch (error) {
+    // Fallback to expo-clipboard for Expo Go
+    Clipboard = require("expo-clipboard");
+}
 import SettingStore from "../../util/SettingStore";
 import GuessLanguage from "../../util/guessLanguage.js";
 import {Text, View} from "react-native";

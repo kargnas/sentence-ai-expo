@@ -2,17 +2,18 @@ import * as React from 'react';
 import {StyleSheet, View, FlatList, ScrollView, RefreshControl} from 'react-native';
 import {List, Button, PaperProvider, Text, ActivityIndicator, useTheme} from "react-native-paper";
 import {useEffect} from "react";
-import {useNavigation} from "@react-navigation/native";
+import { useRouter } from 'expo-router';
 import FavoriteButton from "../word/favoriteButton";
 import StarStore from "../../util/StarStore";
 
 let focus = 0;
 
 export default function SavedWords({ route, navigation }) {
+    const router = useRouter();
     const theme = useTheme()
     const [starredList, setStarredList] = React.useState({})
     const [loading, setLoading] = React.useState(false);
-    const refresh = route.params?.refresh;
+    const refresh = route?.params?.refresh;
 
     const refreshStarredList = async () => {
         const result = await StarStore.getStars()
@@ -50,9 +51,12 @@ export default function SavedWords({ route, navigation }) {
                                 </View>
                             }
                             onPress={() =>
-                                navigation.navigate('Word', {
-                                    title: `${component.word}`,
-                                    component
+                                router.push({
+                                    pathname: '/saved/word',
+                                    params: {
+                                        title: `${component.word}`,
+                                        component: JSON.stringify(component)
+                                    }
                                 })
                             }
                         />
