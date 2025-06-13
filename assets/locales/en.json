@@ -1,6 +1,6 @@
 {
   "CFBundleDisplayName": "Mandarin AI",
-  "btn_see_demo": "See Sample Sentences of {learningLanguage}",
+  "btn_see_demo": "Try Demo",
   "btn_paste_from_clipboard": "Clipboard",
   "toast_successful_copied": "Successfully copied.",
   "placeholder_input_text": "Input random language text here."

@@ -187,10 +187,34 @@ export default function Search() {
                         </TouchableOpacity>
                         <TouchableOpacity 
                             style={[styles.demoButton, { borderColor: theme.colors.border }]}
-                            onPress={() => handleDemoSearch("我今天很开心")}
+                            onPress={async () => {
+                                const learningLanguage = await SettingStore.getLearningLanguage();
+                                let demoText = '';
+                                switch (learningLanguage) {
+                                    case 'Japanese':
+                                        demoText = '家から図書館までどのくらいかかりますか？';
+                                        break;
+                                    case 'Korean':
+                                        demoText = '도서관에서 학교까지 얼마나 걸리나요? 저 지금 빨리 가야되는데...';
+                                        break;
+                                    case 'Mandarin':
+                                        demoText = '我可以得到一杯冰美式咖啡吗';
+                                        break;
+                                    case 'Cantonese':
+                                        demoText = '佢睇呢場戲';
+                                        break;
+                                    case 'English':
+                                        demoText = 'Where are you from? What kind of country do you want to travel?';
+                                        break;
+                                    default:
+                                        demoText = '我今天很开心';
+                                        break;
+                                }
+                                handleDemoSearch(demoText);
+                            }}
                         >
                             <Text style={[styles.demoButtonText, { color: theme.colors.primary }]}>
-                                Try Demo
+                                {trans('btn_see_demo')}
                             </Text>
                         </TouchableOpacity>
                     </View>

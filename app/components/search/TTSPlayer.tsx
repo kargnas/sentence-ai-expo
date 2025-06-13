@@ -4,12 +4,13 @@ import {useTheme} from "@react-navigation/native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import ApiService from "../../api/apiService";
 import * as Haptics from "expo-haptics";
-import { useAudioPlayer } from "expo-audio";
+import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
 
 export default ({ text }) => {
     const [loading, setLoading] = React.useState(false);
     const [audioSource, setAudioSource] = React.useState(null);
     const player = useAudioPlayer(audioSource);
+    const status = useAudioPlayerStatus(player);
     const theme = useTheme();
 
     const playSound = async (query) => {
@@ -40,9 +41,9 @@ export default ({ text }) => {
         } catch (error) {
             console.error('Sound play error:', error);
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-        } finally {
             setLoading(false);
         }
+        // Loading will be stopped when audio actually starts playing
     };
 
     // Play when audioSource changes
@@ -54,9 +55,21 @@ export default ({ text }) => {
                 console.log('재생 시작:', audioSource);
             } catch (error) {
                 console.error('재생 오류:', error);
+                setLoading(false);
             }
         }
     }, [audioSource, player]);
+
+    // Monitor audio status to stop loading when actually playing
+    useEffect(() => {
+        if (status?.playing) {
+            console.log('오디오 실제 재생 시작!');
+            setLoading(false);
+        } else if (status?.isLoaded && !status?.playing && loading) {
+            // If loaded but not playing and we're still loading, something might be wrong
+            console.log('오디오 로드됨, 재생 상태:', status);
+        }
+    }, [status?.playing, status?.isLoaded, loading]);
 
     return (
         <TouchableOpacity
