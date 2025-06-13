@@ -4,6 +4,7 @@ import {useEffect, useState} from 'react'; // new import
 import {Snackbar} from "react-native-paper";
 import {useTheme} from '@react-navigation/native';
 import {RefreshControl, ScrollView, SectionList, StyleSheet, TouchableOpacity, View, Text, ActivityIndicator} from "react-native";
+import {SafeAreaView} from "react-native-safe-area-context";
 import FavoriteButton from "./favoriteButton";
 import ApiService from "../../api/apiService";
 import axios from "axios";
@@ -127,7 +128,7 @@ export default function Word(props) {
 
     if (results && results?.summary) {
         return (
-            <>
+            <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }} edges={['bottom']}>
                 <SectionList sections={sectionListData}
                              keyExtractor={(item, index) => item + index}
                              refreshControl={<RefreshControl refreshing={loading}
@@ -160,7 +161,7 @@ export default function Word(props) {
                     }}>
                     {trans('toast_successful_copied')}
                 </Snackbar>
-            </>
+            </SafeAreaView>
         );
     } else {
         return (

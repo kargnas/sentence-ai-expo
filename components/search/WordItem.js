@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     favoriteButton: {
-        marginRight: 12,
+        marginRight: 8,
     },
     wordInfo: {
         flex: 1,

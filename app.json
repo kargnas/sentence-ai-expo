@@ -47,7 +47,20 @@
     "owner": "kargnas",
     "plugins": [
       "expo-localization",
-      "expo-build-properties"
+      [
+        "react-native-bottom-tabs",
+        {
+          "translucent": true
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ]
     ],
     "runtimeVersion": {
       "policy": "appVersion"

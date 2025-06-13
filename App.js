@@ -4,10 +4,29 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import SearchNavigationScreen from "./screens/SearchNavigationScreen";
 import SavedWordNavigationScreen from "./screens/SavedWordNavigationScreen";
 import {NavigationContainer, DarkTheme, DefaultTheme} from "@react-navigation/native";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import SettingNavigationScreen from "./screens/SettingNavigationScreen";
 import {useCallback, useEffect, useState} from "react";
 import {default as I18n, i18n, loadLocale} from "./util/i18n";
+
+// Try to import native bottom tabs, fallback to regular tabs if not available
+let Tab;
+let isNativeTabsAvailable = false;
+
+try {
+    // Try direct import first
+    const RNCTabView = require('react-native-bottom-tabs').default;
+    console.log('✅ Native bottom tabs core library loaded');
+    
+    // Fallback to adapter
+    const { createNativeBottomTabNavigator } = require('@bottom-tabs/react-navigation');
+    Tab = createNativeBottomTabNavigator();
+    isNativeTabsAvailable = true;
+    console.log('✅ Native bottom tabs adapter loaded successfully');
+} catch (error) {
+    console.log('❌ Native bottom tabs not available, using regular tabs:', error.message);
+    const { createBottomTabNavigator } = require("@react-navigation/bottom-tabs");
+    Tab = createBottomTabNavigator();
+}
 
 const iOSDarkTheme = {
     ...DarkTheme,
@@ -47,7 +66,6 @@ const iOSLightTheme = {
     },
 };
 
-const Tab = createBottomTabNavigator();
 
 export default function App() {
     const [initialized, setInitialized] = React.useState(true);
@@ -57,6 +75,11 @@ export default function App() {
     
     // Choose theme based on system color scheme
     const theme = colorScheme === 'dark' ? iOSDarkTheme : iOSLightTheme;
+    
+    // Check if we're using native tabs
+    const isNativeTabs = isNativeTabsAvailable;
+    
+    console.log('Using native bottom tabs:', isNativeTabs);
 
     useEffect(() => {
         // Load locale
@@ -81,37 +104,64 @@ export default function App() {
             <NavigationContainer theme={theme}>
                 <Tab.Navigator 
                     initialRouteName="Search" 
-                    screenOptions={{
+                    screenOptions={isNativeTabs ? {
+                        headerShown: false,
+                    } : {
                         tabBarStyle: {
                             backgroundColor: theme.colors.card,
-                            borderTopColor: theme.colors.border,
-                            borderTopWidth: 0.5,
+                            borderTopColor: 'transparent',
+                            borderTopWidth: 0,
                             height: Platform.OS === 'ios' ? 88 : 60,
                             paddingBottom: Platform.OS === 'ios' ? 25 : 8,
                             paddingTop: 8,
+                            position: 'absolute',
+                            elevation: 0,
+                            shadowColor: '#000',
+                            shadowOffset: {
+                                width: 0,
+                                height: -2,
+                            },
+                            shadowOpacity: 0.1,
+                            shadowRadius: 8,
                         },
                         tabBarActiveTintColor: theme.colors.primary,
                         tabBarInactiveTintColor: theme.colors.secondaryText,
                         headerShown: false,
                         tabBarLabelStyle: {
                             fontSize: 10,
-                            fontWeight: '500',
+                            fontWeight: '600',
+                        },
+                        tabBarItemStyle: {
+                            paddingVertical: 5,
                         },
                     }}>
                     <Tab.Screen name="Search" component={SearchNavigationScreen}
-                                options={{
+                                options={isNativeTabs ? {
+                                    title: 'Analysis',
+                                    tabBarIcon: ({ focused }) => ({ 
+                                        sfSymbol: focused ? 'wand.and.stars.inverse' : 'wand.and.stars'
+                                    }),
+                                } : {
                                     tabBarLabel: 'Analysis',
                                     tabBarIcon: ({ focused, color, size }) => (
                                         <FontAwesome5 
                                             name={'magic'} 
-                                            size={focused ? 26 : 24} 
+                                            size={focused ? 28 : 24} 
                                             color={color}
-                                            style={{ opacity: focused ? 1 : 0.8 }}
+                                            style={{ 
+                                                opacity: focused ? 1 : 0.6,
+                                                transform: [{ scale: focused ? 1.1 : 1 }]
+                                            }}
                                         />
                                     ),
                                 }}/>
                     <Tab.Screen name="SavedWords" component={SavedWordNavigationScreen}
-                                options={{
+                                options={isNativeTabs ? {
+                                    title: 'Saved',
+                                    tabBarIcon: ({ focused }) => ({ 
+                                        sfSymbol: focused ? 'star.fill' : 'star'
+                                    }),
+                                } : {
                                     tabBarLabel: 'Saved',
                                     tabBarIcon: ({ focused, color, size }) => (
                                         <FontAwesome5 
@@ -123,7 +173,12 @@ export default function App() {
                                     ),
                                 }}/>
                     <Tab.Screen name="Setting" component={SettingNavigationScreen}
-                                options={{
+                                options={isNativeTabs ? {
+                                    title: 'Settings',
+                                    tabBarIcon: ({ focused }) => ({ 
+                                        sfSymbol: focused ? 'gearshape.fill' : 'gearshape'
+                                    }),
+                                } : {
                                     tabBarLabel: 'Settings',
                                     tabBarIcon: ({ focused, color, size }) => (
                                         <FontAwesome5 

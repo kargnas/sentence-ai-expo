@@ -14,6 +14,7 @@ import {
     Platform,
     Pressable
 } from 'react-native';
+import {SafeAreaView} from "react-native-safe-area-context";
 import {useNavigation, useTheme} from "@react-navigation/native";
 import Clipboard from "@react-native-clipboard/clipboard";
 
@@ -190,6 +191,7 @@ export default function Search() {
             {/* Content Area */}
             <ScrollView 
                 style={styles.contentContainer}
+                contentContainerStyle={{ paddingBottom: 100 }} // 탭바 여백 추가
                 refreshControl={
                     <RefreshControl 
                         refreshing={loading > 0}

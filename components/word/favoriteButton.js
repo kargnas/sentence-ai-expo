@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as SecureStore from 'expo-secure-store';
 import {useEffect, useState} from 'react'; // new import
 import {Snackbar} from "react-native-paper";
-import {StyleSheet, View, TouchableOpacity} from "react-native";
+import {StyleSheet, View, TouchableOpacity, Text} from "react-native";
 import {useTheme} from '@react-navigation/native';
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import * as Haptics from "expo-haptics";
@@ -13,6 +13,7 @@ export default function FavoriteButton(props) {
     const { word, pinyin } = props;
     const [starred, setStarred] = useState(false);
     const [error, setError] = useState(null);
+    const [iconLoaded, setIconLoaded] = useState(true);
     const navigation = useNavigation();
     const theme = useTheme();
 
@@ -54,12 +55,24 @@ export default function FavoriteButton(props) {
                 }}
                 activeOpacity={0.7}
             >
-                <FontAwesome5 
-                    name={starred ? "check" : "star"} 
-                    size={16} 
-                    color={starred ? "#FFFFFF" : theme.colors.text}
-                    solid={starred}
-                />
+                {iconLoaded ? (
+                    <FontAwesome5 
+                        name={starred ? "check" : "star"} 
+                        size={14} 
+                        color={starred ? "#FFFFFF" : theme.colors.text}
+                        solid={starred}
+                        suppressHighlighting={true}
+                        onError={() => setIconLoaded(false)}
+                    />
+                ) : (
+                    <Text style={{
+                        fontSize: 14,
+                        color: starred ? "#FFFFFF" : theme.colors.text,
+                        fontWeight: 'bold'
+                    }}>
+                        {starred ? "✓" : "★"}
+                    </Text>
+                )}
             </TouchableOpacity>
             <Snackbar
                 visible={error !== null}
@@ -75,12 +88,11 @@ export default function FavoriteButton(props) {
 
 const styles = StyleSheet.create({
     starButton: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
+        width: 28,
+        height: 28,
+        borderRadius: 14,
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1,
-        borderColor: 'transparent',
+        borderWidth: 0,
     },
 });
