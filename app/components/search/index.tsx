@@ -224,7 +224,7 @@ export default function Search() {
             {/* Content Area */}
             <ScrollView 
                 style={[styles.contentContainer, { marginBottom: -100 }]} // 탭바 영역까지 확장
-                contentContainerStyle={{ paddingBottom: 150 }} // 더 큰 패딩으로 조정
+                contentContainerStyle={{ gap: 8, paddingBottom: 100 }} // 더 큰 패딩으로 조정
                 refreshControl={
                     <RefreshControl 
                         refreshing={loading > 0}
@@ -287,9 +287,11 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     searchContainer: {
-        paddingHorizontal: 16,
+        paddingHorizontal: 12,
         paddingVertical: 12,
         borderBottomWidth: 0.5,
+        flexDirection: 'column',
+        gap: 12,
     },
     searchInputContainer: {
         flexDirection: 'row',
@@ -298,7 +300,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         paddingHorizontal: 12,
         height: 44,
-        marginBottom: 12,
     },
     searchInput: {
         flex: 1,
@@ -348,6 +349,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flex: 1,
+        padding: 16,
     },
     loadingContainer: {
         alignItems: 'center',
@@ -360,8 +362,6 @@ const styles = StyleSheet.create({
         marginTop: 12,
     },
     errorContainer: {
-        margin: 16,
-        padding: 16,
         borderRadius: 12,
         borderWidth: 1,
     },
@@ -372,7 +372,6 @@ const styles = StyleSheet.create({
         lineHeight: 22,
     },
     languageIndicator: {
-        margin: 16,
         padding: 12,
         borderRadius: 8,
         alignItems: 'center',
@@ -382,8 +381,6 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     clearSearchButton: {
-        margin: 16,
-        marginTop: 8,
         padding: 12,
         borderRadius: 8,
         borderWidth: 1,

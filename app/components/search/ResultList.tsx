@@ -41,8 +41,6 @@ export default ({ sentences }) => {
 }
 const styles = StyleSheet.create({
     sentenceContainer: {
-        marginHorizontal: 16,
-        marginVertical: 8,
         borderRadius: 12,
         overflow: 'hidden',
     },
