@@ -4,7 +4,7 @@ import {useTheme} from "@react-navigation/native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import ApiService from "../../api/apiService";
 import * as Haptics from "expo-haptics";
-import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
+import { useAudioPlayer, useAudioPlayerStatus, setAudioModeAsync } from "expo-audio";
 
 export default ({ text }) => {
     const [loading, setLoading] = React.useState(false);
@@ -18,6 +18,10 @@ export default ({ text }) => {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
         try {
+            // Set audio mode to allow playback even in silent mode
+            await setAudioModeAsync({
+                playsInSilentMode: true,
+            });
             // Logic
             const apiService = new ApiService();
             const sound = await apiService.getSound(query);
