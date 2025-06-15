@@ -13,15 +13,26 @@ export default ({ text }) => {
     const status = useAudioPlayerStatus(player);
     const theme = useTheme();
 
+    // Initialize audio mode on component mount
+    useEffect(() => {
+        const initAudioMode = async () => {
+            try {
+                await setAudioModeAsync({
+                    playsInSilentMode: true,
+                });
+                console.log('Audio mode initialized');
+            } catch (error) {
+                console.error('Failed to initialize audio mode:', error);
+            }
+        };
+        initAudioMode();
+    }, []);
+
     const playSound = async (query) => {
         setLoading(true);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
         try {
-            // Set audio mode to allow playback even in silent mode
-            await setAudioModeAsync({
-                playsInSilentMode: true,
-            });
             // Logic
             const apiService = new ApiService();
             const sound = await apiService.getSound(query);
@@ -53,14 +64,22 @@ export default ({ text }) => {
     // Play when audioSource changes
     useEffect(() => {
         if (audioSource && player) {
-            try {
-                player.seekTo(0); // Reset to beginning
-                player.play();
-                console.log('재생 시작:', audioSource);
-            } catch (error) {
-                console.error('재생 오류:', error);
-                setLoading(false);
-            }
+            const playAudio = async () => {
+                try {
+                    // Ensure audio mode is set before playing
+                    await setAudioModeAsync({
+                        playsInSilentMode: true,
+                    });
+                    
+                    await player.seekTo(0); // Reset to beginning
+                    await player.play();
+                    console.log('재생 시작:', audioSource);
+                } catch (error) {
+                    console.error('재생 오류:', error);
+                    setLoading(false);
+                }
+            };
+            playAudio();
         }
     }, [audioSource, player]);
 
