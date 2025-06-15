@@ -3,15 +3,15 @@
     "name": "Mandarin AI",
     "slug": "chinese-learning",
     "scheme": "mandarinai",
-    "version": "1.2.6",
+    "version": "1.2.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "newArchEnabled": false,
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#cf4237"
+      "resizeMode": "cover",
+      "backgroundColor": "#000d26"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -23,7 +23,7 @@
       "zh-HK": "./assets/locales/zh_tw.json"
     },
     "ios": {
-      "buildNumber": "12",
+      "buildNumber": "13",
       "supportsTablet": true,
       "bundleIdentifier": "as.kargn.chineselearning",
       "config": {
