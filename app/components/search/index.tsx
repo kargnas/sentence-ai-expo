@@ -224,7 +224,7 @@ export default function Search() {
             {/* Content Area */}
             <ScrollView 
                 style={[styles.contentContainer, { marginBottom: -100 }]} // 탭바 영역까지 확장
-                contentContainerStyle={{ gap: 8, paddingBottom: 100 }} // 더 큰 패딩으로 조정
+                contentContainerStyle={{ gap: 8, paddingBottom: 150 }} // 더 큰 패딩으로 조정
                 refreshControl={
                     <RefreshControl 
                         refreshing={loading > 0}
