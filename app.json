@@ -41,7 +41,8 @@
       "package": "as.kargn.chineselearning"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
     },
     "extra": {
       "eas": {
@@ -67,7 +68,8 @@
         }
       ],
       "expo-secure-store",
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-audio"
     ],
     "runtimeVersion": {
       "policy": "appVersion"

@@ -1,24 +1,19 @@
-/**
- * Setting for these options
- * 1. A language user wanted which can override the system language.
- * 2. A language user want to learn
- */
-import * as SecureStore from 'expo-secure-store';
+import { getItemAsync, setItemAsync, deleteItemAsync } from './storage';
 
 class SettingStore {
     static STORAGE_KEY = 'setting';
 
     async getSetting() {
-        const existingSettingString = await SecureStore.getItemAsync(SettingStore.STORAGE_KEY);
+        const existingSettingString = await getItemAsync(SettingStore.STORAGE_KEY);
         return existingSettingString ? JSON.parse(existingSettingString) : {};
     }
 
     async setSetting(setting) {
-        await SecureStore.setItemAsync(SettingStore.STORAGE_KEY, JSON.stringify(setting));
+        await setItemAsync(SettingStore.STORAGE_KEY, JSON.stringify(setting));
     }
 
     async clearSetting() {
-        await SecureStore.deleteItemAsync(SettingStore.STORAGE_KEY);
+        await deleteItemAsync(SettingStore.STORAGE_KEY);
     }
 
     async getLanguage() {
@@ -84,8 +79,6 @@ class SettingStore {
             await this.setSetting(setting);
         }
     }
-
-
 }
 
 export default new SettingStore();

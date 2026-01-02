@@ -1,11 +1,10 @@
-import * as SecureStore from 'expo-secure-store';
+import { getItemAsync, setItemAsync, deleteItemAsync } from './storage';
 
 class StarStore {
     static STORAGE_KEY = 'starred';
 
     async addStar(word, pinyin) {
         if (await this.isStar(word)) {
-            // The word is already starred, so don't add it again
             return;
         }
 
@@ -18,13 +17,13 @@ class StarStore {
             word: word,
         };
 
-        await SecureStore.setItemAsync(StarStore.STORAGE_KEY, JSON.stringify(existingStars));
+        await setItemAsync(StarStore.STORAGE_KEY, JSON.stringify(existingStars));
     }
 
     async removeStar(word) {
         const existingStars = await this.getStars();
         delete existingStars[word];
-        await SecureStore.setItemAsync(StarStore.STORAGE_KEY, JSON.stringify(existingStars));
+        await setItemAsync(StarStore.STORAGE_KEY, JSON.stringify(existingStars));
     }
 
     async isStar(word) {
@@ -33,13 +32,13 @@ class StarStore {
     }
 
     async getStars() {
-        const existingStarsString = await SecureStore.getItemAsync(StarStore.STORAGE_KEY);
+        const existingStarsString = await getItemAsync(StarStore.STORAGE_KEY);
         console.log('List', existingStarsString)
         return existingStarsString ? JSON.parse(existingStarsString) : {};
     }
 
     async clearStars() {
-        await SecureStore.deleteItemAsync(StarStore.STORAGE_KEY);
+        await deleteItemAsync(StarStore.STORAGE_KEY);
     }
 }
 
