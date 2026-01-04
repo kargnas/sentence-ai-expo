@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import {SafeAreaView} from "react-native-safe-area-context";
 import {useNavigation, useTheme} from "@react-navigation/native";
+import { Snackbar } from 'react-native-paper';
 // Conditional clipboard import for Expo Go compatibility
 let Clipboard;
 try {
@@ -52,6 +53,14 @@ export default function Search() {
     const [initialized, setInitialized] = React.useState(true);
     const [learningLanguage, setLearningLanguage] = React.useState(null);
     const [error, setError] = React.useState(null);
+    const [snackbarVisible, setSnackbarVisible] = React.useState(false);
+    const [snackbarMessage, setSnackbarMessage] = React.useState("");
+
+    const handleError = (message) => {
+        setSnackbarMessage(message);
+        setSnackbarVisible(true);
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    }
 
     const handleClipboard = (myquery) => {
         if (query.length > 0) return;
@@ -251,7 +260,7 @@ export default function Search() {
                     </View>
                 )}
 
-                <ResultList sentences={results?.sentences}/>
+                <ResultList sentences={results?.sentences} onError={handleError}/>
 
                 {learningLanguage && (
                     <View style={[styles.languageIndicator, { backgroundColor: theme.colors.card }]}>
@@ -278,6 +287,13 @@ export default function Search() {
                     </TouchableOpacity>
                 )}
             </ScrollView>
+            <Snackbar
+                visible={snackbarVisible}
+                onDismiss={() => setSnackbarVisible(false)}
+                duration={3000}
+            >
+                <Text style={{ color: theme.colors.surface }}>{snackbarMessage}</Text>
+            </Snackbar>
         </View>
     );
 }
