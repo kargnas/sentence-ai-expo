@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from "react-native";
 import TTSPlayer from "./TTSPlayer";
 import WordItem from "./WordItem";
 
-export default ({ sentences }) => {
+export default ({ sentences, onError }) => {
     const theme = useTheme()
 
     return (
@@ -25,7 +25,7 @@ export default ({ sentences }) => {
                             )}
                         </View>
                         <View style={styles.ttsContainer}>
-                            <TTSPlayer text={item.sentence}/>
+                            <TTSPlayer text={item.sentence} onError={onError}/>
                         </View>
                     </View>
                     
