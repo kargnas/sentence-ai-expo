@@ -25,7 +25,7 @@ export default ({ sentences, onError }) => {
                             )}
                         </View>
                         <View style={styles.ttsContainer}>
-                            <TTSPlayer text={item.sentence}/>
+                            <TTSPlayer text={item.sentence} onError={onError}/>
                         </View>
                     </View>
                     

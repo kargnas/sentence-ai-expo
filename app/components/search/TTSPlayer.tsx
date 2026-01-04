@@ -1,12 +1,14 @@
 import React, {useEffect, useRef} from "react";
-import {StyleSheet, View, Text, TouchableOpacity, ActivityIndicator, Animated} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, ActivityIndicator, Animated, Alert} from 'react-native';
 import {useTheme} from "@react-navigation/native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import ApiService from "../../api/apiService";
 import * as Haptics from "expo-haptics";
 import { useAudioPlayer, useAudioPlayerStatus, setAudioModeAsync } from "expo-audio";
 
-export default ({ text }) => {
+const LOADING_TIMEOUT_MS = 30000;
+
+export default ({ text, onError }) => {
     const [loading, setLoading] = React.useState(false);
     const [audioSource, setAudioSource] = React.useState(null);
     const [isPlaying, setIsPlaying] = React.useState(false);
@@ -15,8 +17,8 @@ export default ({ text }) => {
     const theme = useTheme();
     const progressAnim = useRef(new Animated.Value(0)).current;
     const scaleAnim = useRef(new Animated.Value(1)).current;
+    const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    // Initialize audio mode on component mount
     useEffect(() => {
         const initAudioMode = async () => {
             try {
@@ -29,21 +31,50 @@ export default ({ text }) => {
             }
         };
         initAudioMode();
+
+        return () => {
+            clearLoadingTimeout();
+        };
     }, []);
 
+    const clearLoadingTimeout = () => {
+        if (loadingTimeoutRef.current) {
+            clearTimeout(loadingTimeoutRef.current);
+            loadingTimeoutRef.current = null;
+        }
+    };
+
+    const handleLoadingTimeout = () => {
+        console.error('Voice loading timed out after 30 seconds');
+        setLoading(false);
+        setAudioSource(null);
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        
+        const errorMessage = 'Voice loading timed out. Please try again.';
+        if (onError) {
+            onError(errorMessage);
+        } else {
+            Alert.alert(
+                'Loading Failed',
+                errorMessage,
+                [{ text: 'OK' }]
+            );
+        }
+    };
+
     const playSound = async (query) => {
+        clearLoadingTimeout();
         setLoading(true);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
+        loadingTimeoutRef.current = setTimeout(handleLoadingTimeout, LOADING_TIMEOUT_MS);
+
         try {
-            // Logic
             const apiService = new ApiService();
             const sound = await apiService.getSound(query);
             console.log(query, '사운드를 다운받았습니다.');
 
-            // Set the audio source and play
             if (sound.uri) {
-                // If same audio source, just replay
                 if (audioSource === sound.uri && player) {
                     player.seekTo(0);
                     player.play();
@@ -54,14 +85,17 @@ export default ({ text }) => {
                 }
             }
 
-            // Finish
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         } catch (error) {
             console.error('Sound play error:', error);
+            clearLoadingTimeout();
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
             setLoading(false);
+            
+            if (onError) {
+                onError('Failed to play sound. Please try again.');
+            }
         }
-        // Loading will be stopped when audio actually starts playing
     };
 
     // Play when audioSource changes
@@ -108,6 +142,7 @@ export default ({ text }) => {
 
         if (status?.playing && !status?.didJustFinish && !isPlaying) {
             console.log('오디오 실제 재생 시작!');
+            clearLoadingTimeout();
             setLoading(false);
             setIsPlaying(true);
         } else if (status?.didJustFinish && isPlaying) {
