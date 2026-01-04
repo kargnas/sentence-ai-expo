@@ -2,7 +2,6 @@ import { Platform } from 'react-native';
 import { Tabs as ExpoTabs } from 'expo-router';
 import { withLayoutContext } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 let Tabs: any;
 
@@ -16,7 +15,6 @@ if (Platform.OS === 'web' || Platform.OS === 'android') {
 
 export default function TabLayout() {
   console.log('TabLayout: Rendering tabs layout');
-  const insets = useSafeAreaInsets();
   
   if (Platform.OS === 'web' || Platform.OS === 'android') {
     return (
@@ -26,8 +24,8 @@ export default function TabLayout() {
             backgroundColor: 'rgba(28, 28, 30, 0.95)',
             borderTopColor: '#38383A',
             paddingTop: 8,
-            paddingBottom: Platform.OS === 'android' ? 10 + insets.bottom : 0,
-            height: Platform.OS === 'android' ? 60 + insets.bottom : undefined,
+            paddingBottom: Platform.OS === 'android' ? 10 : 0,
+            height: Platform.OS === 'android' ? 60 : undefined,
           },
           tabBarActiveTintColor: '#007AFF',
           tabBarInactiveTintColor: '#8E8E93',
