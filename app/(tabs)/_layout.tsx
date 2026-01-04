@@ -1,5 +1,6 @@
 import { createNativeBottomTabNavigator } from '@bottom-tabs/react-navigation';
 import { withLayoutContext } from 'expo-router';
+import { Platform } from 'react-native';
 
 // Create the native tab navigator
 const { Navigator } = createNativeBottomTabNavigator();
@@ -25,8 +26,10 @@ export default function TabLayout() {
         name="search"
         options={{
           title: 'Analysis',
-          tabBarIcon: () => ({ 
-            sfSymbol: 'wand.and.stars.inverse'
+          tabBarIcon: () => Platform.select({
+            ios: { sfSymbol: 'wand.and.stars.inverse' },
+            android: { name: 'auto-fix', type: 'material-community' },
+            default: { name: 'auto-fix', type: 'material-community' },
           }),
         }}
       />
@@ -34,8 +37,10 @@ export default function TabLayout() {
         name="saved"
         options={{
           title: 'Saved',
-          tabBarIcon: () => ({ 
-            sfSymbol: 'star.fill'
+          tabBarIcon: () => Platform.select({
+            ios: { sfSymbol: 'star.fill' },
+            android: { name: 'star', type: 'material-community' },
+            default: { name: 'star', type: 'material-community' },
           }),
         }}
       />
@@ -43,8 +48,10 @@ export default function TabLayout() {
         name="settings"
         options={{
           title: 'Settings',
-          tabBarIcon: () => ({ 
-            sfSymbol: 'gearshape.fill'
+          tabBarIcon: () => Platform.select({
+            ios: { sfSymbol: 'gearshape.fill' },
+            android: { name: 'cog', type: 'material-community' },
+            default: { name: 'cog', type: 'material-community' },
           }),
         }}
       />
