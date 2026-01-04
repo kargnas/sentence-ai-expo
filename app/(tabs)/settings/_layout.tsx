@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
 import { useTheme } from '@react-navigation/native';
+import { Platform } from 'react-native';
 
 export default function SettingsLayout() {
   const theme = useTheme();
@@ -16,6 +17,7 @@ export default function SettingsLayout() {
           color: theme.colors.text,
         },
         headerTintColor: theme.colors.primary,
+        headerStatusBarHeight: Platform.OS === 'android' ? 0 : undefined,
       }}
     >
       <Stack.Screen 
