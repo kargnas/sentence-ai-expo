@@ -14,9 +14,18 @@ if (Platform.OS === 'web' || Platform.OS === 'android') {
   Tabs = withLayoutContext(Navigator);
 }
 
+const ANDROID_TABBAR_GESTURE_INSET_FALLBACK = 24;
+const ANDROID_TABBAR_BASE_PADDING_BOTTOM = 14;
+const ANDROID_TABBAR_MIN_HEIGHT = 64;
+
 export default function TabLayout() {
   console.log('TabLayout: Rendering tabs layout');
   const insets = useSafeAreaInsets();
+
+  const androidBottomInset =
+    Platform.OS === 'android'
+      ? Math.max(insets.bottom, ANDROID_TABBAR_GESTURE_INSET_FALLBACK)
+      : insets.bottom;
   
   if (Platform.OS === 'web' || Platform.OS === 'android') {
     return (
@@ -26,8 +35,15 @@ export default function TabLayout() {
             backgroundColor: 'rgba(28, 28, 30, 0.95)',
             borderTopColor: '#38383A',
             paddingTop: 8,
-            paddingBottom: Platform.OS === 'android' ? 10 + insets.bottom : 0,
-            height: Platform.OS === 'android' ? 60 + insets.bottom : undefined,
+            paddingBottom:
+              Platform.OS === 'android'
+                ? ANDROID_TABBAR_BASE_PADDING_BOTTOM + androidBottomInset
+                : 0,
+            minHeight: Platform.OS === 'android' ? ANDROID_TABBAR_MIN_HEIGHT : undefined,
+          },
+          tabBarLabelStyle: {
+            fontSize: 11,
+            marginBottom: Platform.OS === 'android' ? 4 : 0,
           },
           tabBarActiveTintColor: '#007AFF',
           tabBarInactiveTintColor: '#8E8E93',
