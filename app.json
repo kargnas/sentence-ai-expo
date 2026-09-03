@@ -3,7 +3,7 @@
     "name": "Mandarin AI",
     "slug": "chinese-learning",
     "scheme": "mandarinai",
-    "version": "1.2.7",
+    "version": "1.2.8",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -33,10 +33,14 @@
         "NSMicrophoneUsageDescription": "This app uses audio libraries that may reference microphone APIs, but does not actually use the microphone for any functionality."
       }
     },
+    "androidNavigationBar": {
+      "backgroundColor": "#000000",
+      "barStyle": "light-content"
+    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundImage": "./assets/adaptive-icon-background.png"
       },
       "package": "as.kargn.chineselearning"
     },
@@ -64,6 +68,10 @@
         {
           "ios": {
             "useFrameworks": "static"
+          },
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35
           }
         }
       ],
