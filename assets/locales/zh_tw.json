@@ -3,5 +3,8 @@
   "btn_see_demo": "試試範例",
   "btn_paste_from_clipboard": "貼上",
   "toast_successful_copied": "複製成功。",
-  "placeholder_input_text": "在這裡輸入不同語言的文字。"
+  "placeholder_input_text": "在這裡輸入不同語言的文字。",
+  "analysis_error_empty": "請輸入要分析的文字。",
+  "analysis_error_failed": "無法分析此文字，請再試一次。",
+  "analysis_error_network": "無法連線，請檢查網路連線後再試一次。"
 }

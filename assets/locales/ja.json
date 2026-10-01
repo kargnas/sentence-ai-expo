@@ -3,5 +3,8 @@
   "btn_see_demo": "例文を見る",
   "btn_paste_from_clipboard": "クリップボード",
   "toast_successful_copied": "正常にコピーされました。",
-  "placeholder_input_text": "ここにさまざまな言語のテキストを入力してください。"
+  "placeholder_input_text": "ここにさまざまな言語のテキストを入力してください。",
+  "analysis_error_empty": "分析するテキストを入力してください。",
+  "analysis_error_failed": "テキストを分析できませんでした。もう一度お試しください。",
+  "analysis_error_network": "接続できませんでした。インターネット接続を確認して、もう一度お試しください。"
 }

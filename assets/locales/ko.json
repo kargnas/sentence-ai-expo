@@ -3,5 +3,8 @@
   "btn_see_demo": "예제 보기",
   "btn_paste_from_clipboard": "붙여넣기",
   "toast_successful_copied": "성공적으로 복사되었습니다.",
-  "placeholder_input_text": "여기에 다양한 언어의 텍스트를 입력하세요."
+  "placeholder_input_text": "여기에 다양한 언어의 텍스트를 입력하세요.",
+  "analysis_error_empty": "분석할 텍스트를 입력해 주세요.",
+  "analysis_error_failed": "텍스트를 분석하지 못했어요. 다시 시도해 주세요.",
+  "analysis_error_network": "연결하지 못했어요. 인터넷 연결을 확인하고 다시 시도해 주세요."
 }

@@ -34,6 +34,7 @@ import ApiService from "../../api/apiService";
 import SavedSearchStore from "../../utils/SavedSearchStore";
 import SettingStore from "../../utils/SettingStore";
 import {trans} from "../../utils/i18n";
+import {getAnalysisErrorKey, runAnalysisRequest} from "../../utils/analysisRequest";
 
 import WordItem from "./WordItem";
 import GuessLanguage from "../../utils/guessLanguage";
@@ -92,47 +93,49 @@ export default function Search() {
         }, 300);
     }
 
-    const handleSearch = async (customQuery) => {
-        const apiService = new ApiService();
-        const realQuery = customQuery?.length > 0 ? customQuery : query;
-        loadingStack++;
-        setLoading(loadingStack)
-        Keyboard.dismiss();
-
-        try {
-            apiService.prepareForRequest();
-            const response = await apiService.analysis(realQuery);
-            setError(null)
-            setResults(response.data);
-            console.log(response.data);
-
-            Haptics.notificationAsync(
-                Haptics.NotificationFeedbackType.Success
-            )
-
-            setLearningLanguage(await SettingStore.getLearningLanguage());
-
-            await SavedSearchStore.setSavedSearchKeyword(realQuery);
-            await SavedSearchStore.setSavedSearch(response.data);
-        } catch (error) {
-            if (axios.isCancel(error)) {
-                console.log("Cancelled previous request");
-            } else {
-                // trace
-                console.error(error);
-                console.error(error, error.stack)
-
-                setResults([])
-                setLearningLanguage(null)
-                setError(error.message)
-            }
-            Haptics.notificationAsync(
-                Haptics.NotificationFeedbackType.Error
-            )
-        } finally {
-            loadingStack--;
+    const handleSearch = async (customQuery?: string) => {
+        return runAnalysisRequest(customQuery ?? query, async (realQuery) => {
+            const apiService = new ApiService();
+            setError(null);
+            loadingStack++;
             setLoading(loadingStack)
-        }
+            Keyboard.dismiss();
+
+            try {
+                apiService.prepareForRequest();
+                const response = await apiService.analysis(realQuery);
+                setError(null)
+                setResults(response.data);
+                console.log(response.data);
+
+                Haptics.notificationAsync(
+                    Haptics.NotificationFeedbackType.Success
+                )
+
+                setLearningLanguage(await SettingStore.getLearningLanguage());
+
+                await SavedSearchStore.setSavedSearchKeyword(realQuery);
+                await SavedSearchStore.setSavedSearch(response.data);
+            } catch (error) {
+                if (axios.isCancel(error)) {
+                    console.log("Cancelled previous request");
+                } else {
+                    // trace
+                    console.error(error);
+                    console.error(error, error.stack)
+
+                    setResults([])
+                    setLearningLanguage(null)
+                    setError(trans(getAnalysisErrorKey(error), {}))
+                }
+                Haptics.notificationAsync(
+                    Haptics.NotificationFeedbackType.Error
+                )
+            } finally {
+                loadingStack--;
+                setLoading(loadingStack)
+            }
+        }, () => setError(trans('analysis_error_empty', {})));
     };
 
     useEffect(() => {
@@ -162,8 +165,11 @@ export default function Search() {
                         placeholder={trans('placeholder_input_text')}
                         placeholderTextColor={theme.colors.placeholder}
                         value={query}
-                        onChangeText={setQuery}
-                        onSubmitEditing={handleSearch}
+                        onChangeText={(text) => {
+                            setQuery(text);
+                            setError(null);
+                        }}
+                        onSubmitEditing={({nativeEvent}) => handleSearch(nativeEvent.text)}
                         returnKeyType="search"
                         clearButtonMode="while-editing"
                     />
@@ -172,6 +178,7 @@ export default function Search() {
                         onPress={() => {
                             if (query.length > 0) {
                                 setQuery('');
+                                setError(null);
                             }
                         }}
                         activeOpacity={0.7}
@@ -238,7 +245,7 @@ export default function Search() {
                     <RefreshControl 
                         refreshing={loading > 0}
                         tintColor={theme.colors.primary}
-                        onRefresh={handleSearch}
+                        onRefresh={() => handleSearch()}
                     />
                 }
                 showsVerticalScrollIndicator={false}
@@ -276,6 +283,7 @@ export default function Search() {
                         onPress={() => {
                             setResults([]);
                             setQuery('');
+                            setError(null);
                             setLearningLanguage(null);
                             SavedSearchStore.clearSavedSearch();
                             SavedSearchStore.clearSavedSearchKeyword();
